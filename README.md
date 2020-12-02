@@ -14,5 +14,4 @@ Simple & Clean OpenCart theme. Easy to install and use, best universal theme etc
 # Support
 
 If you find any bug, just create an ish with a description of this bug, If you want to get commercial support, write to me by mail
-
-[mailto:stick.qwe@gmail.com](stick.qwe@gmail.com)
+(stick.qwe@gmail.com)

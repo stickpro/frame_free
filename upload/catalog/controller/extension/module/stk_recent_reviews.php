@@ -9,7 +9,7 @@ class ControllerExtensionModuleSTKRecentReviews extends Controller {
 		$this->document->addScript('catalog/view/theme/' . $this->config->get('theme_framefree_directory') . '/javascript/owl-carousel/owl.carousel.min.js');
 
 		$this->load->model('tool/image');
-    $this->load->model('extension/theme/frame');
+    $this->load->model('extension/theme/framefree');
     $this->load->model('catalog/product');
 
 		$this->load->model('setting/setting');
