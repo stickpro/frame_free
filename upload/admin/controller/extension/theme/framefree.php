@@ -4,18 +4,13 @@ class ControllerExtensionThemeFrameFree extends Controller {
 
 	public function index() {
 
-		if (file_exists('../system/framefree.ocmod.xml')) {
-	    $frame_modifier = simplexml_load_file('../system/framefree.ocmod.xml');
-			$data['t1_version'] = $frame_modifier->version;
-		} else {
-			$this->load->model('setting/modification');
-			$results = $this->model_setting_modification->getModifications();
-			foreach ($results as $result) {
-				$data['t1_version'] = ' null';
-				if ($result['code'] == 'frame_theme') {
-					$data['t1_version'] = $result['version'];
-					break;
-				}
+		$this->load->model('setting/modification');
+		$results = $this->model_setting_modification->getModifications();
+		foreach ($results as $result) {
+			$data['t1_version'] = ' null';
+			if ($result['code'] == 'framefree') {
+				$data['t1_version'] = $result['version'];
+				break;
 			}
 		}
 
