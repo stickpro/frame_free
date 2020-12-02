@@ -1,0 +1,14 @@
+<div class="card mb-3">
+	<div class="card-header">{{ heading_title }}</div>
+  <div class="list-group list-group-flush">
+		{% for information in informations %}
+		<a href="{{ information.href }}" class="list-group-item list-group-item-action py-2">{{ information.title }}</a>
+		{% endfor %}
+		<a href="{{ contact }}" class="list-group-item list-group-item-action py-2">{{ text_contact }}</a>
+		<a href="{{ sitemap }}" class="list-group-item list-group-item-action py-2">{{ text_sitemap }}</a>
+	</div>
+</div>
+
+
+
+

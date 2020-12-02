@@ -1,0 +1,77 @@
+{{ header }}
+<div id="common-home" class="container">
+	<div id="content">
+		{% if menu_open or ff_additional_position1 or ff_additional_position2 or ff_additional_position3 or ff_additional_position4 %}
+		<div class="row flex-nowrap align-items-start">
+			{% if menu_open %}
+			<div class="d-none d-lg-block col-lg-3 col-aside">
+				<div class="menu-holder d-none d-lg-block mb-3 mt-n3"></div>
+				<script> var menu_holder_height = function() { document.querySelector('.menu-holder').style.height = document.querySelector('.category-menu-list').offsetHeight + 'px' }; menu_holder_height();</script>
+			</div>
+			{% endif %}
+			{% if ff_additional_position1 or ff_additional_position2 or ff_additional_position3 or ff_additional_position4 %}
+			<div class="col">
+				<div class="row">
+					{% if ff_additional_position1 %}
+					<div class="col-12">
+						{{ ff_additional_position1 }}
+					</div>
+					{% endif %}
+					{% if ff_additional_position2 %}
+					<div class="col">
+						{{ ff_additional_position2 }}
+					</div>
+					{% endif %}
+					{% if ff_additional_position3 %}
+					<div class="col d-none d-xxl-block col-xxl-only">
+						{{ ff_additional_position3 }}
+					</div>
+					{% endif %}
+					{% if ff_additional_position4 %}
+					<div class="col-12">
+						{{ ff_additional_position4 }}
+					</div>
+					{% endif %}
+				</div>
+			</div>
+			{% endif %}
+		</div>
+		{% endif %}
+
+		{% if content_top or column_right %}
+		<div class="row">
+			{% if content_top %}
+			<div class="col-12 col-lg ">
+				{{ content_top }}
+			</div>
+			{% endif %}
+			{% if column_right %}
+			<div class="col-12 col-lg-3 col-aside">
+				{{ column_right }}
+			</div>
+			{% endif %}
+		</div>
+		{% endif %}
+
+		{{ ff_additional_position5 }}
+
+		{% if content_bottom or column_left %}
+		<div class="row">
+			{% if column_left %}
+			<div class="col-12 col-lg-3 col-aside">
+				{{ column_left }}
+			</div>
+			{% endif %}
+			{% if content_bottom %}
+			<div class="col-12 col-lg">
+				{{ content_bottom }}
+			</div>
+			{% endif %}
+		</div>
+		{% endif %}
+
+		{{ ff_additional_position6 }}
+
+	</div>
+</div>
+{{ footer }}

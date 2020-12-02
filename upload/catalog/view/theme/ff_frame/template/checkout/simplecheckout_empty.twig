@@ -1,0 +1,13 @@
+{% if not ajax and not popup and not as_module %}
+{% include simple_header %}
+{% endif %}
+  <div class="content">
+    <p class="my-5 text-center">{{ text_error }}</p>
+  </div>
+
+  <div class="simplecheckout-button-block buttons">
+    <div class="simplecheckout-button-right right text-right"><a href="{{ continue }}" class="button btn-primary button_oc btn"><span>{{ button_continue }}</span></a></div>
+  </div>
+{% if not ajax and not popup and not as_module %}
+{% include simple_footer %}
+{% endif %}

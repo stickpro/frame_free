@@ -1,0 +1,120 @@
+{% if not ajax and not popup and not as_module %}
+{% set simple_page = 'simpleregister' %}
+{% include simple_header %}
+<div class="simple-content">
+{% endif %}
+  {% if not ajax or (ajax and popup) %}
+  <script type="text/javascript">
+      {% if popup %}
+          var simpleScriptsInterval = window.setInterval(function(){
+              if (typeof jQuery !== 'undefined' && jQuery.isReady) {
+                  window.clearInterval(simpleScriptsInterval);
+
+                  if (typeof Simplepage !== "function") {
+                      {% for script in simple_scripts %}
+                          $("head").append('<script src="' + '{{ script }}' + '"></' + 'script>');
+                      {% endfor %}
+
+                      {% for style in simple_styles %}
+                          $("head").append('<link href="' + '{{ style }}' + '" rel="stylesheet"/>');
+                      {% endfor %}
+                  }
+              }
+          },0);
+      {% endif %}
+
+      var startSimpleInterval = window.setInterval(function(){
+          if (typeof jQuery !== 'undefined' && typeof Simplepage === "function" && jQuery.isReady) {
+              window.clearInterval(startSimpleInterval);
+
+              var simplepage = new Simplepage({
+                  additionalParams: "{{ additional_params }}",
+                  additionalPath: "{{ additional_path }}",
+                  mainUrl: "{{ action }}",
+                  mainContainer: "#simplepage_form",
+                  useAutocomplete: {{ use_autocomplete ? 1 : 0 }},
+                  useGoogleApi: {{ use_google_api ? 1 : 0 }},
+                  scrollToError: {{ scroll_to_error ? 1 : 0 }},
+                  notificationDefault: {{ notification_default ? 1 : 0 }},
+                  notificationToasts: {{ notification_toasts ? 1 : 0 }},
+                  notificationCheckForm: {{ notification_check_form ? 1 : 0 }},
+                  notificationCheckFormText: "{{ notification_check_form_text }}",
+                  languageCode: "{{ language_code }}",
+                  javascriptCallback: function() { {{ javascript_callback }} }
+              });
+
+              if (typeof toastr !== 'undefined') {
+                  toastr.options.positionClass = "{{ notification_position ? notification_position : 'toast-top-right' }}";
+                  toastr.options.timeOut = "{{ notification_timeout ? notification_timeout : '5000' }}";
+                  toastr.options.progressBar = true;
+              }
+
+              simplepage.init();
+          }
+      },0);
+  </script>
+  {% endif %}
+  <form action="{{ action }}" method="post" enctype="multipart/form-data" id="simplepage_form">
+    <div class="simpleregister" id="simpleregister">
+
+      <div class="simpleregister-have-account alert alert-info">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ text_account_already }}
+      </div>
+
+      {% if error_warning %}
+      <div class="warning alert alert-danger">{{ error_warning }}</div>
+      {% endif %}
+
+      <div class="simpleregister-block-content d-flex flex-wrap mx-n2">
+        {% for row in rows %}
+        {{ row }}
+        {% endfor %}
+        {% for row in hidden_rows %}
+        {{ row }}
+        {% endfor %}
+      </div>
+      {% if display_agreement_checkbox %}
+      <div class="alert alert-danger simpleregister-warning-block" id="agreement_warning" {% if error_agreement %}data-error="true"{% else %}style="display:none;"{% endif %}>
+        <div class="agreement_all">
+          {% for agreement_id, warning_agreement in error_warning_agreement %}
+          <div class="agreement_{{ agreement_id }}">{{ warning_agreement }}</div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+      <div class="row align-items-center">
+
+        {% if (display_agreement_checkbox) %}
+        <div class="col-12 col-lg-auto order-lg-2 mb-3 mb-lg-0">
+          <div id="agreement_checkbox">
+            {% for agreement_id, text_agreement in text_agreements %}
+            <div class="form-check">
+              <input class="form-check-input" id="agreement_{{ agreement_id }}" type="checkbox" name="agreements[]" value="{{ agreement_id }}" {{ agreement_id in agreements ? 'checked="checked"' : '' }} />
+              <label class="form-check-label" for="agreement_{{ agreement_id }}">{{ text_agreement }}</label>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+
+        <div class="col-12 col-lg-auto order-lg-1">
+          <div class="simpleregister-button-block buttons">
+            <div class="simpleregister-button-right">
+              <a href="javascript:void(0)" class="button btn-primary button_oc btn px-4" data-onclick="submit" id="simpleregister_button_confirm">
+                <span>{{ button_continue }}</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    {% if redirect %}
+    <input type="hidden" id="simple_redirect_url" value="{{ redirect }}">
+    {% endif %}
+  </form>
+{% if not ajax and not popup and not as_module %}
+</div>
+{% include simple_footer %}
+{% endif %}

@@ -1,0 +1,278 @@
+<div id="ftNewsCarousel_{{ module }}" class="{% if 'pagination' in controls %}mb-3{% else %}mb-4{% endif %}">
+  {% if heading_title or 'arrows' in controls %}
+  <div class="pt-2 mb-3">
+    <div class="row">
+      <div class="col">
+        {% if heading_title %}
+        <div class="h5 mb-0 ml-1">{{ heading_title }}</div>
+        {% endif %}
+      </div>
+      {% if 'arrows' in controls %}
+      <div class="col-auto">
+        <button class="btn btn-prev p-0 rounded-pill">
+          <svg class="d-block ft-icon-24 m-0 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"></path>
+          </svg>
+        </button>
+        <button class="btn btn-next p-0 rounded-pill">
+          <svg class="d-block ft-icon-24 m-0 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"></path>
+          </svg>
+        </button>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+  {% endif %}
+  <div class="m-n1 m-sm-n2">
+    <!--noindex-->
+    <!--googleoff: all-->
+    <div class="carousel-placeholder d-flex">
+      <script>
+
+        items = {{ items }};
+        breakpoints = [];
+        base_width = window.innerWidth;
+
+        {% if responsive_items %}
+        {% for item in responsive_items %}
+        breakpoints[{{ loop.index0 }}] = { ww: {{ item.breakpoint }}, count: {{ item.amount }} };
+        {% endfor %}
+        {% endif %}
+
+        breakpoints.sort((a, b) => a.ww > b.ww ? 1 : -1);
+        breakpoints.forEach(function(breakpoint, i, breakpoints) {
+
+          next_bp_vw = breakpoints[i + 1] != null ? breakpoints[i + 1].ww : 9999;
+
+          if (breakpoint.ww <= base_width && next_bp_vw > base_width) {
+            items = breakpoint.count;
+          }
+        });
+
+      </script>
+      <div class="item d-flex">
+        <script>
+
+          item = document.querySelector('#ftNewsCarousel_{{ module }} .carousel-placeholder .item');
+          item.style.width = items > 0 ? 100 / items + '%' : 100 + '%';
+
+        </script>
+        <div class="article-item w-100 border rounded bg-white overflow-hidden m-1 m-sm-2 d-flex flex-column">
+           <a href="{{ article.href }}" class="d-block position-relative">
+             <svg class="d-block img-fluid w-100" width="{{ articles[0].img_width }}" height="{{ articles[0].img_height }}" xmlns="http://www.w3.org/2000/svg"></svg>
+             <div class="d-flex justify-content-center align-items-center position-absolute t-0 b-0 r-0 l-0 w-100 h-100 lazy-spinner">
+               <div class="spinner-border text-gray-400"></div>
+             </div>
+           </a>
+           <div class="px-3 px-sm-3 pt-3">
+             <div class="article-name h6 {% if review_status %}mb-2{% else %}mb-0{% endif %} overflow-hiddden">
+               <span class="bg-light">
+                 <span class="invisible">
+                   Lorem ipsum dolor sit amet, consectetur...
+                 </span>
+               </span>
+             </div>
+             {% if review_status %}
+             <div class="d-flex mb-3">
+               {% for i in 1..5 %}
+               <svg class="d-block ft-icon-18 text-light m-0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                 <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+               </svg>
+               {% endfor %}
+             </div>
+             {% endif %}
+           </div>
+           <div class="px-3 pb-3 mt-auto">
+             <div class="row no-gutters align-items-center">
+               <div class="col-auto">
+                <span class="badge d-block badge-light px-1 py-0 mr-2">
+    						  <svg class="d-block ft-icon-18 m-0 text-gray-500" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"></svg>
+                </span>
+               </div>
+               <div class="col-auto">
+                 <span class="badge d-block badge-light py-0 pl-1 pr-3">
+                   <span class="row no-gutters align-items-center">
+                     <span class="col-auto">
+                       <svg class="d-block ft-icon-18 m-0 text-gray-500" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"></svg>
+                     </span>
+                   </span>
+                </span>
+               </div>
+               <div class="col text-right">
+                 <small class="d-block text-secondary">
+                   <span class="bg-light">
+                     <span class="invisible">
+                       Date...
+                     </span>
+                   </span>
+                 </small>
+               </div>
+            </div>
+           </div>
+        </div>
+      </div>
+      <script>
+
+        for(let i = 1; i < items && i < {{ articles|length }}; i++)  {
+          clone = item.cloneNode(true);
+          item.parentNode.appendChild(clone);
+        }
+
+        items = null;
+				item = null;
+				clone = null;
+				breakpoints = null;
+				base_width = null;
+				prev_bp_vw = null;
+
+      </script>
+    </div>
+    <!--googleon: all-->
+    <!--/noindex-->
+    <div class="owl-carousel">
+      {% for article in articles %}
+       <div class="article-item border w-100 rounded bg-white overflow-hidden m-1 m-sm-2 d-flex flex-column">
+          <a href="{{ article.href }}" class="d-block position-relative">
+            <svg class="d-block img-fluid w-100" width="{{ article.img_width }}" height="{{ article.img_height }}" xmlns="http://www.w3.org/2000/svg"></svg>
+
+            {% if lazyload_imgs %}
+            <picture>
+              {% if article.thumb2x %}
+              <source class="owl-lazy" data-srcset="{{ article.thumb }} 1x, {{ article.thumb2x }} 2x, {{ article.thumb3x }} 3x, {{ article.thumb4x }} 4x" srcset="{{ article.thumb_holder }}">
+              {% endif %}
+              <img src="{{ article.thumb_holder }}" data-src="{{ article.thumb }}" alt="{{ article.name }}" title="{{ article.name }}" class="position-absolute t-0 l-0 img-fluid w-100 d-block owl-lazy">
+            </picture>
+            <div class="d-flex justify-content-center align-items-center position-absolute t-0 b-0 r-0 l-0 w-100 h-100 lazy-spinner">
+              <div class="spinner-border text-gray-400"></div>
+            </div>
+            {% else %}
+            <picture>
+              {% if article.thumb2x %}
+              <source srcset="{{ article.thumb }} 1x, {{ article.thumb2x }} 2x, {{ article.thumb3x }} 3x, {{ article.thumb4x }} 4x">
+              {% endif %}
+              <img src="{{ article.thumb }}" alt="{{ article.name }}" title="{{ article.name }}" class="position-absolute t-0 l-0 img-fluid w-100 d-block">
+            </picture>
+            {% endif %}
+
+          </a>
+          <div class="px-3 px-sm-3 pt-3">
+            <div class="article-name h6 {% if review_status %}mb-2{% else %}mb-0{% endif %}">
+              <a href="{{ article.href }}" class="text-dark  font-weight-normal line-clamp-3">{{ article.name }}</a>
+            </div>
+            {% if review_status %}
+            <div class="d-flex mb-3">
+              {% for i in 1..5 %}
+              {% if article.rating < i %}
+              <svg class="d-block ft-icon-18 text-gray-400 m-0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"/>
+              </svg>
+              {% else %}
+              <svg class="d-block ft-icon-18 text-warning m-0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+              </svg>
+              {% endif %}
+              {% endfor %}
+            </div>
+            {% endif %}
+          </div>
+          <div class="px-3 pb-3 mt-auto">
+            <div class="row no-gutters align-items-center">
+              <div class="col-auto">
+                <span class="badge d-block badge-light px-1 py-0 mr-2 cursor-pointer" title="{{ article.description }}" onclick="location.href = ('{{ article.href }}')">
+   								<svg class="d-block ft-icon-18 m-0 text-gray-500" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+   									<path d="M3 18h12v-2H3v2zM3 6v2h18V6H3zm0 7h18v-2H3v2z"/>
+   								</svg>
+               </span>
+              </div>
+              <div class="col-auto">
+                <span class="badge d-block badge-light py-0 pl-1 pr-2" title="{{ text_views }} {{ article.viewed }}">
+                  <span class="row no-gutters align-items-center">
+                    <span class="col-auto">
+                      <svg class="d-block ft-icon-18 m-0 text-gray-500" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 6.5c3.79 0 7.17 2.13 8.82 5.5-1.65 3.37-5.02 5.5-8.82 5.5S4.83 15.37 3.18 12C4.83 8.63 8.21 6.5 12 6.5m0-2C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zm0 5c1.38 0 2.5 1.12 2.5 2.5s-1.12 2.5-2.5 2.5-2.5-1.12-2.5-2.5 1.12-2.5 2.5-2.5m0-2c-2.48 0-4.5 2.02-4.5 4.5s2.02 4.5 4.5 4.5 4.5-2.02 4.5-4.5-2.02-4.5-4.5-4.5z"/>
+                      </svg>
+                    </span>
+                    <span class="col-auto font-weight-normal text-secondary">
+                      <span class="d-block ml-1">{{ article.viewed }}</span>
+                    </span>
+                  </span>
+               </span>
+              </div>
+              <div class="col text-right">
+                <small class="d-block text-secondary">{{ article.date_added }}</small>
+              </div>
+           </div>
+          </div>
+       </div>
+       {% endfor %}
+    </div>
+  </div>
+  {% if 'pagination' in controls %}
+  <div class="owl-pagination text-center text-sm-left px-2 py-2">
+    <button class="btn btn-dot bg-dark shadow-none rounded-pill border-0 bg-secondary p-0 mr-0"><span></span></button>
+  </div>
+  {% endif %}
+</div>
+
+<script>
+	$(function () {
+
+		var ftNewsCarousel_{{ module }} = $('#ftNewsCarousel_{{ module }} .owl-carousel');
+
+		ftNewsCarousel_{{ module }}.owlCarousel({
+      mouseDrag: false,
+      touchDrag: true,
+      loop: false,
+      rewind: true,
+
+      items: {{ items }},
+
+      {% if responsive_items %}
+        responsive: {
+        {% for item in responsive_items %}
+        {{ item.breakpoint }} : { items: {{ item.amount }} },
+        {% endfor %}
+        },
+      {% endif %}
+
+      stageClass: 'owl-stage d-flex justify-content-between',
+      itemClass: 'owl-item d-flex float-none',
+
+      nav: false,
+      {% if 'pagination' in controls %}
+      dots: true,
+      dotsContainer: '#ftNewsCarousel_{{ module }} .owl-pagination',
+      dotClass: 'btn btn-dot bg-dark shadow-none rounded-pill border-0 bg-secondary p-0',
+      {% else %}
+      dots: false,
+      {% endif %}
+      {% if autoplay %}
+      autoplay: true,
+      autoplayTimeout: {{ autoplay_speed }},
+      autoplayHoverPause: true,
+      {% endif %}
+
+      {% if lazyload_imgs %}
+      lazyLoad: true,
+      {% else %}
+      lazyLoad: false,
+      {% endif %}
+      lazyLoadEager: 0,
+
+      onLoadedLazy: function(e) { e.element.parent().parent().find('.lazy-spinner').remove() },
+      onInitialized: function(e) { $(e.target).parent().find('.carousel-placeholder').remove()},
+      onRefreshed: function(e) {
+
+        $(e.target).find('.owl-item').each(function() { this.style.minWidth = this.style.width });
+        let arrows = $('#ftNewsCarousel_{{ module }} .btn-prev, #ftNewsCarousel_{{ module }} .btn-next ');
+        if (e.item.count <= e.page.size) { arrows.attr('disabled','disabled') } else { arrows.removeAttr('disabled') }
+
+      },
+		});
+
+		$('#ftNewsCarousel_{{ module }} .btn-prev').click(function() { ftNewsCarousel_{{ module }}.trigger('prev.owl.carousel'); });
+		$('#ftNewsCarousel_{{ module }} .btn-next').click(function() { ftNewsCarousel_{{ module }}.trigger('next.owl.carousel'); });
+
+	});
+</script>

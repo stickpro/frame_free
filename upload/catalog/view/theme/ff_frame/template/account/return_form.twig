@@ -1,0 +1,285 @@
+{{ header }}
+<div id="account-return" class="container">
+  {% if error_warning %}
+  <div class="alert alert-danger alert-dismissible">{{ error_warning }}</div>
+  {% endif %}
+  <div class="row">
+		{% if column_left %}
+		<div class="col-12 col-sm col-lg-3 order-lg-1 col-aside">
+			{{ column_left }}
+		</div>
+		{% endif %}
+		{% if column_right %}
+		<div class="col-12 col-sm col-lg-3 order-lg-3 col-aside">
+			{{ column_right }}
+		</div>
+		{% endif %}
+    <div id="content" class="col-12 col-lg order-lg-2 mb-3">
+			{{ content_top }}
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb p-0 mb-3 bg-transparent" itemscope itemtype="http://schema.org/BreadcrumbList">
+          {% for breadcrumb in breadcrumbs %}
+          {% if loop.index == 1 %}
+          <li class="breadcrumb-item p-0" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a class="text-dark" href="{{ breadcrumb.href }}"  itemprop="item">
+              <meta itemprop="name" content="{{ g_text_home }}" />
+            	<svg class="ft-icon-18 d-block" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            		<path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+            	</svg>
+            </a>
+            <meta itemprop="position" content="{{ loop.index }}" />
+          </li>
+          {% elseif breadcrumbs|length != loop.index %}
+          <li class="breadcrumb-item p-0" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a class="text-dark" href="{{ breadcrumb.href }}" itemprop="item">
+              <span itemprop="name">{{ breadcrumb.text }}</span>
+            </a>
+            <meta itemprop="position" content="{{ loop.index }}" />
+          </li>
+          {% else %}
+          <li class="breadcrumb-item p-0 active">
+            <span>{{ breadcrumb.text }}</span>
+          </li>
+          {% endif %}
+          {% endfor %}
+        </ol>
+      </nav>
+      <h1 class="h2 mb-4">{{ heading_title }}</h1>
+      <p>{{ text_description }}</p>
+
+
+      <form action="{{ action }}" method="post" enctype="multipart/form-data" class="form-horizontal d-block bg-light border rounded p-4" >
+				<h5>{{ text_order }}</h5>
+				<div class="form-row">
+					<div class="col-12 col-sm-6">
+						<div class="form-group required">
+							<label for="input-firstname">{{ entry_firstname }}</label>
+							<input type="text" name="firstname" value="{{ firstname }}" placeholder="{{ entry_firstname }}" id="input-firstname" class="form-control" />
+							{% if error_firstname %}
+							<div class="text-danger">{{ error_firstname }}</div>
+							{% endif %}
+						</div>
+					</div>
+					<div class="col-12 col-sm-6">
+						<div class="form-group required">
+							<label for="input-lastname">{{ entry_lastname }}</label>
+							<input type="text" name="lastname" value="{{ lastname }}" placeholder="{{ entry_lastname }}" id="input-lastname" class="form-control" />
+							{% if error_lastname %}
+							<div class="text-danger">{{ error_lastname }}</div>
+							{% endif %}
+						</div>
+					</div>
+					<div class="col-12 col-sm-6">
+						<div class="form-group required">
+							<label for="input-email">{{ entry_email }}</label>
+							<input type="text" name="email" value="{{ email }}" placeholder="{{ entry_email }}" id="input-email" class="form-control" />
+							{% if error_email %}
+							<div class="text-danger">{{ error_email }}</div>
+							{% endif %}
+						</div>
+					</div>
+					<div class="col-12 col-sm-6">
+						<div class="form-group required">
+							<label for="input-telephone">{{ entry_telephone }}</label>
+							<input type="text" name="telephone" value="{{ telephone }}" placeholder="{{ entry_telephone }}" id="input-telephone" class="form-control" />
+							{% if error_telephone %}
+							<div class="text-danger">{{ error_telephone }}</div>
+							{% endif %}
+						</div>
+					</div>
+					<div class="col-12 col-sm-6">
+						<div class="form-group required">
+							<label for="input-order-id">{{ entry_order_id }}</label>
+							<input type="text" name="order_id" value="{{ order_id }}" placeholder="{{ entry_order_id }}" id="input-order-id" class="form-control" />
+							{% if error_order_id %}
+							<div class="text-danger">{{ error_order_id }}</div>
+							{% endif %}
+						</div>
+					</div>
+					<div class="col-12 col-sm-6">
+						<div class="form-group">
+							<label for="input-date-ordered">{{ entry_date_ordered }}</label>
+							<div class="input-group date">
+								<input type="text" name="date_ordered" value="{{ date_ordered }}" placeholder="{{ entry_date_ordered }}" data-date-format="YYYY-MM-DD" id="input-date-ordered" class="form-control need-dtp" />
+								<span class="input-group-append">
+									<button type="button" class="btn btn-light border px-2">
+										<svg class="d-block ft-icon-18 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+											<path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"></path>
+										</svg>
+									</button>
+								</span>
+							</div>
+						</div>
+					</div>
+        </div>
+
+				<h5>{{ text_product }}</h5>
+        <div class="form-row">
+					<div class="col-12">
+						<div class="form-group required">
+							<label for="input-product">{{ entry_product }}</label>
+							<input type="text" name="product" value="{{ product }}" placeholder="{{ entry_product }}" id="input-product" class="form-control" />
+							{% if error_product %}
+							<div class="text-danger">{{ error_product }}</div>
+							{% endif %}
+						</div>
+					</div>
+
+					<div class="col-12 col-sm-6">
+						<div class="form-group required">
+							<label for="input-model">{{ entry_model }}</label>
+							<input type="text" name="model" value="{{ model }}" placeholder="{{ entry_model }}" id="input-model" class="form-control" />
+							{% if error_model %}
+							<div class="text-danger">{{ error_model }}</div>
+							{% endif %}
+						</div>
+					</div>
+
+					<div class="col-12 col-sm-6">
+						<div class="form-group">
+							<label for="input-quantity">{{ entry_quantity }}</label>
+							<input type="text" name="quantity" value="{{ quantity }}" placeholder="{{ entry_quantity }}" id="input-quantity" class="form-control" />
+						</div>
+					</div>
+
+
+					<div class="col-12">
+
+						<div class="form-group required">
+							<label>{{ entry_reason }}</label>
+								{% for return_reason in return_reasons %}
+								{% if return_reason.return_reason_id == return_reason_id %}
+								<div class="form-check mb-1">
+									<label class="form-check-label">
+										<input type="radio" class="form-check-input" name="return_reason_id" value="{{ return_reason.return_reason_id }}" checked="checked" />
+										{{ return_reason.name }}
+									</label>
+								</div>
+								{% else %}
+								<div class="form-check mb-1">
+									<label class="form-check-label">
+										<input type="radio" class="form-check-input" name="return_reason_id" value="{{ return_reason.return_reason_id }}" />
+										{{ return_reason.name }}
+									</label>
+								</div>
+								{% endif %}
+								{% endfor %}
+								{% if error_reason %}
+								<div class="text-danger">{{ error_reason }}</div>
+								{% endif %}
+						</div>
+
+						<div class="form-group required">
+							<label>{{ entry_opened }}</label>
+							<div class="form-check mb-1">
+								<label class="form-check-label"> {% if opened %}
+									<input type="radio" class="form-check-input" name="opened" value="1" checked="checked" />
+									{% else %}
+									<input type="radio" class="form-check-input" name="opened" value="1" />
+									{% endif %}
+									{{ text_yes }}
+								</label>
+							</div>
+							<div class="form-check mb-1">
+								<label class="form-check-label"> {% if not opened %}
+									<input type="radio" class="form-check-input" name="opened" value="0" checked="checked" />
+									{% else %}
+									<input type="radio" class="form-check-input" name="opened" value="0" />
+									{% endif %}
+									{{ text_no }}
+								</label>
+							</div>
+						</div>
+
+					</div>
+
+					<div class="col-12">
+						<div class="form-group">
+							<label for="input-comment">{{ entry_fault_detail }}</label>
+							<textarea name="comment" rows="4" placeholder="{{ entry_fault_detail }}" id="input-comment" class="form-control">{{ comment }}</textarea>
+						</div>
+					</div>
+
+        </div>
+        {% if captcha %}
+        <div class="form-group">
+        {{ captcha }}
+        </div>
+        {% endif %}
+        {% if text_agree %}
+				<div class="row">
+					<div class="col-12 col-md-auto ml-md-auto order-md-2 mb-2 mb-md-0">
+						<div class="form-row">
+							<div class="col-12 col-md text-md-right mb-3 mb-md-0">
+								<div class="d-table w-100 h-100">
+									<div class="d-table-cell w-100 h-100 align-middle">
+										<div class="checkbox">
+											<label class="m-0">
+												<span class="row no-gutters">
+													<span class="col-auto order-md-2">
+														{% if agree %}
+														<input type="checkbox" class="align-middle mr-2 mr-md-0 ml-md-2" name="agree" value="1" checked="checked" />
+														{% else %}
+														<input type="checkbox" class="align-middle mr-2 mr-md-0 ml-md-2" name="agree" value="1" />
+														{% endif %}
+													</span>
+													<span class="col order-md-1">
+														{{ text_agree }}
+													</span>
+												</span>
+											</label>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-12 col-md-auto">
+								<input type="submit" value="{{ button_continue }}" class="btn btn-block btn-primary px-4" />
+							</div>
+						</div>
+          </div>
+          <div class="col-12 col-md-auto mr-md-auto order-md-1">
+						<a href="{{ back }}" class="btn btn-outline-secondary btn-block px-5">{{ button_back }}</a>
+					</div>
+        </div>
+        {% else %}
+        <div class="row">
+					<div class="col-12 col-sm-auto ml-sm-auto order-sm-2 mb-2 mb-sm-0">
+            <input type="submit" value="{{ button_continue }}" class="btn btn-primary btn-block px-4" />
+          </div>
+          <div class="col-12 col-sm-auto mr-sm-auto order-sm-1">
+						<a href="{{ back }}" class="btn btn-outline-secondary btn-block px-5">{{ button_back }}</a>
+					</div>
+        </div>
+        {% endif %}
+      </form>
+    </div>
+  </div>
+{{ content_bottom }}
+</div>
+<script>
+	function start_datetimepicker() {
+		$('.date').datetimepicker({
+			language: '{{ datepicker }}',
+			pickTime: false
+		});
+	}
+
+	if ($('.need-dtp').length > 0){
+		if (typeof jQuery().datetimepicker != 'function'  ) {
+
+			$('head').append('<link rel="stylesheet" href="catalog/view/theme/{{ theme_dir }}/javascript/plugins/dtpicker-b4j3fix/bootstrap-datetimepicker.min.css">');
+
+			$.getScript("catalog/view/theme/{{ theme_dir }}/javascript/plugins/dtpicker-b4j3fix/moment/moment.min.js", function( data, textStatus, jqxhr ) {
+				$.getScript("catalog/view/theme/{{ theme_dir }}/javascript/plugins/dtpicker-b4j3fix/moment/moment-with-locales.min.js", function( data, textStatus, jqxhr ) {
+					$.getScript("catalog/view/theme/{{ theme_dir }}/javascript/plugins/dtpicker-b4j3fix/bootstrap-datetimepicker.min.js", function( data, textStatus, jqxhr ) {
+						start_datetimepicker();
+					});
+				});
+			});
+
+		} else {
+			start_datetimepicker();
+		}
+	}
+</script>
+{{ footer }}

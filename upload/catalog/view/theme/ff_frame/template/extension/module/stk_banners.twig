@@ -1,0 +1,427 @@
+{% if banners and type == 'carousel' %}
+<div id="ftCarousel_{{ module }}">
+  {% if heading_title %}
+  <div class="pt-2 mb-3">
+    <div class="row">
+      <div class="col">
+        <div class="h5 mb-0 ml-1">{{ heading_title }}</div>
+      </div>
+      {% if 'arrows' in controls %}
+      <div class="col-auto">
+        <button class="btn btn-prev p-0 rounded-pill">
+          <svg class="d-block ft-icon-24 m-0 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"></path>
+          </svg>
+        </button>
+        <button class="btn btn-next p-0 rounded-pill">
+          <svg class="d-block ft-icon-24 m-0 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"></path>
+          </svg>
+        </button>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+  {% endif %}
+  <div class="{% if 'pagination' in controls %}mb-3{% else %}mb-4{% endif %}">
+    <div class="position-relative overflow-hidden border rounded bg-white">
+      <!--noindex-->
+      <!--googleoff: all-->
+      <div class="carousel-placeholder d-flex">
+        {% if banners[0].type %}
+        <div class="item invisible">
+          {{ banners[0].description }}
+        </div>
+        {% else %}
+
+        <script>
+          items = {{ items }};
+          breakpoints = [];
+          base_width = window.innerWidth;
+
+          {% if responsive_items %}
+          {% for item in responsive_items %}
+          breakpoints[{{ loop.index0 }}] = { ww: {{ item.breakpoint }}, count: {{ item.amount }} };
+          {% endfor %}
+          {% endif %}
+
+          breakpoints.sort((a, b) => a.ww > b.ww ? 1 : -1);
+          breakpoints.forEach(function(breakpoint, i, breakpoints) {
+
+            next_bp_vw = breakpoints[i + 1] != null ? breakpoints[i + 1].ww : 9999;
+
+            if (breakpoint.ww <= base_width && next_bp_vw > base_width) {
+              items = breakpoint.count;
+            }
+          });
+        </script>
+        <div class="item">
+          <script>
+
+            item = document.querySelector('#ftCarousel_{{ module }} .carousel-placeholder .item');
+            item.style.width = items > 0 ? 100 / items + '%' : 100 + '%';
+
+          </script>
+          <div class="d-flex justify-content-center">
+            <div class="position-relative">
+              <svg class="d-block img-fluid w-100" width="{{ banners[0].img_width }}" height="{{ banners[0].img_height }}" xmlns="http://www.w3.org/2000/svg"></svg>
+              <div class="d-flex justify-content-center align-items-center position-absolute t-0 b-0 r-0 l-0 w-100 h-100">
+                <div class="spinner-border text-gray-400"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <script>
+
+          for(let i = 1; i < items && i < {{ banners|length }}; i++)  {
+            clone = item.cloneNode(true);
+            item.parentNode.appendChild(clone);
+          }
+
+          items = null;
+  				item = null;
+  				clone = null;
+  				breakpoints = null;
+  				base_width = null;
+  				prev_bp_vw = null;
+
+        </script>
+        {% endif %}
+      </div>
+      <!--googleon: all-->
+      <!--/noindex-->
+      <div class="owl-carousel">
+    		{% for banner in banners %}
+        {% if banner.type  %}
+        <div class="d-flex justify-content-center">
+          {{ banner.description }}
+        </div>
+        {% else %}
+        {% if banner.image %}
+        <div class="d-flex justify-content-center">
+    			{% if banner.link %}
+    			<a href="{{ banner.link }}">
+          {% endif %}
+          <div class="position-relative">
+            <svg class="d-block img-fluid" width="{{ banner.img_width }}" height="{{ banner.img_height }}" xmlns="http://www.w3.org/2000/svg"></svg>
+            {% if lazyload_imgs %}
+            <picture>
+              {% if banner.image2x %}
+              <source class="owl-lazy" data-srcset="{{ banner.image }} 1x, {{ banner.image2x }} 2x, {{ banner.image3x }} 3x, {{ banner.image4x }} 4x" srcset="{{ banner.src_holder }}">
+              {% endif %}
+              <img src="{{ banner.src_holder }}" data-src="{{ banner.image }}" alt="{{ banner.alt }}" class="position-absolute t-0 l-0 img-fluid d-block w-100 owl-lazy">
+            </picture>
+            <div class="d-flex justify-content-center align-items-center position-absolute t-0 b-0 r-0 l-0 w-100 h-100 lazy-spinner">
+              <div class="spinner-border text-gray-400"></div>
+            </div>
+            {% else %}
+            <picture>
+              {% if banner.image2x %}
+              <source srcset="{{ banner.image }} 1x, {{ banner.image2x }} 2x, {{ banner.image3x }} 3x, {{ banner.image4x }} 4x">
+              {% endif %}
+              <img src="{{ banner.image }}" alt="{{ banner.alt }}" class="position-absolute t-0 l-0 img-fluid d-block w-100">
+            </picture>
+            {% endif %}
+          </div>
+          {% if banner.link %}
+          </a>
+          {% endif %}
+    		</div>
+        {% endif %}
+        {% endif %}
+        {% endfor %}
+    	</div>
+      {% if 'arrows' in controls and not heading_title %}
+      <button class="btn btn-next position-absolute t-50p r-0 p-0 rounded-pill z-index-2 mt-n3 mr-3">
+    		<svg class="d-block ft-icon-24 m-0 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    			<path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"></path>
+    		</svg>
+    	</button>
+      <button class="btn btn-prev position-absolute t-50p l-0 p-0 rounded-pill z-index-2 mt-n3 ml-3">
+    		<svg class="d-block ft-icon-24 m-0 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    			<path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"></path>
+    		</svg>
+    	</button>
+      {% endif %}
+    </div>
+    {% if 'pagination' in controls %}
+    <div class="owl-pagination text-center text-sm-left px-2 py-2">
+      <button class="btn btn-dot bg-dark shadow-none rounded-pill border-0 bg-secondary p-0 mr-0"><span></span></button>
+    </div>
+    {% endif %}
+  </div>
+  <script>
+  	$(function () {
+
+  		var ftCarousel_{{ module }} = $('#ftCarousel_{{ module }} .owl-carousel');
+
+  		ftCarousel_{{ module }}.owlCarousel({
+
+        mouseDrag: false,
+        touchDrag: true,
+        items: {{ items }},
+
+        {% if responsive_items %}
+          responsive: {
+          {% for item in responsive_items %}
+          {{ item.breakpoint }} : { items: {{ item.amount }} },
+          {% endfor %}
+          },
+        {% endif %}
+
+        {% if responsive_base == 'parent' %}
+        responsiveBaseElement: '#ftCarousel_{{ module }}',
+        {% elseif responsive_base and responsive_base != 'viewport' %}
+        responsiveBaseElement: '{{ responsive_base }}',
+        {% endif %}
+
+        stageClass: 'owl-stage d-flex justify-content-start align-items-center',
+        itemClass: 'owl-item float-none',
+
+  			nav: false,
+        {% if 'pagination' in controls %}
+        dots: true,
+  			dotsContainer: '#ftCarousel_{{ module }} .owl-pagination',
+        dotClass: 'btn btn-dot bg-dark shadow-none rounded-pill border-0 bg-secondary p-0',
+        {% else %}
+        dots: false,
+        {% endif %}
+
+        {% if loop %}
+        loop: true,
+        rewind: false,
+        {% else %}
+        loop: false,
+        rewind: true,
+        {% endif %}
+
+        {% if autoplay %}
+        autoplay: true,
+  			autoplayTimeout: {{ autoplay_speed }},
+  			autoplayHoverPause: true,
+        {% endif %}
+
+        {% if lazyload_imgs %}
+        lazyLoad: true,
+        {% else %}
+        lazyLoad: false,
+        {% endif %}
+
+        lazyLoadEager: 0,
+
+        onLoadedLazy: function(e) { e.element.parent().parent().find('.lazy-spinner').remove() },
+        onInitialized: function(e) { $(e.target).parent().find('.carousel-placeholder').remove() },
+        onRefreshed: function(e) {
+
+          $(e.target).find('.owl-item').each(function() { this.style.minWidth = this.style.width });
+          let arrows = $('#ftCarousel_{{ module }} .btn-prev, #ftCarousel_{{ module }} .btn-next ');
+          if (e.item.count <= e.page.size) { arrows.attr('disabled','disabled') } else { arrows.removeAttr('disabled') }
+
+        },
+  		});
+
+      {% if 'arrows' in controls %}
+  		$('#ftCarousel_{{ module }} .btn-prev').click(function() { ftCarousel_{{ module }}.trigger('prev.owl.carousel'); });
+  		$('#ftCarousel_{{ module }} .btn-next').click(function() { ftCarousel_{{ module }}.trigger('next.owl.carousel'); });
+      {% endif %}
+
+  	});
+  </script>
+</div>
+{% endif %}
+
+
+{% if banners and type == 'slideshow' %}
+<div id="ftSlideshow_{{ module }}">
+  {% if heading_title %}
+  <div class="h5 mb-4 pt-2">{{ heading_title }}</div>
+  {% endif %}
+
+  <div class="position-relative overflow-hidden border rounded mb-4">
+    <!--noindex-->
+    <!--googleoff: all-->
+    <div class="slideshow-placeholder">
+      {% if banners[0].type %}
+      {{ banners[0].description }}
+      {% else %}
+      <div class="position-relative">
+        <svg class="d-block img-fluid w-100" width="{{ banners[0].img_width }}" height="{{ banners[0].img_height }}" xmlns="http://www.w3.org/2000/svg"></svg>
+        <div class="d-flex justify-content-center align-items-center position-absolute t-0 b-0 r-0 l-0 w-100 h-100">
+          <div class="spinner-border text-gray-400"></div>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+    <!--googleon: all-->
+    <!--/noindex-->
+    <div class="owl-carousel">
+  		{% for banner in banners %}
+      {% if banner.type  %}
+      {{ banner.description }}
+      {% else %}
+      {% if banner.image %}
+      <div class="position-relative">
+  			{% if banner.link %}
+  			<a href="{{ banner.link }}">
+        {% endif %}
+        <svg class="d-block img-fluid w-100" width="{{ banner.img_width }}" height="{{ banner.img_height }}" xmlns="http://www.w3.org/2000/svg"></svg>
+        {% if lazyload_imgs %}
+        <picture>
+          {% if banner.image2x %}
+          <source class="owl-lazy" data-srcset="{{ banner.image }} 1x, {{ banner.image2x }} 2x, {{ banner.image3x }} 3x, {{ banner.image4x }} 4x" srcset="{{ banner.src_holder }}">
+          {% endif %}
+          <img src="{{ banner.src_holder }}" data-src="{{ banner.image }}" alt="{{ banner.alt }}" class="position-absolute t-0 l-0 img-fluid d-block w-100 owl-lazy">
+        </picture>
+        <div class="d-flex justify-content-center align-items-center position-absolute t-0 b-0 r-0 l-0 w-100 h-100 lazy-spinner">
+          <div class="spinner-border text-gray-400"></div>
+        </div>
+        {% else %}
+        <picture>
+          {% if banner.image2x %}
+          <source srcset="{{ banner.image }} 1x, {{ banner.image2x }} 2x, {{ banner.image3x }} 3x, {{ banner.image4x }} 4x">
+          {% endif %}
+          <img src="{{ banner.image }}" alt="{{ banner.alt }}" class="position-absolute t-0 l-0 img-fluid d-block w-100">
+        </picture>
+        {% endif %}
+        {% if banner.link %}
+        </a>
+        {% endif %}
+  		</div>
+      {% endif %}
+      {% endif %}
+      {% endfor %}
+  	</div>
+
+    {% if 'pagination' in controls %}
+    <div class="owl-pagination position-absolute b-0 l-0 r-0 w-100 z-index-2 text-center px-3 pb-2">
+      <button class="btn btn-dot bg-dark shadow-none rounded-pill border-0 bg-secondary p-0 mr-0"><span></span></button>
+    </div>
+    {% endif %}
+
+    {% if 'arrows' in controls %}
+    <button class="btn btn-next position-absolute t-50p r-0 p-0 rounded-pill z-index-2 mt-n3 mr-3">
+  		<svg class="d-block ft-icon-24 m-0 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  			<path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"></path>
+  		</svg>
+  	</button>
+    <button class="btn btn-prev position-absolute t-50p l-0 p-0 rounded-pill z-index-2 mt-n3 ml-3">
+  		<svg class="d-block ft-icon-24 m-0 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  			<path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"></path>
+  		</svg>
+  	</button>
+    {% endif %}
+
+  </div>
+  <script>
+  	$(function () {
+
+  		var ftSlideshow_{{ module }} = $('#ftSlideshow_{{ module }} .owl-carousel');
+
+  		ftSlideshow_{{ module }}.owlCarousel({
+
+        {% if animation_out %}
+        animateOut: '{{ animation_out }}',
+        {% endif %}
+
+        {% if animation_in %}
+        animateIn: '{{ animation_in }}',
+        {% endif %}
+
+        mouseDrag: false,
+        touchDrag: true,
+        items: 1,
+        autoHeight: true,
+        nav: false,
+
+        {% if 'pagination' in controls %}
+        dots: true,
+        dotsContainer: '#ftSlideshow_{{ module }} .owl-pagination',
+        dotClass: 'btn btn-dot bg-dark shadow-none rounded-pill border-0 bg-secondary p-0',
+        {% else %}
+        dots: false,
+        {% endif %}
+
+        {% if loop %}
+        loop: true,
+        rewind: false,
+        {% else %}
+        loop: false,
+        rewind: true,
+        {% endif %}
+
+        {% if autoplay %}
+        autoplay: true,
+        autoplayTimeout: {{ autoplay_speed }},
+        autoplayHoverPause: true,
+        {% endif %}
+
+        {% if lazyload_imgs %}
+        lazyLoad: true,
+        {% else %}
+        lazyLoad: false,
+        {% endif %}
+
+        lazyLoadEager: 0,
+
+        onLoadedLazy: function(e) { e.element.parent().parent().find('.lazy-spinner').remove() },
+        onInitialized: function(e) { $(e.target).parent().find('.slideshow-placeholder').remove() },
+
+  		});
+
+      {% if 'arrows' in controls %}
+  		$('#ftSlideshow_{{ module }} .btn-prev').click( function() { ftSlideshow_{{ module }}.trigger('prev.owl.carousel') })
+  		$('#ftSlideshow_{{ module }} .btn-next').click( function() { ftSlideshow_{{ module }}.trigger('next.owl.carousel') })
+      {% endif %}
+
+  	});
+  </script>
+</div>
+{% endif %}
+
+{% if banners and type == 'single_banner' %}
+
+{% if heading_title %}
+<div class="h5 mb-3">{{ heading_title }}</div>
+{% endif %}
+
+{% for banner in banners %}
+{% if banner.type  %}
+{{ banner.description }}
+{% else %}
+<div id="ff_banner_{{ module }}" class="overflow-hidden border rounded mb-3">
+{% if banner.link %}
+<a href="{{ banner.link }}" class="d-block position-relative">
+{% endif %}
+  <svg class="d-block img-fluid w-100" width="{{ banner.img_width }}" height="{{ banner.img_height }}" xmlns="http://www.w3.org/2000/svg"></svg>
+  {% if lazyload_imgs %}
+  <img
+    src="image/catalog/framefreetheme/src_holder.png"
+    data-src="{{ banner.image }}"
+    {% if banner.image2x %}
+    srcset="image/catalog/framefreetheme/src_holder.png"
+    data-srcset="{{ banner.image }} 1x, {{ banner.image2x }} 2x, {{ banner.image3x }} 3x, {{ banner.image4x }} 4x"
+    {% endif %}
+    alt="{{ banner.alt }}"
+    class="img-fluid d-block position-absolute t-0 l-0 w-100 h-100 ft-lazy-img"
+  >
+  <div class="d-flex justify-content-center align-items-center position-absolute t-0 b-0 r-0 l-0 w-100 h-100 ft-lazy-spinner">
+    <div class="spinner-border text-gray-300"></div>
+  </div>
+  {% else %}
+  <img
+    src="{{ banner.image }}"
+    {% if banner.image2x %}
+    srcset="{{ banner.image }} 1x, {{ banner.image2x }} 2x, {{ banner.image3x }} 3x, {{ banner.image4x }} 4x"
+    {% endif %}
+    alt="{{ banner.alt }}"
+    class="img-fluid d-block position-absolute t-0 l-0 w-100 h-100"
+  >
+  {% endif %}
+{% if banner.link %}
+</a>
+{% endif %}
+</div>
+{% endif %}
+{% endfor %}
+
+{% endif %}

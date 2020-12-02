@@ -1,0 +1,80 @@
+<div class="simplecheckout-block" id="simplecheckout_payment" {{ hide ? 'data-hide="true"' : '' }} {{ display_error and has_error ? 'data-error="true"' : '' }}>
+  <div class="card mb-4">
+    {% if display_header %}
+    <div class="checkout-heading card-header px-3">
+      <div class="row no-gutters align-items-center">
+        <div class="col-auto">
+          <svg class="d-block ft-icon-24 m-0 text-gray-500 mr-3" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/>
+          </svg>
+        </div>
+        <div class="col">
+          <div class="h5 m-0">
+            {{ text_checkout_payment_method }}
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    <div class="simplecheckout-block-content card-body p-4">
+      <div class="alert alert-danger simplecheckout-warning-block border-top-0 border-left-0 border-right-0 rounded-0 mx-n4 mt-n4 px-4" {{ display_error and has_error_payment ? '' : 'style="display:none"' }}>
+        {{ error_payment }}
+      </div>
+
+        {% if payment_methods is not empty %}
+            {% if display_type == 2  %}
+                {% set current_method = false %}
+                <select data-onchange="reloadAll" name="payment_method" class="form-control custom-select">
+                    {% for payment_method in payment_methods %}
+                        <option value="{{ payment_method['code'] }}" {{ payment_method['dummy'] is not empty ? 'disabled="disabled"' : '' }} {{ payment_method['dummy'] is not empty ? 'data-dummy="true"' : '' }} {% if payment_method['code'] == code %}selected="selected"{% endif %}>{{ payment_method['title'] }}</option>
+                        {% if payment_method['code'] == code %}
+                            {% set current_method = payment_method %}
+                        {% endif %}
+                    {% endfor %}
+                </select>
+                {% if current_method %}
+                    {% if current_method['description'] is not empty %}
+                        <div class="simplecheckout-methods-description mt-2">{{ current_method['description'] }}</div>
+                    {% endif %}
+                    {% if rows is not empty %}
+                        {% for row in rows %}
+                          {{ row }}
+                        {% endfor %}
+                    {% endif %}
+                {% endif %}
+            {% else %}
+                {% for payment_method in payment_methods %}
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" data-onchange="reloadAll" name="payment_method" value="{{ payment_method['code'] }}" {{ payment_method['dummy'] is not empty ? 'disabled="disabled"' : '' }} {{ payment_method['dummy'] is not empty ? 'data-dummy="true"' : '' }} id="{{ payment_method['code'] }}" {% if payment_method['code'] == code %}checked="checked"{% endif %} />
+                        <label class="form-check-label ml-1 mb-1 cursor-pointer" for="{{ payment_method['code'] }}">
+                            {{ payment_method['title'] }}
+                            {% if payment_method['terms'] is not empty %}
+                                {{ payment_method['terms'] }}
+                            {% endif %}
+                        </label>
+                    </div>
+                    {% if payment_method['description'] is not empty and (display_for_selected is empty or (display_for_selected is not empty and payment_method['code'] == code)) %}
+
+                      <label class="d-block mb-0" for="{{ payment_method['code'] }}">{{ payment_method['description'] }}</label>
+
+                    {% endif %}
+                    {% if payment_method['code'] == code and rows is not empty %}
+                        {% for row in rows %}
+                          {{ row }}
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+            <input type="hidden" name="payment_method_current" value="{{ code }}" />
+            <input type="hidden" name="payment_method_checked" value="{{ checked_code }}" />
+        {% endif %}
+        {% if payment_methods is empty and address_empty and display_address_empty %}
+            <div class="simplecheckout-warning-text invalid-feedback">{{ text_payment_address }}</div>
+        {% endif %}
+        {% if payment_methods is empty and not address_empty %}
+            <div class="simplecheckout-warning-text invalid-feedback">{{ error_no_payment }}</div>
+        {% endif %}
+    </div>
+  </div>
+</div>

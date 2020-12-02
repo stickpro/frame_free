@@ -1,0 +1,26 @@
+{% if links_status and links %}
+<div class="btn-group">
+	<a class="btn btn-light dropdown-toggle p-1 px-sm-2" href="#" title="Помощь" data-toggle="dropdown">
+		<span class="row no-gutters align-items-start">
+			<span class="col-auto mx-2 mx-lg-0">
+				<svg class="d-block ft-icon-18 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" >
+					<path d="M 5 3 C 3.9069372 3 3 3.9069372 3 5 L 3 19 C 3 20.093063 3.9069372 21 5 21 L 10.029297 21 L 12 23.007812 L 13.970703 21 L 19 21 C 20.093063 21 21 20.093063 21 19 L 21 5 C 21 3.9069372 20.093063 3 19 3 L 5 3 z M 5 5 L 19 5 L 19 19 L 13.130859 19 L 12 20.152344 L 10.869141 19 L 5 19 L 5 5 z M 11 7 L 11 9 L 13 9 L 13 7 L 11 7 z M 11 11 L 11 17 L 13 17 L 13 11 L 11 11 z"/>
+				</svg>
+			</span>
+			<span class="col-auto d-none d-lg-block ml-2 mr-1">
+				{{ links_title }}
+			</span>
+			<span class="col-auto d-none d-lg-block">
+				<svg class="d-block ft-icon-24 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" >
+					<path transform="translate(0 2)" d="M7.41 7.84L12 12.42l4.59-4.58L18 9.25l-6 6-6-6z"/>
+				</svg>
+			</span>
+		</span>
+	</a>
+	<div class="dropdown-menu dropdown-menu-right text-right">
+		{% for link in links %}
+		<a class="dropdown-item" href="{{ link.href }}">{{ link.title }}</a>
+		{% endfor %}
+	</div>
+</div>
+{% endif %}

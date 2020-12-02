@@ -1,0 +1,20 @@
+{% if show_price %}
+<div class="list-group-item ocfilter-option" data-toggle="popover-price">
+  <div class="ocf-option-name mb-2 font-weight-bold">
+		{{ text_price }}<span class="font-weight-light">:</span>&nbsp;{{ symbol_left }}<span id="price-from">{{ min_price_get }}</span>&nbsp;<span class="font-weight-light">-</span>&nbsp;<span id="price-to">{{ max_price_get }}</span>{{ symbol_right }}
+	</div>
+
+  <div class="ocf-option-values">
+		<div id="scale-price" class="scale ocf-target" data-option-id="p"
+      data-start-min="{{ min_price_get }}"
+      data-start-max="{{ max_price_get }}"
+      data-range-min="{{ min_price }}"
+      data-range-max="{{ max_price }}"
+      data-element-min="#price-from"
+      data-element-max="#price-to"
+      data-control-min="#min-price-value"
+      data-control-max="#max-price-value"
+    ></div>
+  </div>
+</div>
+{% endif %}

@@ -1,0 +1,29 @@
+		</div>
+		<footer class="mb-5 mt-4">
+			{{ ff_fmap }}
+			{{ ff_footer }}
+			{{ ff_modal }}
+		</footer>
+
+    <div id="footer-fixed-buttons" class="position-fixed d-flex flex-column b-0 r-0 z-index-max mb-3 mr-3 mb-md-5 mr-md-5">
+      <button type="button" id="scrll-on-top" class="btn btn-light shadow rounded-circle p-2 p-md-2 d-none" onclick="ff_scrlltop(250)">
+  			<svg class="d-block ft-icon m-0 text-gray-600 darker-on-hover" width="28" height="28" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  				<path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/>
+  			</svg>
+  		</button>
+    </div>
+
+		{% for script in scripts %}
+		<script src="{{ script }}"></script>
+		{% endfor %}
+
+		{% if livesearch %}
+		<script id="ftLiveSearchScript" src="catalog/view/theme/{{ theme_dir }}/javascript/ft.livesearch.js{{ theme_version }}" async></script>
+		{% endif %}
+
+		<script src="catalog/view/theme/{{ theme_dir }}/javascript/common.js{{ theme_version }}"></script>
+
+		{{ cust_code }}
+
+	</body>
+</html>

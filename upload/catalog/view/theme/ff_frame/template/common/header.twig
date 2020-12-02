@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html dir="{{ direction }}" lang="{{ lang }}" {% if isMobile %}class="mobile"{% endif %}>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+{% if meta_theme_color %}
+<meta name="theme-color" content="{{ meta_theme_color }}">
+{% endif %}
+<title>{{ title }}</title>
+<base href="{{ base }}">
+{% if description %}
+<meta name="description" content="{{ description }}">
+{% endif %}
+{% if keywords %}
+<meta name="keywords" content="{{ keywords }}">
+{% endif %}
+{% if og_url %}
+<meta property="og:title" content="{{ title }}" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="{{ og_url }}" />
+{% if og_image %}
+<meta property="og:image" content="{{ og_image }}" />
+{% else %}
+<meta property="og:image" content="{{ logo }}" />
+{% endif %}
+{% endif %}
+<script>
+  var debounce = (callback, interval) => {
+    var timeout;
+    return function(...arguments) {
+      clearTimeout(timeout);
+      timeout = setTimeout(callback, interval, ...arguments);
+    };
+  }
+</script>
+{% if not minify %}
+{% if preload_ss %}
+<link href="catalog/view/theme/{{ theme_dir }}/bootstrap/css/bootstrap.min.css" rel="preload" as="style">
+<link href="catalog/view/theme/{{ theme_dir }}/stylesheet/stylesheet.css{{ theme_version }}" rel="preload" as="style">
+{% endif %}
+<link href="catalog/view/theme/{{ theme_dir }}/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="catalog/view/theme/{{ theme_dir }}/stylesheet/stylesheet.css{{ theme_version }}" rel="stylesheet">
+{% if fontawesome %}
+{% if preload_ss %}
+<link href="catalog/view/javascript/font-awesome/css/font-awesome.min.css" rel="preload" as="style">
+{% endif %}
+<link href="catalog/view/javascript/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+{% endif %}
+{% for style in styles %}
+{% if preload_ss %}
+<link href="{{ style.href }}" rel="preload" as="style">
+{% endif %}
+<link href="{{ style.href }}" type="text/css" rel="{{ style.rel }}" media="{{ style.media }}">
+{% endfor %}
+{% if cust_css %}
+{% if preload_ss %}
+<link href="catalog/view/theme/{{ theme_dir }}/stylesheet/custom.css" rel="preload" as="style">
+{% endif %}
+<link href="catalog/view/theme/{{ theme_dir }}/stylesheet/custom.css" rel="stylesheet">
+{% endif %}
+{% if preload_ss %}
+<link href="catalog/view/theme/{{ theme_dir }}/javascript/jquery-3.5.1.min.js" rel="preload" as="script">
+<link href="catalog/view/theme/{{ theme_dir }}/bootstrap/js/popper.min.js" rel="preload" as="script">
+<link href="catalog/view/theme/{{ theme_dir }}/bootstrap/js/bootstrap.min.js" rel="preload" as="script">
+{% endif %}
+<script src="catalog/view/theme/{{ theme_dir }}/javascript/jquery-3.5.1.min.js"></script>
+<script src="catalog/view/theme/{{ theme_dir }}/bootstrap/js/popper.min.js"></script>
+<script src="catalog/view/theme/{{ theme_dir }}/bootstrap/js/bootstrap.min.js"></script>
+{% for script in scripts %}
+{% if preload_ss %}
+<link href="{{ script }}" rel="preload" as="script">
+{% endif %}
+<script src="{{ script }}"></script>
+{% endfor %}
+{% else %}
+{% if preload_ss %}
+<link href="min/?{% if site_dir %}b={{ site_dir }}&{% endif %}f=catalog/view/theme/{{ theme_dir }}/bootstrap/css/bootstrap.min.css,catalog/view/theme/{{ theme_dir }}/stylesheet/stylesheet.css{% if fontawesome %},catalog/view/javascript/font-awesome/css/font-awesome.min.css{% endif %}{% for style in styles %},{{ style.href }}{% endfor %}{% if cust_css %},catalog/view/theme/{{ theme_dir }}/stylesheet/custom.css{% endif %}" rel="preload" as="style">
+<link href="min/?{% if site_dir %}b={{ site_dir }}&{% endif %}f=catalog/view/theme/{{ theme_dir }}/javascript/jquery-3.5.1.min.js,catalog/view/theme/{{ theme_dir }}/bootstrap/js/popper.min.js,catalog/view/theme/{{ theme_dir }}/bootstrap/js/bootstrap.min.js{% for script in scripts %},{{ script }}{% endfor %}" rel="preload" as="script">
+{% endif %}
+<link href="min/?{% if site_dir %}b={{ site_dir }}&{% endif %}f=catalog/view/theme/{{ theme_dir }}/bootstrap/css/bootstrap.min.css,catalog/view/theme/{{ theme_dir }}/stylesheet/stylesheet.css{% if fontawesome %},catalog/view/javascript/font-awesome/css/font-awesome.min.css{% endif %}{% for style in styles %},{{ style.href }}{% endfor %}{% if cust_css %},catalog/view/theme/{{ theme_dir }}/stylesheet/custom.css{% endif %}" rel="stylesheet">
+<script src="min/?{% if site_dir %}b={{ site_dir }}&{% endif %}f=catalog/view/theme/{{ theme_dir }}/javascript/jquery-3.5.1.min.js,catalog/view/theme/{{ theme_dir }}/bootstrap/js/popper.min.js,catalog/view/theme/{{ theme_dir }}/bootstrap/js/bootstrap.min.js{% for script in scripts %},{{ script }}{% endfor %}"></script>
+{% endif %}
+{% if preload_ss %}
+<link href="catalog/view/theme/{{ theme_dir }}/javascript/common.js{{ theme_version }}" rel="preload" as="script">
+{% endif %}
+{% if webfont and webfont_link %}
+{{ webfont_link }}
+{% endif %}
+{% for link in links %}
+<link href="{{ link.href }}" rel="{{ link.rel }}">
+{% endfor %}
+{% for analytic in analytics %}
+{{ analytic }}
+{% endfor %}
+{{ cust_code }}
+</head>
+<body class="loading {% if preloader_status %}overflow-hidden{% endif %}">
+{% if preloader_status %}
+<div class="preloader d-flex position-fixed t-0 b-0 l-0 r-0 align-items-center justify-content-center z-index-max" style="background: inherit">
+	<div class="spinner-border" style="color: {{ preloader_color }}; width: 3rem; height: 3rem; border-width: .25rem"></div>
+	<script>
+		let	preloader = document.querySelector('.preloader');
+
+		let preloader_remove = () => {
+			document.body.classList.remove('overflow-hidden');
+			if (preloader != null) preloader.remove();
+		}
+
+		window.addEventListener('DOMContentLoaded', preloader_remove);
+		setTimeout(preloader_remove, {{ preloader_timeout }});
+	</script>
+</div>
+{% endif %}
+
+
+<header>
+	<nav id="top" class="border-bottom py-2 bg-white">
+		<div class="container">
+			<div class="row no-gutters">
+				{% if language or currency %}
+				<div class="col-auto">
+					<div class="btn-group">
+						{{ language }}
+						{{ currency }}
+					</div>
+				</div>
+				{% endif %}
+				<div class="col {% if language or currency %}text-center{% endif %}">
+					<div class="btn-group">
+						<a class="btn btn-light p-1 px-sm-2" href="{{ wishlist }}">
+							<span class="row no-gutters align-items-start">
+								<span class="col-auto mx-2 mx-lg-0">
+									<svg class="d-block ft-icon-18 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" >
+										<path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/>
+									</svg>
+								</span>
+								<span class="col-auto d-none d-md-block ml-2 mr-1" id="wishlist-total">
+									{{ text_wishlist }}
+								</span>
+							</span>
+						</a>
+						<a class="btn btn-light p-1 px-sm-2" href="{{ link_compare }}">
+							<span class="row no-gutters align-items-start">
+								<span class="col-auto mx-2 mx-lg-0">
+									<svg class="d-block ft-icon-18 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" >
+										<path d="M 12 4 A 2 2 0 0 0 10.269531 5 L 5 5 L 2 5 L 2 7 L 4 7 L 0 15 C 0 17.761 2.239 20 5 20 C 7.761 20 10 17.761 10 15 L 6 7 L 10.271484 7 A 2 2 0 0 0 12 8 A 2 2 0 0 0 13.730469 7 L 18 7 L 14 15 C 14 17.761 16.239 20 19 20 C 21.761 20 24 17.761 24 15 L 20 7 L 22 7 L 22 5 L 13.728516 5 A 2 2 0 0 0 12 4 z M 5 9.0214844 L 7.9882812 15 L 2.0117188 15 L 5 9.0214844 z M 19 9.0214844 L 21.988281 15 L 16.011719 15 L 19 9.0214844 z"/>
+									</svg>
+								</span>
+								<span class="col-auto d-none d-md-block ml-2 mr-1" id="compare-total">
+									{{ g_text_compare }}
+								</span>
+							</span>
+						</a>
+					</div>
+				</div>
+				<div class="col-auto">
+					<div class="btn-group">
+						{{ blog_menu }}
+						{{ ff_hlinks }}
+						<div class="btn-group">
+							<a class="btn btn-light dropdown-toggle p-1 px-sm-2" href="#" title="{{ text_account }}" data-toggle="dropdown">
+								<span class="row no-gutters align-items-start">
+									<span class="col-auto mx-2 mx-lg-0">
+										<svg class="d-block ft-icon-18 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" >
+											<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM7.07 18.28c.43-.9 3.05-1.78 4.93-1.78s4.51.88 4.93 1.78C15.57 19.36 13.86 20 12 20s-3.57-.64-4.93-1.72zm11.29-1.45c-1.43-1.74-4.9-2.33-6.36-2.33s-4.93.59-6.36 2.33C4.62 15.49 4 13.82 4 12c0-4.41 3.59-8 8-8s8 3.59 8 8c0 1.82-.62 3.49-1.64 4.83zM12 6c-1.94 0-3.5 1.56-3.5 3.5S10.06 13 12 13s3.5-1.56 3.5-3.5S13.94 6 12 6zm0 5c-.83 0-1.5-.67-1.5-1.5S11.17 8 12 8s1.5.67 1.5 1.5S12.83 11 12 11z"/>
+										</svg>
+									</span>
+									<span class="col-auto d-none d-lg-block ml-2 mr-1">
+										{{ text_account }}
+									</span>
+									<span class="col-auto d-none d-lg-block">
+										<svg class="d-block ft-icon-24 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" >
+											<path transform="translate(0 2)" d="M7.41 7.84L12 12.42l4.59-4.58L18 9.25l-6 6-6-6z"/>
+										</svg>
+									</span>
+								</span>
+							</a>
+							<div class="dropdown-menu dropdown-menu-right text-right">
+								{% if logged %}
+								<a class="dropdown-item" href="{{ account }}">{{ text_account }}</a>
+								<a class="dropdown-item" href="{{ order }}">{{ text_order }}</a>
+								<a class="dropdown-item" href="{{ transaction }}">{{ text_transaction }}</a>
+								<a class="dropdown-item" href="{{ download }}">{{ text_download }}</a>
+								<a class="dropdown-item" href="{{ logout }}">{{ text_logout }}</a>
+								{% else %}
+								<a class="dropdown-item" href="{{ register }}">{{ text_register }}</a>
+								<a class="dropdown-item" href="{{ login }}">{{ text_login }}</a>
+								{% endif %}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</nav>
+	<div class="container">
+		<div class="row align-items-center">
+			<div class="col-12 col-lg-3 col-aside order-lg-1">
+        <div class="row align-items-center no-gutters">
+          {% if ff_menu %}
+          <div class="col-auto d-lg-none">
+            <button class="btn btn-link p-2 rounded-lg shadow-none" data-toggle="modal" data-target="#ftModalMenu">
+              <svg class="d-block text-dark" width="28px" height="28px" fill="currentColor" viewBox="0 0 24 24"  xmlns="http://www.w3.org/2000/svg">
+      					<path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+      				</svg>
+            </button>
+          </div>
+          {% endif %}
+          <div class="col">
+            <div id="logo" class="text-center text-lg-left my-3 my-lg-4">
+    					{% if ff_logo %}{{ ff_logo }}{% elseif logo %}
+    					<a href="{{ home }}" aria-label="Logo"><img src="{{ logo }}" title="{{ name }}" alt="{{ name }}" class="img-fluid"></a>
+    					{% endif %}
+    				</div>
+          </div>
+          {% if ff_cart %}
+          <div class="col-auto d-lg-none">
+            <button class="btn btn-link p-2 rounded-lg shadow-none position-relative" data-toggle="modal" data-target="#ff_popup_cart">
+              <svg class="d-block text-dark" width="28px" height="28px"  fill="currentColor" viewBox="0 0 24 24"  xmlns="http://www.w3.org/2000/svg">
+      					<path d="M22 9h-4.79l-4.38-6.56c-.19-.28-.51-.42-.83-.42s-.64.14-.83.43L6.79 9H2c-.55 0-1 .45-1 1 0 .09.01.18.04.27l2.54 9.27c.23.84 1 1.46 1.92 1.46h13c.92 0 1.69-.62 1.93-1.46l2.54-9.27L23 10c0-.55-.45-1-1-1zM12 4.8L14.8 9H9.2L12 4.8zM18.5 19l-12.99.01L3.31 11H20.7l-2.2 8zM12 13c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+      				</svg>
+              <span id="ff_m_cart_total"  class="position-absolute t-0 r-0 mr-0 mt-1 badge rounded-pill text-gray-400"></span>
+            </button>
+            <script>$(function() { $('#ff_m_cart_total').html($('#ff_cart > button #ff_cart_total .products > b').text()) })</script>
+          </div>
+          {% endif %}
+        </div>
+			</div>
+			<div class="col-12 col-lg-auto order-lg-2">{{ ff_contacts }}</div>
+			<div class="col-12 col-lg order-lg-6 mb-3 mb-lg-4">{{ ff_search }}</div>
+      <div class="col-12 col-lg order-lg-3">{{ ff_links }}</div>
+      <div class="col-12 order-lg-4"><div class="d-lg-none mx-n1 mx-sm-0 mt-n1"><hr class="mx-n2 mx-sm-0 mb-4"></div></div>
+			<div class="col-12 col-md-6 col-lg-auto order-lg-7 mb-lg-4">{{ ff_cart }}</div>
+			<div class="col-12 col-md-6 col-lg-3 col-aside order-lg-5 mb-lg-4">{{ ff_menu }}</div>
+		</div>
+	</div>
+  {{ ff_mobile_menu }}
+</header>
+<div class="content-wrapper">

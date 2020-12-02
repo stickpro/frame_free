@@ -1,0 +1,9 @@
+{% if links_status and links %}
+<div id="ftHeaderLinks" class="text-center text-lg-right h-100 mw-100">
+	<ul class="list-inline d-inline-block my-0 mx-n1">
+		{% for link in links %}
+		<li class="list-inline-item mx-3 mx-sm-3 pt-2 pb-2"><a class="text-dark text-decoration-none border-bottom" href="{{ link.href }}">{{ link.title }}</a></li>
+		{% endfor %}
+	</ul>
+</div>
+{% endif %}

@@ -1,0 +1,149 @@
+<div class="simplecheckout-block" id="simplecheckout_summary" {{ hide ? 'data-hide="true"' : '' }}>
+  <div class="card mb-4">
+    {% if display_header %}
+    <div class="checkout-heading card-header px-3">
+      <div class="row no-gutters align-items-center">
+        <div class="col-auto">
+          <svg class="d-block ft-icon-24 m-0 text-gray-500 mr-3" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M19.5,3.5L18,2l-1.5,1.5L15,2l-1.5,1.5L12,2l-1.5,1.5L9,2L7.5,3.5L6,2v14H3v3c0,1.66,1.34,3,3,3h12c1.66,0,3-1.34,3-3V2 L19.5,3.5z M15,20H6c-0.55,0-1-0.45-1-1v-1h10V20z M19,19c0,0.55-0.45,1-1,1s-1-0.45-1-1v-3H8V5h11V19z"/><rect height="2" width="6" x="9" y="7"/><rect height="2" width="2" x="16" y="7"/><rect height="2" width="6" x="9" y="10"/><rect height="2" width="2" x="16" y="10"/>
+          </svg>
+        </div>
+        <div class="col">
+          <div class="h5 m-0">
+            {{ text_summary }}
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+    <div class="card-body p-4">
+      {% if display_products or display_totals_block %}
+      <div class="row simplecheckout-cart">
+        {% if display_products %}
+        <div class="col-12 col-lg">
+          <div class="">
+            {% for product in products %}
+            {% if loop.index > 1 %}<hr>{% endif %}
+            <div class="row">
+              {% if product['thumb'] %}
+                <div class="col-auto">
+                  <a href="{{ product['href'] }}" class="d-block position-relative border rounded overflow-hidden p-1 bg-white">
+                    <img src="{{ product['thumb'] }}" alt="{{ product['name'] }}" title="{{ product['name'] }}" class="d-block">
+                  </a>
+                </div>
+              {% endif %}
+              <div class="col">
+                <div class="row product-info">
+                  <div class="col">
+                    <a href="{{ product['href'] }}" class="text-dark h6 d-block mb-1 line-clamp-2">{{ product['name'] }}</a>
+                    <small class="d-block mb-1 text-muted">{{ product['model'] }}</small>
+                    {% if product['option'] or product['reward'] %}
+                    <div class="options">
+                    {% for option in product['option'] %}
+                    <small class="d-inline-block bg-light rounded-sm text-secondary border px-1">{{ option['name'] }}: {{ option['value'] }}</small>
+                    {% endfor %}
+                    {% if product['reward'] %}
+                    <small class="d-inline-block bg-light rounded-sm text-secondary border px-1">{{ product['reward'] }}</small>
+                    {% endif %}
+                    </div>
+                    {% endif %}
+                  </div>
+                  <div class="col-12 col-sm-auto text-sm-right mt-2 mt-sm-0">
+                    <div class="mr-0 mb-2">
+                      <small class="d-block mb-0 text-muted">
+                        {{ product['price'] }} x {{ product['quantity'] }}
+                      </small>
+                      <strong>{{ product['total'] }}</strong>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+            {% for voucher_info in vouchers %}
+            {% if loop.index > 1 or products|length > 0 %}<hr>{% endif %}
+            <div class="row no-gutters align-items-center">
+              <div class="col-auto">
+                <svg class="d-block ft-icon-24 text-gray-500" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 11 8.76l1-1.36 1 1.36L15.38 12 17 10.83 14.92 8H20v6z"/>
+                </svg>
+              </div>
+              <div class="col">
+                <div class="name h6 mb-0 line-clamp-2 mx-2">
+                  {{ voucher_info['description'] }}
+                </div>
+              </div>
+              <div class="col-auto">
+                <div class="total ml-2">
+                  <strong>{{ voucher_info['amount'] }}</strong>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+        {% if display_products and display_totals_block %}
+        <div class="col-12 col-lg-auto">
+          <div class="v-border h-100 border-right d-none d-lg-block"></div>
+          <hr class="h-border d-lg-none">
+        </div>
+        {% endif %}
+        {% if display_totals_block %}
+        <div class="col">
+          <div class="d-flex h-100 flex-column" id="collapse-totals">
+            {% for total in totals %}
+            {% if total['code'] == 'total' and 'total' in display_totals %}
+            <hr class="w-100">
+            {% endif %}
+            <div class="simplecheckout-cart-total {% if loop.index == 1 %}mt-auto{% endif %}" id="total_{{ total['code'] }}">
+              {% if total['code'] in display_totals %}
+              {% if total['code'] == 'total' %}<div class="h4 m-0 font-weight-normal">{% endif %}
+              {{ total['title'] }}: <b>{{ total['text'] }}</b>
+              {% if total['code'] == 'total' %}</div>{% endif %}
+              {% endif %}
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+      </div>
+      <hr>
+      {% endif %}
+      {% if display_comment %}
+      {% if summary_comment %}
+      <div class="h5">
+        {{ text_summary_comment }}
+      </div>
+      <p>{{ summary_comment }}</p>
+      <hr>
+      {% endif %}
+      {% endif %}
+      {% if display_address %}
+      {% if summary_payment_address or summary_shipping_address %}
+      <div class="row">
+        {% if summary_payment_address %}
+        <div class="col">
+          <div class="h5">{{ text_summary_payment_address }}</div>
+          <div>{{ summary_payment_address }}</div>
+        </div>
+        {% endif %}
+        {% if summary_payment_address and summary_shipping_address %}
+        <div class="col-12 col-lg-auto">
+          <div class="v-border h-100 border-right d-none d-lg-block"></div>
+          <hr class="h-border d-lg-none">
+        </div>
+        {% endif %}
+        {% if summary_shipping_address %}
+        <div class="col">
+          <div class="h5">{{ text_summary_shipping_address }}</div>
+          <div>{{ summary_shipping_address }}</div>
+        </div>
+        {% endif %}
+      </div>
+      {% endif %}
+      {% endif %}
+    </div>
+  </div>
+</div>

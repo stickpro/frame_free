@@ -1,0 +1,205 @@
+<div id="ff_cart">
+  <button type="button" class="btn btn-primary btn-block py-2 pl-3 pr-2 d-none d-lg-block" {% if not in_cart %} data-toggle="modal" {% endif %} data-target="#ff_popup_cart" data-loading="{{ text_loading }}">
+		<span class="row no-gutters align-items-center my-1">
+			<span class="col-auto">
+				<span class="cart-icon-wrapper d-block mr-3">
+					<span class="loading-icon">
+            <span class="spinner-border d-block ft-icon-24 text-white"></span>
+					</span>
+					<span class="static-icon">
+						<svg class="d-block ft-icon-24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+							<path d="M22 9h-4.79l-4.38-6.56c-.19-.28-.51-.42-.83-.42s-.64.14-.83.43L6.79 9H2c-.55 0-1 .45-1 1 0 .09.01.18.04.27l2.54 9.27c.23.84 1 1.46 1.92 1.46h13c.92 0 1.69-.62 1.93-1.46l2.54-9.27L23 10c0-.55-.45-1-1-1zM12 4.8L14.8 9H9.2L12 4.8zM18.5 19l-12.99.01L3.31 11H20.7l-2.2 8zM12 13c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+						</svg>
+					</span>
+				</span>
+			</span>
+			<span class="col">
+				<span id="ff_cart_total" class="d-block text-center text-lg-left">{{ text_items }}</span>
+			</span>
+			<span class="col-auto">
+        <svg class="d-block ft-icon-24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+					<path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+				</svg>
+			</span>
+		</span>
+	</button>
+	<div class="modal fade" id="ff_popup_cart" tabindex="-1" role="dialog">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header no-gutters">
+					<div class="col-auto">
+						<div class="loading-icon mr-3">
+							<div class="spinner-border ft-icon-24 m-0 text-gray-500"></div>
+						</div>
+						<div class="static-icon mr-3">
+							<svg class="d-block ft-icon-24 m-0 text-gray-500" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+								<path d="M22 9h-4.79l-4.38-6.56c-.19-.28-.51-.42-.83-.42s-.64.14-.83.43L6.79 9H2c-.55 0-1 .45-1 1 0 .09.01.18.04.27l2.54 9.27c.23.84 1 1.46 1.92 1.46h13c.92 0 1.69-.62 1.93-1.46l2.54-9.27L23 10c0-.55-.45-1-1-1zM12 4.8L14.8 9H9.2L12 4.8zM18.5 19l-12.99.01L3.31 11H20.7l-2.2 8zM12 13c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+							</svg>
+						</div>
+					</div>
+					<div class="col">
+						<div class="h5 modal-title">
+							{{ ff_heading_title }}
+						</div>
+					</div>
+					<div class="col-auto">
+            <a href="#" class="d-block ml-2" data-dismiss="modal">
+        			<svg class="d-block ft-icon-24 m-0 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        				<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+        			</svg>
+        		</a>
+					</div>
+				</div>
+				<div class="modal-body">
+					<div class="cart-list">
+						{% if products or vouchers %}
+						<div class="cart-list-product">
+							{% for product in products %}
+							<div class="row">
+								<div class="col-auto">
+									{% if product.thumb %}
+									<a href="{{ product.href }}" class="ml-1 d-block position-relative border rounded overflow-hidden">
+                    <svg width="{{ product.img_width }}" height="{{ product.img_height }}" class="d-block img-placeholder" viewBox="0 0 1 1" xmlns="http://www.w3.org/2000/svg"></svg>
+										<img src="{{ product.thumb }}" {% if product.thumb2x %}srcset="{{ product.thumb }} 1x, {{ product.thumb2x }} 2x, {{ product.thumb3x }} 3x, {{ product.thumb4x }} 4x"{% endif %} alt="{{ product.name }}" title="{{ product.name }}" class="d-block position-absolute t-0 l-0" />
+									</a>
+									{% endif %}
+								</div>
+								<div class="col">
+									<div class="row">
+										<div class="col ">
+											<div class="mb-2">
+												<div class="row no-gutters">
+													<div class="col">
+														<a href="{{ product.href }}" class="text-dark"><strong>{{ product.name }}</strong></a>
+														<div>
+															{% if product.option %}
+															{% for option in product.option %}
+															<small class="d-inline-block bg-light text-secondary border-like-form pl-2 pr-2">{{ option.name }}: {{ option.value }}</small>
+															{% endfor %}
+															{% endif %}
+															{% if product.recurring %}
+															<small class="d-inline-block bg-light text-secondary border-like-form pl-2 pr-2">{{ text_recurring }}: {{ product.recurring }}</small>
+															{% endif %}
+														</div>
+													</div>
+													<div class="col-auto">
+														<button type="button" class="close ml-2 mr-1 d-sm-none" onclick="cart.remove('{{ product.cart_id }}');">×</button>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-12 col-sm-auto ">
+											<div class="mr-3 mb-2 text-left text-sm-right">
+												<strong>{{ product.total }}</strong>
+											</div>
+											<div class="form-row mr-1">
+												<div class="col-auto ml-sm-auto">
+													<div class="input-group input-group-sm">
+														<div class="input-group-prepend">
+															<button class="btn btn-light border px-1" type="button" onclick="cart.updatePopup('{{ product.cart_id }}','{{ product.quantity_minus }}');">
+																<svg class="d-block ft-icon-18 m-0 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+																	<path d="M19 13H5v-2h14v2z"/>
+																</svg>
+															</button>
+														</div>
+														<input type="text" class="form-control input-quantity border text-center" placeholder="" value="{{ product.quantity }}" onchange="cart.updatePopup('{{ product.cart_id }}', $(this).val());">
+														<div class="input-group-append">
+															<button class="btn btn-light border px-1" type="button" onclick="cart.updatePopup('{{ product.cart_id }}','{{ product.quantity_plus }}');">
+																<svg class="d-block ft-icon-18 m-0 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+																	<path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+																</svg>
+															</button>
+															<button class="btn btn-light border px-1" type="button" onclick="cart.remove('{{ product.cart_id }}');" title="{{ button_remove }}" >
+																<svg class="d-block ft-icon-18 m-0 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+																	<path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+																</svg>
+															</button>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<hr class="mx-n3">
+							{% endfor %}
+							{% for voucher in vouchers %}
+							<div class="row">
+								<div class="col-auto">
+									<div class="ml-2">
+										<svg class="d-block ft-icon-18 text-gray-500" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+											<path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 11 8.76l1-1.36 1 1.36L15.38 12 17 10.83 14.92 8H20v6z"/>
+										</svg>
+									</div>
+								</div>
+								<div class="col">
+									<div class="text-center">{{ voucher.description }}</div>
+								</div>
+								<div class="col-auto">
+									<a href="#" class="d-none d-sm-block mr-2" onclick="voucher.remove('{{ voucher.key }}');return false">
+										<svg class="d-block ft-icon-18 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+											<path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+										</svg>
+									</a>
+									<button type="button" class="close mr-1 d-block d-sm-none" onclick="voucher.remove('{{ voucher.key }}');">×</button>
+								</div>
+							</div>
+							<hr class="mx-n3">
+							{% endfor %}
+						</div>
+						<div class="cart-totals">
+							<button class="btn btn-light btn-block" data-toggle="collapse" data-target="#totals-details">
+                <span class="row no-gutters justify-content-center align-items-center">
+                  <span class="col-auto">
+                    <svg class="d-block ft-icon-18 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  										<path  d="M19 2h-4.18C14.4.84 13.3 0 12 0c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm7 18H5V4h2v3h10V4h2v16z"/>
+  									</svg>
+                  </span>
+                  <span class="col-auto">
+                    <span class="mx-2">{{ text_items }}</span>
+                  </span>
+                  <span class="col-auto">
+                    <svg class="d-block ft-icon-18 text-gray-500 darker-on-hover" viewBox="0 0 24 20" xmlns="http://www.w3.org/2000/svg">
+  										<path d="M7.41 7.84L12 12.42l4.59-4.58L18 9.25l-6 6-6-6z"/>
+  									</svg>
+                  </span>
+                </span>
+							</button>
+							<div id="totals-details" class="collapse">
+								<hr class="mx-n3">
+								{% for total in totals %}
+								<div class="row no-gutters">
+									<div class="col text-right"><span class="mr-2">{{ total.title }}:</span></div>
+									<div class="col text-left"><strong>{{ total.text }}</strong></div>
+								</div>
+								{% endfor %}
+							</div>
+						</div>
+						{% else %}
+						<div class="cart-empty text-center p-3">
+							{{ ff_text_empty }}
+						</div>
+						{% endif %}
+					</div>
+					<div class="cart-mask bg-white position-absolute t-0 b-0 l-0 r-0 d-none"></div>
+				</div>
+				<div class="modal-footer d-block px-0">
+          <div class="m-0 px-3">
+  					<div class="row">
+  						<div class="col-12 col-sm-4 order-sm-3">
+  							<a class="btn btn-primary btn-block text-truncate mb-3 mb-sm-0" href="{{ checkout }}">{{ ff_text_checkout }}</a>
+  						</div>
+  						<div class="col-5 col-sm-4 order-sm-1">
+  							<a href="#" class="btn btn-light btn-block text-truncate" data-dismiss="modal">{{ ff_text_continue }}</a>
+  						</div>
+  						<div class="col-7 col-sm-4 order-sm-2">
+  							<a class="btn btn-light btn-block text-truncate" href="{{ cart }}">{{ ff_text_cart }}</a>
+  						</div>
+  					</div>
+          </div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

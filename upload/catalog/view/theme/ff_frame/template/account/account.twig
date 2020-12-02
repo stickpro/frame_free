@@ -1,0 +1,134 @@
+{{ header }}
+<div id="account-account" class="container">
+  {% if success %}
+  <div class="alert alert-success alert-dismissible">
+		{{ success }}
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</div>
+  {% endif %}
+	  <div class="row">
+		{% if column_left %}
+		<div class="col-12 col-sm col-lg-3 order-lg-1 col-aside">
+			{{ column_left }}
+		</div>
+		{% endif %}
+		{% if column_right %}
+		<div class="col-12 col-sm col-lg-3 order-lg-3 col-aside">
+			{{ column_right }}
+		</div>
+		{% endif %}
+    <div id="content" class="col-12 col-lg order-lg-2 mb-3">
+			{{ content_top }}
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb p-0 mb-3 bg-transparent" itemscope itemtype="http://schema.org/BreadcrumbList">
+          {% for breadcrumb in breadcrumbs %}
+          {% if loop.index == 1 %}
+          <li class="breadcrumb-item p-0" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a class="text-dark" href="{{ breadcrumb.href }}"  itemprop="item">
+              <meta itemprop="name" content="{{ g_text_home }}" />
+            	<svg class="ft-icon-18 d-block" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            		<path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+            	</svg>
+            </a>
+            <meta itemprop="position" content="{{ loop.index }}" />
+          </li>
+          {% elseif breadcrumbs|length != loop.index %}
+          <li class="breadcrumb-item p-0" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a class="text-dark" href="{{ breadcrumb.href }}" itemprop="item">
+              <span itemprop="name">{{ breadcrumb.text }}</span>
+            </a>
+            <meta itemprop="position" content="{{ loop.index }}" />
+          </li>
+          {% else %}
+          <li class="breadcrumb-item p-0 active">
+            <span>{{ breadcrumb.text }}</span>
+          </li>
+          {% endif %}
+          {% endfor %}
+        </ol>
+      </nav>
+      <h1 class="h2 mb-4">{{ heading_title }}</h1>
+			<div class="row">
+				<div class="col-12 col-md-6">
+					<div class="card mb-3">
+						<div class="card-header border-0">
+							<h5 class="mb-0">
+								{{ text_my_account }}
+							</h5>
+						</div>
+						<div  class="list-group list-group-flush">
+							<a href="{{ edit }}" class="list-group-item list-group-item-action py-2">{{ text_edit }}</a>
+							<a href="{{ password }}" class="list-group-item list-group-item-action py-2">{{ text_password }}</a>
+							<a href="{{ address }}" class="list-group-item list-group-item-action py-2">{{ text_address }}</a>
+							<a href="{{ wishlist }}" class="list-group-item list-group-item-action py-2">{{ text_wishlist }}</a>
+						</div >
+					</div>
+					{% if credit_cards %}
+					<div class="card mb-3">
+						<div class="card-header border-0">
+							<h5 class="mb-0">
+								{{ text_credit_card }}
+							</h5>
+						</div>
+						<div  class="list-group list-group-flush">
+							{% for credit_card in credit_cards %}
+							<a href="{{ credit_card.href }}" class="list-group-item list-group-item-action py-2">{{ credit_card.name }}</a>
+							{% endfor %}
+						</div>
+					</div>
+					{% endif %}
+					<div class="card mb-3">
+						<div class="card-header border-0">
+							<h5 class="mb-0">
+								{{ text_my_affiliate }}
+							</h5>
+						</div>
+						<div  class="list-group list-group-flush">
+							{% if not tracking %}
+							<a href="{{ affiliate }}" class="list-group-item list-group-item-action py-2">{{ text_affiliate_add }}</a>
+							{% else %}
+							<a href="{{ affiliate }}" class="list-group-item list-group-item-action py-2">{{ text_affiliate_edit }}</a>
+							<a href="{{ tracking }}" class="list-group-item list-group-item-action py-2">{{ text_tracking }}</a>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+				<div class="col-12 col-md-6">
+					<div class="card mb-3">
+						<div class="card-header border-0">
+							<h5 class="mb-0">
+								{{ text_my_orders }}
+							</h5>
+						</div>
+						<div  class="list-group list-group-flush">
+							<a href="{{ order }}" class="list-group-item list-group-item-action py-2">{{ text_order }}</a>
+							<a href="{{ download }}" class="list-group-item list-group-item-action py-2">{{ text_download }}</a>
+							{% if reward %}
+							<a href="{{ reward }}" class="list-group-item list-group-item-action py-2">{{ text_reward }}</a>
+							{% endif %}
+							<a href="{{ return }}" class="list-group-item list-group-item-action py-2">{{ text_return }}</a>
+							<a href="{{ transaction }}" class="list-group-item list-group-item-action py-2">{{ text_transaction }}</a>
+							<a href="{{ recurring }}" class="list-group-item list-group-item-action py-2">{{ text_recurring }}</a>
+						</div >
+					</div>
+					<div class="card mb-3">
+						<div class="card-header border-0">
+							<h5 class="mb-0">
+
+
+								{{ text_my_newsletter }}
+							</h5>
+						</div>
+						<div  class="list-group list-group-flush">
+							<a href="{{ newsletter }}" class="list-group-item list-group-item-action py-2">{{ text_newsletter }}</a>
+						</div >
+					</div>
+				</div>
+			</div>
+    </div>
+  </div>
+	{{ content_bottom }}
+</div>
+{{ footer }}

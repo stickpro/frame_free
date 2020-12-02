@@ -1,0 +1,264 @@
+<div class="container position-relative">
+	<div class="border rounded-lg px-3 p-4 pt-5 bg-white">
+		<div class="row">
+			{% if informations %}
+			<div class="col-12 col-sm-6 col-lg-3">
+				<div class="mb-3 mb-lg-3">
+					<div class="row no-gutters">
+						<div class="col">
+							<div class="h5 mb-0">
+								{{ text_information }}
+							</div>
+						</div>
+						<div class="col-auto">
+							<a href="#collapse-info" class="d-block d-sm-none" data-toggle="collapse">
+								<svg class="toggle-hidden ft-icon-24 m-0 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+									<path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+								</svg>
+								<svg class="toggle-shown ft-icon-24 m-0 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+									<path d="M19 13H5v-2h14v2z"/>
+								</svg>
+							</a>
+						</div>
+					</div>
+					<div class="collapse show collapse-xs" id="collapse-info">
+						<ul class="list-unstyled mb-0 mt-3">
+							{% for information in informations %}
+							<li class="row no-gutters pb-1">
+								<span class="col-auto">
+									<svg class="ft-icon-18 d-block text-gray-500 darker-on-hover mr-2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+										<path d="M8.59 16.34l4.58-4.59-4.58-4.59L10 5.75l6 6-6 6z"></path>
+									</svg>
+								</span>
+								<span class="col">
+									<a class="text-dark" href="{{ information.href }}">{{ information.title }}</a>
+								</span>
+							</li>
+							{% endfor %}
+						</ul>
+					</div>
+				</div>
+				<hr class="d-sm-none">
+			</div>
+			{% endif %}
+			<div class="col-12 col-sm-6 col-lg-3">
+				<div class="mb-3 mb-lg-3">
+					<div class="row no-gutters">
+						<div class="col">
+							<div class="h5 mb-0">
+								{{ text_service }}
+							</div>
+						</div>
+						<div class="col-auto">
+							<a href="#collapse-service" class="d-block d-sm-none collapsed" data-toggle="collapse">
+								<svg class="toggle-hidden ft-icon-24 m-0 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+									<path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+								</svg>
+								<svg class="toggle-shown ft-icon-24 m-0 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+									<path d="M19 13H5v-2h14v2z"/>
+								</svg>
+							</a>
+						</div>
+					</div>
+					<div class="collapse collapse-xs d-sm-block" id="collapse-service">
+						<ul class="list-unstyled mb-0 mt-3">
+							<li class="row no-gutters pb-1">
+								<span class="col-auto">
+									<svg class="ft-icon-18 d-block text-gray-500 darker-on-hover mr-2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+										<path d="M8.59 16.34l4.58-4.59-4.58-4.59L10 5.75l6 6-6 6z"></path>
+									</svg>
+								</span>
+								<span class="col">
+									<a class="text-dark" href="{{ contact }}">{{ text_contact }}</a>
+								</span>
+							</li>
+							<li class="row no-gutters pb-1">
+								<span class="col-auto">
+									<svg class="ft-icon-18 d-block text-gray-500 darker-on-hover mr-2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+										<path d="M8.59 16.34l4.58-4.59-4.58-4.59L10 5.75l6 6-6 6z"></path>
+									</svg>
+								</span>
+								<span class="col">
+									<a class="text-dark" href="{{ return }}">{{ text_return }}</a>
+								</span>
+							</li>
+							<li class="row no-gutters pb-1">
+								<span class="col-auto">
+									<svg class="ft-icon-18 d-block text-gray-500 darker-on-hover mr-2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+										<path d="M8.59 16.34l4.58-4.59-4.58-4.59L10 5.75l6 6-6 6z"></path>
+									</svg>
+								</span>
+								<span class="col">
+									<a class="text-dark" href="{{ sitemap }}">{{ text_sitemap }}</a>
+								</span>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<hr class="d-sm-none">
+			</div>
+			<div class="col-12 d-none d-sm-block d-lg-none"><hr class="mb-4"></div>
+			<div class="col-12 col-sm-6 col-lg-3">
+				<div class="mb-3 mb-lg-3">
+					<div class="row no-gutters">
+						<div class="col">
+							<div class="h5 mb-0">
+								{{ text_extra }}
+							</div>
+						</div>
+						<div class="col-auto">
+							<a href="#collapse-extra" class="d-block d-sm-none collapsed" data-toggle="collapse">
+								<svg class="toggle-hidden ft-icon-24 m-0 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+									<path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+								</svg>
+								<svg class="toggle-shown ft-icon-24 m-0 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+									<path d="M19 13H5v-2h14v2z"/>
+								</svg>
+							</a>
+						</div>
+					</div>
+					<div class="collapse collapse-xs d-sm-block" id="collapse-extra">
+						<ul class="list-unstyled mb-0 mt-3">
+							<li class="row no-gutters pb-1">
+								<span class="col-auto">
+									<svg class="ft-icon-18 d-block text-gray-500 darker-on-hover mr-2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+										<path d="M8.59 16.34l4.58-4.59-4.58-4.59L10 5.75l6 6-6 6z"></path>
+									</svg>
+								</span>
+								<span class="col">
+									<a class="text-dark" href="{{ manufacturer }}">{{ text_manufacturer }}</a>
+								</span>
+							</li>
+							<li class="row no-gutters pb-1">
+								<span class="col-auto">
+									<svg class="ft-icon-18 d-block text-gray-500 darker-on-hover mr-2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+										<path d="M8.59 16.34l4.58-4.59-4.58-4.59L10 5.75l6 6-6 6z"></path>
+									</svg>
+								</span>
+								<span class="col">
+									<a class="text-dark" href="{{ voucher }}">{{ text_voucher }}</a>
+								</span>
+							</li>
+							<li class="row no-gutters pb-1">
+								<span class="col-auto">
+									<svg class="ft-icon-18 d-block text-gray-500 darker-on-hover mr-2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+										<path d="M8.59 16.34l4.58-4.59-4.58-4.59L10 5.75l6 6-6 6z"></path>
+									</svg>
+								</span>
+								<span class="col">
+									<a class="text-dark" href="{{ affiliate }}">{{ text_affiliate }}</a>
+								</span>
+							</li>
+							<li class="row no-gutters pb-1">
+								<span class="col-auto">
+									<svg class="ft-icon-18 d-block text-gray-500 darker-on-hover mr-2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+										<path d="M8.59 16.34l4.58-4.59-4.58-4.59L10 5.75l6 6-6 6z"></path>
+									</svg>
+								</span>
+								<span class="col">
+									<a class="text-dark" href="{{ special }}">{{ text_special }}</a>
+								</span>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<hr class="d-sm-none">
+			</div>
+			<div class="col-12 col-sm-6 col-lg-3">
+				<div class="mb-3 mb-lg-3">
+					<div class="row no-gutters">
+						<div class="col">
+							<div class="h5 mb-0">
+								{{ text_account }}
+							</div>
+						</div>
+						<div class="col-auto">
+							<a href="#collapse-account" class="d-block d-sm-none collapsed" data-toggle="collapse">
+								<svg class="toggle-hidden ft-icon-24 m-0 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+									<path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+								</svg>
+								<svg class="toggle-shown ft-icon-24 m-0 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+									<path d="M19 13H5v-2h14v2z"/>
+								</svg>
+							</a>
+						</div>
+					</div>
+					<div class="collapse collapse-xs d-sm-block" id="collapse-account">
+						<ul class="list-unstyled mb-0 mt-3">
+							<li class="row no-gutters pb-1">
+								<span class="col-auto">
+									<svg class="ft-icon-18 d-block text-gray-500 darker-on-hover mr-2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+										<path d="M8.59 16.34l4.58-4.59-4.58-4.59L10 5.75l6 6-6 6z"></path>
+									</svg>
+								</span>
+								<span class="col">
+									<a class="text-dark" href="{{ account }}">{{ text_account }}</a>
+								</span>
+							</li>
+							<li class="row no-gutters pb-1">
+								<span class="col-auto">
+									<svg class="ft-icon-18 d-block text-gray-500 darker-on-hover mr-2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+										<path d="M8.59 16.34l4.58-4.59-4.58-4.59L10 5.75l6 6-6 6z"></path>
+									</svg>
+								</span>
+								<span class="col">
+									<a class="text-dark" href="{{ order }}">{{ text_order }}</a>
+								</span>
+							</li>
+							<li class="row no-gutters pb-1">
+								<span class="col-auto">
+									<svg class="ft-icon-18 d-block text-gray-500 darker-on-hover mr-2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+										<path d="M8.59 16.34l4.58-4.59-4.58-4.59L10 5.75l6 6-6 6z"></path>
+									</svg>
+								</span>
+								<span class="col">
+									<a class="text-dark" href="{{ wishlist }}">{{ text_wishlist }}</a>
+								</span>
+							</li>
+							<li class="row no-gutters pb-1">
+								<span class="col-auto">
+									<svg class="ft-icon-18 d-block text-gray-500 darker-on-hover mr-2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+										<path d="M8.59 16.34l4.58-4.59-4.58-4.59L10 5.75l6 6-6 6z"></path>
+									</svg>
+								</span>
+								<span class="col">
+									<a class="text-dark" href="{{ newsletter }}">{{ text_newsletter }}</a>
+								</span>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<hr class="d-sm-none">
+			</div>
+		</div>
+		<hr class="d-none d-sm-block">
+		<div class="row">
+			<div class="col-12 col-lg-auto">
+				<div class="text-secondary text-left">{{ powered }}</div>
+			</div>
+			{% if pay_icons and pay_icons_status %}
+			<div class="col-12 col-lg">
+				<div class="d-table w-100 h-100">
+					<div class="d-table-cell w-100 h-100 align-middle">
+						<hr class="d-lg-none">
+						<ul class="list-inline text-left text-lg-right m-0 f-pay-icons">
+							{% for pay_icon in pay_icons %}
+							<li class="list-inline-item mt-2">
+								{% if pay_icon.link %}
+								<a href="{{ pay_icon.link }}">
+									<img src="{{ pay_icon.image }}" {% if pay_icon.image2x %}srcset="{{ pay_icon.image }} 1x, {{ pay_icon.image2x }} 2x, {{ pay_icon.image3x }} 3x, {{ pay_icon.image4x }} 4x"{% endif %} alt="{{ pay_icon.title }}" class="img-fluid">
+								</a>
+								{% else %}
+									<img src="{{ pay_icon.image }}" {% if pay_icon.image2x %}srcset="{{ pay_icon.image }} 1x, {{ pay_icon.image2x }} 2x, {{ pay_icon.image3x }} 3x, {{ pay_icon.image4x }} 4x"{% endif %} alt="{{ pay_icon.title }}" class="img-fluid">
+								{% endif %}
+							</li>
+							{% endfor %}
+						</ul>
+					</div>
+				</div>
+			</div>
+			{% endif %}
+		</div>
+
+	</div>
+</div>

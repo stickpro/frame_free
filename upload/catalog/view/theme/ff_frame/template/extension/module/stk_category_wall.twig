@@ -1,0 +1,220 @@
+<div id="ftCategoryWall_{{ module }}" class="{% if 'pagination' in controls %}mb-3{% else %}mb-4{% endif %}">
+  {% if heading_title or 'arrows' in controls %}
+  <div class="pt-2 mb-3">
+    <div class="row">
+      <div class="col">
+        {% if heading_title %}
+        <div class="h5 mb-0 ml-1">{{ heading_title }}</div>
+        {% endif %}
+      </div>
+      {% if 'arrows' in controls %}
+      <div class="col-auto">
+        <button class="btn btn-prev p-0 rounded-pill">
+          <svg class="d-block ft-icon-24 m-0 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"></path>
+          </svg>
+        </button>
+        <button class="btn btn-next p-0 rounded-pill">
+          <svg class="d-block ft-icon-24 m-0 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"></path>
+          </svg>
+        </button>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+  {% endif %}
+
+  <div class="m-n1 m-sm-n2">
+    <!--noindex-->
+    <!--googleoff: all-->
+    <div class="carousel-placeholder d-flex">
+      <script>
+
+        items = {{ items }};
+        breakpoints = [];
+        base_width = window.innerWidth;
+
+        {% if responsive_items %}
+        {% for item in responsive_items %}
+        breakpoints[{{ loop.index0 }}] = { ww: {{ item.breakpoint }}, count: {{ item.amount }} };
+        {% endfor %}
+        {% endif %}
+
+        breakpoints.sort((a, b) => a.ww > b.ww ? 1 : -1);
+        breakpoints.forEach(function(breakpoint, i, breakpoints) {
+
+          next_bp_vw = breakpoints[i + 1] != null ? breakpoints[i + 1].ww : 9999;
+
+          if (breakpoint.ww <= base_width && next_bp_vw > base_width) {
+            items = breakpoint.count;
+          }
+        });
+
+      </script>
+      <div class="item d-flex">
+        <script>
+
+          item = document.querySelector('#ftCategoryWall_{{ module }} .carousel-placeholder .item');
+          item.style.width = items > 0 ? 100 / items + '%' : 100 + '%';
+
+        </script>
+        <div class="w-100 border rounded bg-white p-3 m-1 m-sm-2 text-center">
+          <div class="d-inline-block position-relative">
+            <svg class="d-block img-fluid w-100" width="{{ categories[0].img_width }}" height="{{ categories[0].img_height }}" xmlns="http://www.w3.org/2000/svg"></svg>
+            <div class="d-flex justify-content-center align-items-center position-absolute t-0 b-0 r-0 l-0 w-100 h-100 lazy-spinner">
+              <div class="spinner-border text-gray-400"></div>
+            </div>
+          </div>
+          <div class="h6 d-block mb-0 mt-2 line-clamp-1">
+            <span class="bg-light">
+              <span class="invisible">
+                Category name...
+              </span>
+            </span>
+          </div>
+        </div>
+      </div>
+      <script>
+
+        for(let i = 1; i < items && i < {{ categories|length }}; i++)  {
+          clone = item.cloneNode(true);
+          item.parentNode.appendChild(clone);
+        }
+
+        items = null;
+        item = null;
+        clone = null;
+        breakpoints = null;
+        base_width = null;
+        prev_bp_vw = null;
+
+      </script>
+    </div>
+    <!--googleon: all-->
+    <!--/noindex-->
+    <div  class="owl-carousel">
+      {% for category in categories %}
+      <div class="category-item w-100">
+
+        <div class="position-relative border rounded bg-white p-3 m-1 m-sm-2 overflow-hidden {% if category.active %}border-primary{% endif %}">
+          <a class="text-dark text-decoration-none d-block text-center " {% if category.children %}data-toggle="collapse" href="#subcategory-wall-{{ category.category_id }}-{{ module }}"{% else %}href="{{ category.href }}"{% endif %}>
+            <div class="d-inline-block position-relative">
+              <svg class="d-block img-fluid w-100" width="{{ category.img_width }}" height="{{ category.img_height }}" xmlns="http://www.w3.org/2000/svg"></svg>
+
+              {% if lazyload_imgs %}
+              <picture>
+                {% if category.thumb2x %}
+                <source class="owl-lazy" data-srcset="{{ category.thumb }} 1x, {{ category.thumb2x }} 2x, {{ category.thumb3x }} 3x, {{ category.thumb4x }} 4x" srcset="{{ category.thumb_holder }}">
+                {% endif %}
+                <img src="{{ category.thumb_holder }}" data-src="{{ category.thumb }}" alt="{{ category.name }}" title="{{ category.name }}" class="position-absolute t-0 l-0 img-fluid w-100 d-block owl-lazy">
+              </picture>
+              <div class="d-flex justify-content-center align-items-center position-absolute t-0 b-0 r-0 l-0 w-100 h-100 lazy-spinner">
+                <div class="spinner-border text-gray-400"></div>
+              </div>
+              {% else %}
+              <picture>
+                {% if category.thumb2x %}
+                <source srcset="{{ category.thumb }} 1x, {{ category.thumb2x }} 2x, {{ category.thumb3x }} 3x, {{ category.thumb4x }} 4x">
+                {% endif %}
+                <img src="{{ category.thumb }}" alt="{{ category.name }}" title="{{ category.name }}" class="position-absolute t-0 l-0 img-fluid w-100 d-block">
+              </picture>
+              {% endif %}
+
+
+            </div>
+            <div class="h6 d-block mb-0 mt-2 line-clamp-1">{{ category.name }}</div>
+          </a>
+          {% if category.children %}
+          <div class="collapse w-100 position-absolute b-0 l-0 z-index-2" id="subcategory-wall-{{ category.category_id }}-{{ module }}" data-parent="#ftCategoryWall_{{ module }}">
+            <div class="bg-white border-top shadow px-3 pb-2 pt-2 rounded-0 {% if category.active %}border-primary{% endif %}">
+              <ul class="list-unstyled m-0">
+                {% for child in category.children %}
+                <li class="mt-1 d-block"><a class="text-dark line-clamp-1" href="{{ child.href }}">{{ child.name }}</a></li>
+                {% endfor %}
+                <li><hr class="my-2 mx-n3"></li>
+                <li class="d-block bg-light mx-n3 my-n2 px-3 py-2"><a class="text-dark text-decoration-none line-clamp-1" href="{{ category.href }}">{{ g_text_all }}</a></li>
+              </ul>
+      				<a class="d-block position-absolute t-0 r-0 p-1 rounded-circle m-1" data-toggle="collapse" href="#subcategory-wall-{{ category.category_id }}-{{ module }}">
+      					<svg class="d-block ft-icon-18 m-0 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      						<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+      					</svg>
+      				</a>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% if 'pagination' in controls %}
+  <div class="owl-pagination text-center text-sm-left px-2 py-2">
+    <button class="btn btn-dot bg-dark shadow-none rounded-pill border-0 bg-secondary p-0 mr-0"><span></span></button>
+  </div>
+  {% endif %}
+<script>
+	$(function () {
+
+		var ftCategoryWall_{{ module }} = $('#ftCategoryWall_{{ module }} .owl-carousel');
+
+		ftCategoryWall_{{ module }}.owlCarousel({
+      mouseDrag: false,
+      touchDrag: true,
+      loop: false,
+      rewind: true,
+
+      items: {{ items }},
+
+      {% if responsive_items %}
+        responsive: {
+        {% for item in responsive_items %}
+        {{ item.breakpoint }} : { items: {{ item.amount }} },
+        {% endfor %}
+        },
+      {% endif %}
+
+      stageClass: 'owl-stage d-flex justify-content-between',
+      itemClass: 'owl-item d-flex float-none',
+
+      nav: false,
+      {% if 'pagination' in controls %}
+      dots: true,
+      dotsContainer: '#ftCategoryWall_{{ module }} .owl-pagination',
+      dotClass: 'btn btn-dot bg-dark shadow-none rounded-pill border-0 bg-secondary p-0',
+      {% else %}
+      dots: false,
+      {% endif %}
+      {% if autoplay %}
+      autoplay: true,
+      autoplayTimeout: {{ autoplay_speed }},
+      autoplayHoverPause: true,
+      {% endif %}
+
+      {% if lazyload_imgs %}
+      lazyLoad: true,
+      {% else %}
+      lazyLoad: false,
+      {% endif %}
+
+      lazyLoadEager: 0,
+
+      onLoadedLazy: function(e) { e.element.parent().parent().find('.lazy-spinner').remove() },
+      onInitialized: function(e) { $(e.target).parent().find('.carousel-placeholder').remove()},
+      onRefreshed: function(e) {
+
+        $(e.target).find('.owl-item').each(function() { this.style.minWidth = this.style.width });
+        let arrows = $('#ftCategoryWall_{{ module }} .btn-prev, #ftCategoryWall_{{ module }} .btn-next ');
+        if (e.item.count <= e.page.size) { arrows.attr('disabled','disabled') } else { arrows.removeAttr('disabled') }
+
+      },
+		});
+
+		$('#ftCategoryWall_{{ module }} .btn-prev').click(function() { ftCategoryWall_{{ module }}.trigger('prev.owl.carousel'); });
+		$('#ftCategoryWall_{{ module }} .btn-next').click(function() { ftCategoryWall_{{ module }}.trigger('next.owl.carousel'); });
+
+	});
+</script>
+
+</div>

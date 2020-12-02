@@ -1,0 +1,42 @@
+{% if status %}
+<div class="modal fade" id="ff_custom_modal" tabindex="-1">
+	<div class="modal-dialog modal-dialog-centered {{ size }}">
+		<div class="modal-content">
+			<div class="modal-header no-gutters">
+				<div class="col">
+					<div class="h5 modal-title">{{ heading }}</div>
+				</div>
+				<div class="col-auto">
+					<a href="#" class="d-block ml-2" data-dismiss="modal">
+						<svg class="d-block ft-icon-24 m-0 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+							<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+						</svg>
+					</a>
+				</div>
+			</div>
+			<div class="modal-body">
+				{{ content }}
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	!function(e){"function"==typeof define&&define.amd?define(["jquery"],e):"object"==typeof exports?module.exports=e(require("jquery")):e(jQuery)}(function(e){var n=/\+/g;function o(e){return r.raw?e:encodeURIComponent(e)}function i(o,i){var t=r.raw?o:function(e){0===e.indexOf('"')&&(e=e.slice(1,-1).replace(/\\"/g,'"').replace(/\\\\/g,"\\"));try{return e=decodeURIComponent(e.replace(n," ")),r.json?JSON.parse(e):e}catch(e){}}(o);return e.isFunction(i)?i(t):t}var r=e.cookie=function(n,t,c){if(arguments.length>1&&!e.isFunction(t)){if("number"==typeof(c=e.extend({},r.defaults,c)).expires){var u=c.expires,s=c.expires=new Date;s.setMilliseconds(s.getMilliseconds()+864e5*u)}return document.cookie=[o(n),"=",(a=t,o(r.json?JSON.stringify(a):String(a))),c.expires?"; expires="+c.expires.toUTCString():"",c.path?"; path="+c.path:"",c.domain?"; domain="+c.domain:"",c.secure?"; secure":""].join("")}for(var a,d,p=n?void 0:{},f=document.cookie?document.cookie.split("; "):[],l=0,m=f.length;l<m;l++){var x=f[l].split("="),g=(d=x.shift(),r.raw?d:decodeURIComponent(d)),v=x.join("=");if(n===g){p=i(v,t);break}n||void 0===(v=i(v))||(p[g]=v)}return p};r.defaults={},e.removeCookie=function(n,o){return e.cookie(n,"",e.extend({},o,{expires:-1})),!e.cookie(n)}});
+
+	function modalshow(){
+		if($.cookie('ff_custom_modal_sown') == null) {
+			setTimeout(function() {
+				$('#ff_custom_modal').modal('show');
+			}, 100)
+		}
+	}
+
+	$(window).on('load', function () {
+		modalshow();
+		if ($.cookie('ff_custom_modal_sown') != 1) {
+			$.cookie('ff_custom_modal_sown', '1'{% if cookie_days %}, { expires: {{ cookie_days }} }{% endif %});
+		}
+	});
+</script>
+{% endif %}

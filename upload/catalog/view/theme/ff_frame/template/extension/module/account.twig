@@ -1,0 +1,36 @@
+<div class="card mb-3">
+	<div class="card-header border-0 px-2">
+    <div class="row no-gutters align-items-center">
+      <div class="col-auto">
+        <svg class="d-block ft-icon-24 my-0 text-gray-500 mr-2 ml-1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM7.07 18.28c.43-.9 3.05-1.78 4.93-1.78s4.51.88 4.93 1.78C15.57 19.36 13.86 20 12 20s-3.57-.64-4.93-1.72zm11.29-1.45c-1.43-1.74-4.9-2.33-6.36-2.33s-4.93.59-6.36 2.33C4.62 15.49 4 13.82 4 12c0-4.41 3.59-8 8-8s8 3.59 8 8c0 1.82-.62 3.49-1.64 4.83zM12 6c-1.94 0-3.5 1.56-3.5 3.5S10.06 13 12 13s3.5-1.56 3.5-3.5S13.94 6 12 6zm0 5c-.83 0-1.5-.67-1.5-1.5S11.17 8 12 8s1.5.67 1.5 1.5S12.83 11 12 11z"/>
+        </svg>
+      </div>
+      <div class="col"> {{ heading_title }} </div>
+    </div>
+	</div>
+  <div class="list-group list-group-flush">
+		{% if not logged %}
+		<a href="{{ login }}" class="list-group-item list-group-item-action py-2">{{ text_login }}</a>
+		<a href="{{ register }}" class="list-group-item list-group-item-action py-2">{{ text_register }}</a>
+		<a href="{{ forgotten }}" class="list-group-item list-group-item-action py-2">{{ text_forgotten }}</a>
+		{% endif %}
+		<a href="{{ account }}" class="list-group-item list-group-item-action py-2">{{ text_account }}</a>
+		{% if logged %}
+		<a href="{{ edit }}" class="list-group-item list-group-item-action py-2">{{ text_edit }}</a>
+		<a href="{{ password }}" class="list-group-item list-group-item-action py-2">{{ text_password }}</a>
+		{% endif %}
+		<a href="{{ address }}" class="list-group-item list-group-item-action py-2">{{ text_address }}</a>
+		<a href="{{ wishlist }}" class="list-group-item list-group-item-action py-2">{{ text_wishlist }}</a>
+		<a href="{{ order }}" class="list-group-item list-group-item-action py-2">{{ text_order }}</a>
+		<a href="{{ download }}" class="list-group-item list-group-item-action py-2">{{ text_download }}</a>
+		<a href="{{ recurring }}" class="list-group-item list-group-item-action py-2">{{ text_recurring }}</a>
+		<a href="{{ reward }}" class="list-group-item list-group-item-action py-2">{{ text_reward }}</a>
+		<a href="{{ return }}" class="list-group-item list-group-item-action py-2">{{ text_return }}</a>
+		<a href="{{ transaction }}" class="list-group-item list-group-item-action py-2">{{ text_transaction }}</a>
+		<a href="{{ newsletter }}" class="list-group-item list-group-item-action py-2">{{ text_newsletter }}</a>
+		{% if logged %}
+		<a href="{{ logout }}" class="list-group-item list-group-item-action py-2">{{ text_logout }}</a>
+		{% endif %}
+	</div>
+</div>

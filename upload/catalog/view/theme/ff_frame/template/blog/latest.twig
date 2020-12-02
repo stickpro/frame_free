@@ -1,0 +1,341 @@
+{{ header }}
+<div id="blog-latest" class="container">
+  <div class="row">
+		{% if column_left %}
+		<div class="col-12 col-sm col-lg-3 order-lg-1 col-aside">
+			{{ column_left }}
+		</div>
+		{% endif %}
+		{% if column_right %}
+		<div class="col-12 col-sm col-lg-3 order-lg-3 col-aside">
+			{{ column_right }}
+		</div>
+		{% endif %}
+    <div id="content" class="blog-articles-list col-12 col-lg order-lg-2">
+			{{ content_top }}
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb p-0 mb-3 bg-transparent" itemscope itemtype="http://schema.org/BreadcrumbList">
+          {% for breadcrumb in breadcrumbs %}
+          {% if loop.index == 1 %}
+          <li class="breadcrumb-item p-0" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a class="text-dark" href="{{ breadcrumb.href }}"  itemprop="item">
+              <meta itemprop="name" content="{{ g_text_home }}" />
+            	<svg class="ft-icon-18 d-block" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            		<path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+            	</svg>
+            </a>
+            <meta itemprop="position" content="{{ loop.index }}" />
+          </li>
+          {% elseif breadcrumbs|length != loop.index %}
+          <li class="breadcrumb-item p-0" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a class="text-dark" href="{{ breadcrumb.href }}" itemprop="item">
+              <span itemprop="name">{{ breadcrumb.text }}</span>
+            </a>
+            <meta itemprop="position" content="{{ loop.index }}" />
+          </li>
+          {% else %}
+          <li class="breadcrumb-item p-0 active">
+            <span>{{ breadcrumb.text }}</span>
+          </li>
+          {% endif %}
+          {% endfor %}
+        </ol>
+      </nav>
+			<h1 class="h2 mb-4">{{ heading_title }}</h1>
+      <div class="mb-4">
+        <hr>
+        {% if categories %}
+				<h5 class="mb-3">{{ g_blog_subcat_text }}</h5>
+				<div class="row form-row row-cols-2 row-cols-sm-3 row-cols-md-4 {% if column_right and (column_left or menu_open) %}row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5{% elseif column_right or (column_left or menu_open) %}row-cols-lg-4 row-cols-xl-5 row-cols-xxl-6{% else %}row-cols-lg-5 row-cols-xl-6 row-cols-xxl-7{% endif %}">
+					{% for category in categories %}
+					<div class="col mb-2 d-flex">
+						<div class="bg-white border w-100 rounded overflow-hidden text-center mb-1">
+              <a href="{{ category.href }}" class="d-block text-dark">
+                {% if blog_sub_cat_img_status %}
+                <div class="d-flex vertical-align-middle justify-content-center px-2 py-2">
+                  {% if category.image1x %}
+                  <div class="position-relative">
+                    <svg  class="d-block mx-auto img-fluid" width="120px" height="120px" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"></svg>
+                    {% if catalog_page_lazy %}
+                    <div class="d-flex justify-content-center align-items-center position-absolute t-0 b-0 r-0 l-0 w-100 h-100 ft-lazy-spinner">
+                      <div class="spinner-border text-gray-300"></div>
+                    </div>
+                    <img
+                      src="image/catalog/framefreetheme/src_holder.png"
+                      data-src="{{ category.image1x }}"
+                      {% if category.image2x %}
+                      srcset="image/catalog/framefreetheme/src_holder.png"
+                      data-srcset="{{ category.image1x }} 1x, {{ category.image2x }} 2x, {{ category.image3x }} 3x, {{ category.image4x }} 4x"
+                      {% endif %}
+                      alt="{{ category.name }}"
+                      class="d-block position-absolute t-0 l-0 w-100 img-fluid ft-lazy-img"
+                    >
+                    {% else %}
+                    <img
+                      src="{{ category.image1x }}"
+                      {% if category.image2x %}
+                      srcset="{{ category.image1x }} 1x, {{ category.image2x }} 2x, {{ category.image3x }} 3x, {{ category.image4x }} 4x"
+                      {% endif %}
+                      alt="{{ category.name }}"
+                      class="d-block position-absolute t-0 l-0 w-100 img-fluid"
+                    >
+                    {% endif %}
+                  </div>
+                  {% else %}
+                  <svg  class="d-block mx-auto img-fluid ft-icon text-gray-200" width="{{ category.img_width }}" height="{{ category.img_height }}" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M 2.9902344 1.9902344 A 1.0001 1.0001 0 0 0 2.2929688 3.7070312 L 46.292969 47.707031 A 1.0001 1.0001 0 1 0 47.707031 46.292969 L 44.414062 43 L 48 43 L 48 7 L 8.4140625 7 L 3.7070312 2.2929688 A 1.0001 1.0001 0 0 0 2.9902344 1.9902344 z M 2 7 L 2 43 L 38.707031 43 L 36.853516 41.146484 L 27.060547 31.353516 L 24.707031 33.707031 C 24.316031 34.098031 23.683969 34.098031 23.292969 33.707031 C 22.901969 33.316031 22.901969 32.683969 23.292969 32.292969 L 25.646484 29.939453 L 15.589844 19.882812 L 4 30.699219 L 4 9 L 4.7070312 9 L 2.7070312 7 L 2 7 z M 10.414062 9 L 46 9 L 46 36.585938 L 34.707031 25.292969 C 34.316031 24.901969 33.683969 24.901969 33.292969 25.292969 L 30 28.585938 L 10.414062 9 z M 35 15 A 3 3 0 0 0 35 21 A 3 3 0 0 0 35 15 z" transform="translate(25,25)"/>
+                  </svg>
+                  {% endif %}
+                </div>
+                {% endif %}
+                <div class="bg-light {% if blog_sub_cat_img_status %} border-top {% endif %} py-2 px-2" title="{{ category.name }}">
+                  <span class="line-clamp-1">{{ category.name }}</span>
+                </div>
+              </a>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+				<hr>
+				{% endif %}
+      </div>
+      {% if articles %}
+      <div class="mb-3">
+        <div class="row no-gutters">
+        	<div class="col col-sm-auto mr-2">
+        		<div class="form-group input-group input-group-sm mb-0">
+        			<div class="input-group">
+        				<div class="input-group-prepend">
+        					<span class="input-group-text px-2 bg-light" title="{{ text_sort }}">
+        						<svg class="d-block ft-icon-18 text-gray-500" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        							<path d="M3 18h6v-2H3v2zM3 6v2h18V6H3zm0 7h12v-2H3v2z"/>
+        						</svg>
+        					</span>
+        				</div>
+        				<select id="input-sort" class="form-control custom-select" onchange="location = this.value;" aria-label="{{ text_sort }}">
+        					{% for sorts in sorts %}
+        					{% if sorts.value == '%s-%s'|format(sort, order) %}
+        					<option value="{{ sorts.href }}" selected="selected">{{ sorts.text }}</option>
+        					{% else %}
+        					<option value="{{ sorts.href }}">{{ sorts.text }}</option>
+        					{% endif %}
+        					{% endfor %}
+        				</select>
+        			</div>
+        		</div>
+        	</div>
+          <div class="col-auto col-sm-auto ml-sm-auto">
+        		<div class="form-group input-group input-group-sm mb-0">
+        			<div class="input-group">
+        				<div class="input-group-prepend">
+        					<span class="input-group-text px-2 bg-light" title="{{ text_limit }}">
+        						<svg class="d-block ft-icon-18 text-gray-500" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        							<path d="M3 5H1v16c0 1.1.9 2 2 2h16v-2H3V5zm18-4H7c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V3c0-1.1-.9-2-2-2zm0 16H7V3h14v14z"/>
+        						</svg>
+        					</span>
+        				</div>
+        				<select id="input-limit" class="form-control custom-select" onchange="location = this.value;" aria-label="{{ text_limit }}">
+        					{% for limits in limits %}
+        					{% if limits.value == limit %}
+        					<option value="{{ limits.href }}" selected="selected">{{ limits.text }}</option>
+        					{% else %}
+        					<option value="{{ limits.href }}">{{ limits.text }}</option>
+        					{% endif %}
+        					{% endfor %}
+        				</select>
+        			</div>
+        		</div>
+        	</div>
+        </div>
+      </div>
+      <div class="articles-container">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 {% if column_right and column_left %}row-cols-lg-1 row-cols-xl-2{% elseif column_right or column_left %}row-cols-lg-2 row-cols-xl-3{% else %}row-cols-lg-3 row-cols-xxl-4{% endif %}">
+          {% for article in articles %}
+          <div class="col article-item d-flex mb-4">
+            <div class="bg-white w-100 d-flex flex-column border rounded overflow-hidden">
+              {% if article.thumb %}
+              <a href="{{ article.href }}" class="d-block position-relative">
+                <svg class="d-block img-fluid w-100" width="{{ article.img_width }}" height="{{ article.img_height }}" xmlns="http://www.w3.org/2000/svg"></svg>
+                {% if catalog_page_lazy %}
+                <div class="d-flex justify-content-center align-items-center position-absolute t-0 b-0 r-0 l-0 w-100 h-100 ft-lazy-spinner">
+                  <div class="spinner-border text-gray-300"></div>
+                </div>
+                <img
+                  src="image/catalog/framefreetheme/src_holder.png"
+                  data-src="{{ article.thumb }}"
+                  {% if article.thumb2x %}
+                  srcset="image/catalog/framefreetheme/src_holder.png"
+                  data-srcset="{{ article.thumb }} 1x, {{ article.thumb2x }} 2x, {{ article.thumb3x }} 3x, {{ article.thumb4x }} 4x"
+                  {% endif %}
+                  alt="{{ article.name }}"
+                  title="{{ article.name }}"
+                  class="position-absolute t-0 l-0 img-fluid w-100 d-block ft-lazy-img"
+                >
+                {% else %}
+                <img
+                  src="{{ article.thumb }}"
+                  {% if article.thumb2x %}
+                  srcset="{{ article.thumb }} 1x, {{ article.thumb2x }} 2x, {{ article.thumb3x }} 3x, {{ article.thumb4x }} 4x"
+                  {% endif %}
+                  alt="{{ article.name }}"
+                  title="{{ article.name }}"
+                  class="position-absolute t-0 l-0 img-fluid w-100 d-block"
+                >
+                {% endif %}
+              </a>
+              {% endif %}
+             <div class="px-3 pt-3">
+               <a class="h5 d-block text-dark mb-3" href="{{ article.href }}">{{ article.name }}</a>
+               <p class="text-secondary font-weight-light">
+                 {{ article.description }}
+               </p>
+               {% if review_status %}
+               <div class="d-flex mb-3">
+                 {% for i in 1..5 %}
+                 {% if article.rating < i %}
+                 <svg class="d-block ft-icon-24 text-gray-400 m-0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                   <path d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"/>
+                 </svg>
+                 {% else %}
+                 <svg class="d-block ft-icon-24 text-warning m-0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                   <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                 </svg>
+                 {% endif %}
+                 {% endfor %}
+               </div>
+               {% endif %}
+             </div>
+             <div class="px-3 pb-3 mt-auto">
+               <div class="row no-gutters align-items-center">
+                 <div class="col-auto">
+                   <span class="badge d-block badge-light px-1 py-0 mr-2 cursor-pointer" title="{{ article.description }}" onclick="location.href = ('{{ article.href }}')">
+                     <svg class="d-block ft-icon-18 m-0 text-gray-500" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                       <path d="M3 18h12v-2H3v2zM3 6v2h18V6H3zm0 7h18v-2H3v2z"/>
+                     </svg>
+                  </span>
+                 </div>
+                 <div class="col-auto">
+                   <span class="badge d-block badge-light py-0 pl-1 pr-2" title="{{ text_views }} {{ article.viewed }}">
+                     <span class="row no-gutters align-items-center">
+                       <span class="col-auto">
+                         <svg class="d-block ft-icon-18 m-0 text-gray-500" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                           <path d="M12 6.5c3.79 0 7.17 2.13 8.82 5.5-1.65 3.37-5.02 5.5-8.82 5.5S4.83 15.37 3.18 12C4.83 8.63 8.21 6.5 12 6.5m0-2C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zm0 5c1.38 0 2.5 1.12 2.5 2.5s-1.12 2.5-2.5 2.5-2.5-1.12-2.5-2.5 1.12-2.5 2.5-2.5m0-2c-2.48 0-4.5 2.02-4.5 4.5s2.02 4.5 4.5 4.5 4.5-2.02 4.5-4.5-2.02-4.5-4.5-4.5z"/>
+                         </svg>
+                       </span>
+                       <span class="col-auto font-weight-normal text-secondary">
+                         <span class="d-block ml-1">{{ article.viewed }}</span>
+                       </span>
+                     </span>
+                  </span>
+                 </div>
+                 <div class="col text-right">
+                   <small class="d-block text-secondary">{{ article.date_added }}</small>
+                 </div>
+               </div>
+             </div>
+
+
+            </div>
+          </div>
+
+         {% endfor %}
+        </div>
+      </div>
+      <button type="button" class="btn-showmore btn btn-lg btn-block border btn-light mb-3 d-none text-muted" onclick="showmore()">
+        <span class="row no-gutters justify-content-center align-items-center">
+          <span class="col-auto loading-icon">
+    				<span class="spinner-border ft-icon-24 my-0 mr-3 text-gray-600"></span>
+          </span>
+          <span class="col-auto">
+            {{ g_text_showmore }}
+          </span>
+        </span>
+			</button>
+      <div class="row pr-container align-items-center mt-2">
+				<div class="col-12 col-md-auto order-md-1 text-center text-md-left mb-2">
+					<nav>
+						{{ pagination }}
+					</nav>
+				</div>
+			</div>
+      {% else %}
+			<div>
+				<p>{{ text_empty }}</p>
+				<div class="buttons">
+					<div class="pull-right"><a href="{{ continue }}" class="btn btn-primary">{{ button_continue }}</a></div>
+				</div>
+			</div>
+			{% endif %}
+    </div>
+  </div>
+  {{ content_bottom }}
+</div>
+<script>
+
+  document.addEventListener("DOMContentLoaded", function(e) {
+    if ($('.pagination .active').next('li').length > 0) { $('.btn-showmore').removeClass('d-none') }
+  });
+
+	function showmore() {
+		var $next = $('.pagination .active').next('li').find('a');
+		    pl_class = $('.articles-container').find('.article-item').first().attr('class');
+
+        url = $next.attr('href');
+        url = url.replace(/(^\w+:|^)/, '');
+
+		if ($next.length == 0) {
+			return;
+		}
+
+		$.ajax({
+			url: url,
+			beforeSend: function() {
+				$('.btn-showmore').addClass('loading');
+				$('.btn-showmore').attr('disabled','diasbled');
+			},
+			success: function(data) {
+
+				$('.btn-showmore').removeClass('loading');
+				$('.btn-showmore').removeAttr('disabled');
+
+				history.replaceState(null, null, url);
+
+				$data = $(data);
+
+				var $container = $('.articles-container .article-item').parent();
+
+				$products = $data.find('.articles-container .article-item');
+
+				$products.each(function() {
+					$(this).removeAttr('class');
+					$(this).addClass(pl_class);
+          if (typeof lazyImgObserve == 'function') lazyImgObserve($(this).get()[0]);
+				});
+
+				$container.append($products);
+
+				$('.pagination').html($data.find('.pagination'));
+				$('.results span').html($data.find('.results span'));
+
+				if ($('.pagination .active').next('li').length == 0) {
+					$('.btn-showmore').addClass('d-none');
+				}
+
+				$data.filter('script').each(function () {
+					if ((this.text || this.textContent || this.innerHTML).indexOf("document.write") >= 0) {
+						return;
+					}
+					$.globalEval(this.text || this.textContent || this.innerHTML || '');
+				});
+
+			},
+			error: function(xhr, ajaxOptions, thrownError) {
+				alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+			}
+		});
+
+		return false;
+	}
+
+</script>
+{{ footer }}

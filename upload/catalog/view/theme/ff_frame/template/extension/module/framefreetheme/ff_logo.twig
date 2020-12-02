@@ -1,0 +1,19 @@
+{% if svg_logo_status %}
+  {% if not on_home %}
+    <a href="{{ home }}">{{ svg_logo }}</a>
+  {% else %}
+    <a href="#" onclick="location.href=window.location; return false">{{ svg_logo }}</a>
+  {% endif %}
+{% else %}
+  {% if logo %}
+    {% if not on_home %}
+      <a href="{{ home }}">
+        <img src="{{ logo1x }}" {% if hd_imgs %}srcset="{{ logo1x }} 1x, {{ logo2x }} 2x, {{ logo3x }} 3x, {{ logo4x }} 4x" title="{{ name }}"{% endif %} alt="{{ name }}" class="img-fluid" />
+      </a>
+    {% else %}
+      <a href="#" onclick="location.href=window.location; return false">
+        <img src="{{ logo1x }}" {% if hd_imgs %}srcset="{{ logo1x }} 1x, {{ logo2x }} 2x, {{ logo3x }} 3x, {{ logo4x }} 4x" title="{{ name }}"{% endif %} alt="{{ name }}" class="img-fluid" />
+      </a>
+    {% endif %}
+  {% endif %}
+{% endif %}

@@ -1,0 +1,62 @@
+{% if not ajax and not popup and not as_module %}
+{% set simple_page = 'simpleaddress' %}
+{% include simple_header %}
+<div class="simple-content">
+{% endif %}
+  {% if not ajax or (ajax and popup) %}
+  <script type="text/javascript">
+      var startSimpleInterval = window.setInterval(function(){
+          if (typeof jQuery !== 'undefined' && typeof Simplepage === "function" && jQuery.isReady) {
+              window.clearInterval(startSimpleInterval);
+
+              var simplepage = new Simplepage({
+                  additionalParams: "{{ additional_params }}",
+                  additionalPath: "{{ additional_path }}",
+                  mainUrl: "{{ action }}",
+                  mainContainer: "#simplepage_form",
+                  useAutocomplete: {{ use_autocomplete ? 1 : 0 }},
+                  useGoogleApi: {{ use_google_api ? 1 : 0 }},
+                  scrollToError: {{ scroll_to_error ? 1 : 0 }},
+                  notificationDefault: {{ notification_default ? 1 : 0 }},
+                  notificationToasts: {{ notification_toasts ? 1 : 0 }},
+                  notificationCheckForm: {{ notification_check_form ? 1 : 0 }},
+                  notificationCheckFormText: "{{ notification_check_form_text }}",
+                  languageCode: "{{ language_code }}",
+                  javascriptCallback: function() { {{ javascript_callback }} }
+              });
+
+              if (typeof toastr !== 'undefined') {
+                  toastr.options.positionClass = "{{ notification_position ? notification_position : 'toast-top-right' }}";
+                  toastr.options.timeOut = "{{ notification_timeout ? notification_timeout : '5000' }}";
+                  toastr.options.progressBar = true;
+              }
+
+              simplepage.init();
+          }
+      },0);
+  </script>
+  {% endif %}
+  <form action="{{ action }}" method="post" enctype="multipart/form-data" id="simplepage_form">
+    <div class="simpleregister" id="simpleaddress">
+      <div class="simpleregister-block-content d-flex flex-wrap mx-n2">
+        {% for row in rows %}
+        {{ row }}
+        {% endfor %}
+        {% for row in hidden_rows %}
+        {{ row }}
+        {% endfor %}
+      </div>
+      <div class="simpleregister-button-block buttons">
+        <div class="simpleregister-button-right">
+          <a href="javascript:void(0)" class="button btn-primary button_oc btn px-4" data-onclick="submit" id="simpleregister_button_confirm"><span>{{ button_continue }}</span></a>
+        </div>
+      </div>
+    </div>
+    {% if redirect %}
+    <input type="hidden" id="simple_redirect_url" value="{{ redirect }}">
+    {% endif %}
+  </form>
+{% if not ajax and not popup and not as_module %}
+</div>
+{% include simple_footer %}
+{% endif %}

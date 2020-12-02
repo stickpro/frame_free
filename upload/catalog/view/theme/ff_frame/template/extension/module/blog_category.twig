@@ -1,0 +1,17 @@
+<div class="list-group mb-3">
+  {% for category in categories %}
+  {% if category.blog_category_id == blog_category_id %}
+  <a href="{{ category.href }}" class="list-group-item list-group-item-action active py-2">{{ category.name }}</a>
+  {% if category.children %}
+  {% for child in category.children %}
+  {% if child.blog_category_id == child_id %}
+  <a href="{{ child.href }}" class="list-group-item list-group-item-action active py-2">&nbsp;&nbsp;&nbsp;- {{ child.name }}</a>
+  {% else %}
+  <a href="{{ child.href }}" class="list-group-item list-group-item-action py-2">&nbsp;&nbsp;&nbsp;- {{ child.name }}</a>
+  {% endif %}
+  {% endfor %}
+  {% endif %}
+  {% else %} <a href="{{ category.href }}" class="list-group-item list-group-item-action py-2">{{ category.name }}</a>
+  {% endif %}
+  {% endfor %}
+</div>

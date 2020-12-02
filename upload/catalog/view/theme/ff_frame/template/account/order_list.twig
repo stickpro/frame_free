@@ -1,0 +1,94 @@
+{{ header }}
+<div id="account-order" class="container">
+  <div class="row">
+		{% if column_left %}
+		<div class="col-12 col-sm col-lg-3 order-lg-1 col-aside">
+			{{ column_left }}
+		</div>
+		{% endif %}
+		{% if column_right %}
+		<div class="col-12 col-sm col-lg-3 order-lg-3 col-aside">
+			{{ column_right }}
+		</div>
+		{% endif %}
+    <div id="content" class="col-12 col-lg order-lg-2 mb-3">
+			{{ content_top }}
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb p-0 mb-3 bg-transparent" itemscope itemtype="http://schema.org/BreadcrumbList">
+          {% for breadcrumb in breadcrumbs %}
+          {% if loop.index == 1 %}
+          <li class="breadcrumb-item p-0" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a class="text-dark" href="{{ breadcrumb.href }}"  itemprop="item">
+              <meta itemprop="name" content="{{ g_text_home }}" />
+            	<svg class="ft-icon-18 d-block" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            		<path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+            	</svg>
+            </a>
+            <meta itemprop="position" content="{{ loop.index }}" />
+          </li>
+          {% elseif breadcrumbs|length != loop.index %}
+          <li class="breadcrumb-item p-0" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a class="text-dark" href="{{ breadcrumb.href }}" itemprop="item">
+              <span itemprop="name">{{ breadcrumb.text }}</span>
+            </a>
+            <meta itemprop="position" content="{{ loop.index }}" />
+          </li>
+          {% else %}
+          <li class="breadcrumb-item p-0 active">
+            <span>{{ breadcrumb.text }}</span>
+          </li>
+          {% endif %}
+          {% endfor %}
+        </ol>
+      </nav>
+      <h1 class="h2 mb-4">{{ heading_title }}</h1>
+      {% if orders %}
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr class="bg-light">
+              <th class="text-right">{{ column_order_id }}</th>
+              <th class="text-left">{{ column_customer }}</th>
+              <th class="text-right">{{ column_product }}</th>
+              <th class="text-left">{{ column_status }}</th>
+              <th class="text-right">{{ column_total }}</th>
+              <th class="text-left">{{ column_date_added }}</th>
+              <th></td>
+            </tr>
+          </thead>
+          <tbody>
+           {% for order in orders %}
+            <tr>
+              <td class="text-right">#{{ order.order_id }}</td>
+              <td class="text-left">{{ order.name }}</td>
+              <td class="text-right">{{ order.products }}</td>
+              <td class="text-left">{{ order.status }}</td>
+              <td class="text-right">{{ order.total }}</td>
+              <td class="text-left">{{ order.date_added }}</td>
+              <td class="text-right"><a href="{{ order.view }}" data-toggle="tooltip" title="{{ button_view }}" class="btn btn-info">
+
+									<svg class="d-block ft-icon-18 m-0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+										<path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+									</svg>
+
+							</a></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="row">
+        <div class="col-sm-6 text-left">{{ pagination }}</div>
+        <div class="col-sm-6 text-right">{{ results }}</div>
+      </div>
+      {% else %}
+      <p>{{ text_empty }}</p>
+      {% endif %}
+      <div class="">
+        <div class=""><a href="{{ continue }}" class="btn btn-primary">{{ button_continue }}</a></div>
+      </div>
+      </div>
+    </div>
+	{{ content_bottom }}
+</div>
+{{ footer }}

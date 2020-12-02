@@ -1,0 +1,96 @@
+{{ header }}
+<div id="account-transaction" class="container">
+  <div class="row">
+		{% if column_left %}
+		<div class="col-12 col-sm col-lg-3 order-lg-1 col-aside">
+			{{ column_left }}
+		</div>
+		{% endif %}
+
+		{% if column_right %}
+		<div class="col-12 col-sm col-lg-3 order-lg-3 col-aside">
+			{{ column_right }}
+		</div>
+		{% endif %}
+
+    {% if column_left and column_right %}
+    {% set class = 'col-lg-6' %}
+    {% elseif column_left or column_right %}
+    {% set class = 'col-lg-9' %}
+    {% else %}
+    {% set class = 'col-lg' %}
+    {% endif %}
+
+    <div id="content" class="col-12 col-lg order-lg-2 mb-3">
+      {{ content_top }}
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb p-0 mb-3 bg-transparent" itemscope itemtype="http://schema.org/BreadcrumbList">
+          {% for breadcrumb in breadcrumbs %}
+          {% if loop.index == 1 %}
+          <li class="breadcrumb-item p-0" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a class="text-dark" href="{{ breadcrumb.href }}"  itemprop="item">
+              <meta itemprop="name" content="{{ g_text_home }}" />
+            	<svg class="ft-icon-18 d-block" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            		<path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+            	</svg>
+            </a>
+            <meta itemprop="position" content="{{ loop.index }}" />
+          </li>
+          {% elseif breadcrumbs|length != loop.index %}
+          <li class="breadcrumb-item p-0" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a class="text-dark" href="{{ breadcrumb.href }}" itemprop="item">
+              <span itemprop="name">{{ breadcrumb.text }}</span>
+            </a>
+            <meta itemprop="position" content="{{ loop.index }}" />
+          </li>
+          {% else %}
+          <li class="breadcrumb-item p-0 active">
+            <span>{{ breadcrumb.text }}</span>
+          </li>
+          {% endif %}
+          {% endfor %}
+        </ol>
+      </nav>
+      <h1 class="h2 mb-4">{{ heading_title }}</h1>
+
+      <p>{{ text_total }} <b>{{ total }}</b>.</p>
+      <div class="table-responsive mb-3">
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <td class="text-left">{{ column_date_added }}</td>
+              <td class="text-left">{{ column_description }}</td>
+              <td class="text-right">{{ column_amount }}</td>
+            </tr>
+          </thead>
+          <tbody>
+
+          {% if transactions %}
+          {% for transaction in transactions %}
+          <tr>
+            <td class="text-left">{{ transaction.date_added }}</td>
+            <td class="text-left">{{ transaction.description }}</td>
+            <td class="text-right">{{ transaction.amount }}</td>
+          </tr>
+          {% endfor %}
+          {% else %}
+          <tr>
+            <td class="text-center" colspan="5">{{ text_empty }}</td>
+          </tr>
+          {% endif %}
+            </tbody>
+
+        </table>
+      </div>
+      <div class="row">
+        <div class="col-sm-6 text-left">{{ pagination }}</div>
+        <div class="col-sm-6 text-right">{{ results }}</div>
+      </div>
+      <div>
+        <a href="{{ continue }}" class="btn btn-primary">{{ button_continue }}</a>
+      </div>
+      </div>
+    </div>
+	{{ content_bottom }}
+</div>
+{{ footer }}

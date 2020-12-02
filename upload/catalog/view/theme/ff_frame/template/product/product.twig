@@ -1,0 +1,1775 @@
+{{ header }}
+<div id="product-product" class="container" itemscope itemtype="http://schema.org/Product">
+  <div class="row">
+    <div id="content" class="col-12 col-lg order-lg-2">
+			{{ content_top }}
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb p-0 mb-3 bg-transparent" itemscope itemtype="http://schema.org/BreadcrumbList">
+          {% for breadcrumb in breadcrumbs %}
+          {% if loop.index == 1 %}
+          <li class="breadcrumb-item p-0" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a class="text-dark" href="{{ breadcrumb.href }}"  itemprop="item">
+              <meta itemprop="name" content="{{ g_text_home }}" />
+            	<svg class="ft-icon-18 d-block" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            		<path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+            	</svg>
+            </a>
+            <meta itemprop="position" content="{{ loop.index }}" />
+          </li>
+          {% elseif breadcrumbs|length != loop.index %}
+          <li class="breadcrumb-item p-0" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a class="text-dark" href="{{ breadcrumb.href }}" itemprop="item">
+              <span itemprop="name">{{ breadcrumb.text }}</span>
+            </a>
+            <meta itemprop="position" content="{{ loop.index }}" />
+          </li>
+          {% else %}
+          <li class="breadcrumb-item p-0 active">
+            <span>{{ breadcrumb.text }}</span>
+          </li>
+          {% endif %}
+          {% endfor %}
+        </ol>
+      </nav>
+			<h1 class="h2 my-4" itemprop="name">{{ heading_title }}</h1>
+
+      <div class="mb-4">
+        <div class="bg-light border rounded mb-2 d-lg-none">
+          <a class="d-flex align-items-center pl-2 pr-2 py-2 text-muted text-decoration-none collapsed" data-toggle="collapse" href="#product-info">
+            <svg class="d-block ft-icon-18 my-0 text-gray-400 darker-on-hover mr-2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M7 15h7v2H7zm0-4h10v2H7zm0-4h10v2H7zm12-4h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-.14 0-.27.01-.4.04-.39.08-.74.28-1.01.55-.18.18-.33.4-.43.64-.1.23-.16.49-.16.77v14c0 .27.06.54.16.78s.25.45.43.64c.27.27.62.47 1.01.55.13.02.26.03.4.03h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7-.25c.41 0 .75.34.75.75s-.34.75-.75.75-.75-.34-.75-.75.34-.75.75-.75zM19 19H5V5h14v14z"/>
+            </svg>
+            {{ g_text_product_info }}
+            <svg class="toggle-hidden ft-icon-18 my-0 ml-auto text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+            </svg>
+            <svg class="toggle-shown ft-icon-18 my-0 ml-auto text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M19 13H5v-2h14v2z"/>
+            </svg>
+          </a>
+        </div>
+        <div id="product-info" class="collapse justify-content-start fex-column flex-lg-row border rounded px-3 py-2 bg-light text-lg-center d-lg-flex">
+          {% if manufacturer %}
+          <div class="mr-4 p-1 text-secondary">
+            {{ text_manufacturer }}
+            <a href="{{ manufacturers }}" class="text-danger"><span itemprop="name">{{ manufacturer }}</span></a>
+          </div>
+          {% endif %}
+          {% for additional_field in additional_fields %}
+          <div class="mr-4 p-1 text-secondary">
+            {{ additional_field.title }}
+            <span class="text-danger" {% if additional_field.title == 'SKU:' %}itemprop="sku"{% endif %} {% if additional_field.title == 'MPN:' %} itemprop="mpn" {% endif %} >{{ additional_field.text }}</span>
+          </div>
+          {% endfor %}
+          {% if reward %}
+          <div class="mr-4 p-1 text-secondary">
+            {{ text_reward }} <span class="text-danger">{{ reward }}</span>
+          </div>
+          {% endif %}
+          {% if review_status %}
+          <div class="d-flex justify-content-lg-center ml-lg-auto p-1 text-secondary">
+            <div class="row no-gutters">
+              <div class="col-auto">
+                <div class="d-flex flex-nowrap mr-2">
+                  {% if rating %}
+                  <span itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+                    <meta itemprop='reviewCount' content='{{ microdata_reviews_count }}' />
+                    <meta itemprop='worstRating' content='1' />
+                    <meta itemprop='bestRating' content='5' />
+                    <meta itemprop='ratingValue' content='{{ rating }}' />
+                  </span>
+                  {% endif %}
+                  {% for i in 1..5 %}
+                  {% if rating < i %}
+                  <svg class="d-block ft-icon-18 text-gray-400" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"/>
+                  </svg>
+                  {% else %}
+                  <svg class="d-block ft-icon-18 text-warning" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                  </svg>
+                  {% endif %}
+                  {% endfor %}
+                </div>
+              </div>
+              <div class="col-auto text-secondary text-nowrap d-flex align-items-center">
+                <a href="#review" class="text-secondary" onclick="$('a[href=\'#tab-review\']').trigger('click');  $('html, body').animate({ scrollTop: $('a[href=\'#tab-review\']').offset().top - 5}, 250); return false;">{{ reviews }}</a>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+
+			<div class="row">
+				<div class="col-12 col-lg-5 col-md-7 order-lg-1">
+					<div class="position-relative mb-4">
+            {% if thumb or images %}
+						<div id="product-gallery">
+              <div class="row justify-content-center">
+                <div class="col-12 col-lg order-lg-2">
+                  <!--noindex-->
+                  <!--googleoff: all-->
+                  <div class="gallery-placeholder d-flex justify-content-center">
+                    <div class="position-relative">
+                      <svg class="d-block img-fluid w-100" width="{{ thumb_width }}" height="{{ thumb_height }}" xmlns="http://www.w3.org/2000/svg"></svg>
+                      <div class="d-flex justify-content-center align-items-center position-absolute t-0 b-0 r-0 l-0 w-100 h-100">
+                        <div class="spinner-border text-gray-400"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <!--googleon: all-->
+                  <!--/noindex-->
+                  <div class="owl-carousel">
+    								{% if thumb %}
+    								<div class="item d-flex justify-content-center">
+                      <meta itemprop="image" content="{{ thumb }}">
+    									<a href="{{ popup }}" title="{{ heading_title }}" target="_blank" onclick="psw_show(0);return false" class="d-block position-relative">
+                        <svg class="d-block img-fluid w-100" width="{{ thumb_width }}" height="{{ thumb_height }}" xmlns="http://www.w3.org/2000/svg"></svg>
+                        {% if catalog_page_lazy %}
+                        <picture>
+                          {% if thumb2x %}
+                          <source class="owl-lazy" data-srcset="{{ thumb }} 1x, {{ thumb2x }} 2x, {{ thumb3x }} 3x, {{ thumb4x }} 4x" srcset="{{ thumb_holder }}">
+                          {% endif %}
+                          <img src="{{ thumb_holder }}" data-src="{{ thumb }}" alt="{{ heading_title }}" class="position-absolute t-0 l-0 img-fluid d-block w-100 owl-lazy">
+                        </picture>
+                        <div class="d-flex justify-content-center align-items-center position-absolute t-0 b-0 r-0 l-0 w-100 h-100 lazy-spinner g-{{loop.index}}">
+                          <div class="spinner-border text-gray-400"></div>
+                        </div>
+                        {% else %}
+                        <picture>
+                          {% if thumb2x %}
+                          <source srcset="{{ thumb }} 1x, {{ thumb2x }} 2x, {{ thumb3x }} 3x, {{ thumb4x }} 4x">
+                          {% endif %}
+                          <img src="{{ thumb }}" alt="{{ heading_title }}" class="position-absolute t-0 l-0 img-fluid d-block w-100">
+                        </picture>
+                        {% endif %}
+    									</a>
+    								</div>
+    								{% endif %}
+    								{% if images %}
+    								{% for image in images %}
+    								<div class="item d-flex justify-content-center">
+    									<a href="{{ image.popup }}" title="{{ heading_title }}" target="_blank" onclick="psw_show({{ loop.index }});return false" class="d-block position-relative">
+                        <svg class="d-block img-fluid w-100" width="{{ thumb_width }}" height="{{ thumb_height }}" xmlns="http://www.w3.org/2000/svg"></svg>
+                        {% if catalog_page_lazy %}
+                        <picture>
+                          {% if image.thumb2x %}
+                          <source class="owl-lazy" data-srcset="{{ image.thumb }} 1x, {{ image.thumb2x }} 2x, {{ image.thumb3x }} 3x, {{ image.thumb4x }} 4x" srcset="{{ thumb_holder }}">
+                          {% endif %}
+                          <img src="{{ thumb_holder }}" data-src="{{ image.thumb }}" alt="{{ heading_title }}-{{ loop.index }}" class="position-absolute t-0 l-0 img-fluid d-block w-100 owl-lazy" />
+                        </picture>
+                        <div class="d-flex justify-content-center align-items-center position-absolute t-0 b-0 r-0 l-0 w-100 h-100 lazy-spinner g-{{loop.index + 1}}">
+                          <div class="spinner-border text-gray-400"></div>
+                        </div>
+                        {% else %}
+                        <picture>
+                          {% if image.thumb2x %}
+                          <source srcset="{{ image.thumb }} 1x, {{ image.thumb2x }} 2x, {{ image.thumb3x }} 3x, {{ image.thumb4x }} 4x">
+                          {% endif %}
+                          <img src="{{ image.thumb }}" alt="{{ heading_title }}-{{ loop.index }}" class="position-absolute t-0 l-0 img-fluid d-block w-100">
+                        </picture>
+                        {% endif %}
+                  	  </a>
+    								</div>
+    								{% endfor %}
+    								{% endif %}
+    							</div>
+                </div>
+                {% if add_images_limit > 0 and bullets|length > 1 %}
+                <div class="col-auto order-lg-1">
+                  <div class="additional-images d-flex flex-lg-column mx-n1">
+                    {% for bullet in bullets %}
+                    {% if loop.index <= add_images_limit %}
+                    <a class="d-block position-relative overflow-hidden border rounded mb-2 mx-1 {% if loop.index == 1 %}border-secondary{% endif %}" href="#" onclick="$('#product-gallery .owl-carousel').trigger('to.owl.carousel', [{{ loop.index0 }}]); return false;" data-index="{{ loop.index0 }}">
+                      <svg class="d-block img-fluid" width="{{ bullet.img_width }}" height="{{ bullet.img_height }}" xmlns="http://www.w3.org/2000/svg"></svg>
+                      <img src="{{ bullet.img1x }}" {% if bullet.img2x %}srcset="{{ bullet.img1x }} 1x, {{ bullet.img2x }} 2x, {{ bullet.img3x }} 3x, {{ bullet.img4x }} 4x"{% endif %} alt="{{ heading_title }}" class="position-absolute t-0 l-0 img-fluid d-block w-auto owl-lazy">
+                    </a>
+                    {% endif %}
+                    {% endfor %}
+                  </div>
+                  {% if add_images_limit < bullets|length %}
+                  <a class="d-block text-dark text-center text-decoration-none" href="#" onclick="psw_show({{ add_images_limit }});return false">
+                    {{ g_text_more_add_imgs }}
+                    {{ bullets|length - add_images_limit }}
+                  </a>
+                  {% endif %}
+                </div>
+                {% endif %}
+              </div>
+						</div>
+            {% else %}
+            <svg class="d-block mx-auto img-fluid ft-icon text-gray-200" width="{{ thumb_width }}" height="{{ thumb_height }}" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <path d="M 2.9902344 1.9902344 A 1.0001 1.0001 0 0 0 2.2929688 3.7070312 L 46.292969 47.707031 A 1.0001 1.0001 0 1 0 47.707031 46.292969 L 44.414062 43 L 48 43 L 48 7 L 8.4140625 7 L 3.7070312 2.2929688 A 1.0001 1.0001 0 0 0 2.9902344 1.9902344 z M 2 7 L 2 43 L 38.707031 43 L 36.853516 41.146484 L 27.060547 31.353516 L 24.707031 33.707031 C 24.316031 34.098031 23.683969 34.098031 23.292969 33.707031 C 22.901969 33.316031 22.901969 32.683969 23.292969 32.292969 L 25.646484 29.939453 L 15.589844 19.882812 L 4 30.699219 L 4 9 L 4.7070312 9 L 2.7070312 7 L 2 7 z M 10.414062 9 L 46 9 L 46 36.585938 L 34.707031 25.292969 C 34.316031 24.901969 33.683969 24.901969 33.292969 25.292969 L 30 28.585938 L 10.414062 9 z M 35 15 A 3 3 0 0 0 35 21 A 3 3 0 0 0 35 15 z" transform="translate(25,25)"/>
+            </svg>
+            {% endif %}
+  					{% if stickers %}
+  					<div class="position-absolute t-0 r-0 z-index-2">
+  						{% for sticker in stickers %}
+  						<div class="text-right"><span class="{{ sticker.class }}">{{ sticker.text }}</span></div>
+  						{% endfor %}
+  					</div>
+  					{% endif %}
+					</div>
+				</div>
+
+				<div class="col-12 col-xl-3 col-lg-4 col-md-5 order-lg-3">
+					<div class="card mb-3">
+						<div class="card-body p-3">
+							<div class="row no-gutters flex-nowrap">
+								<div class="col" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+
+                  <!-- <meta itemprop="url" content="{{ microdata_canonical_url }}"> -->
+                  <link itemprop="url" href="{{ microdata_canonical_url }}">
+
+                  <meta itemprop="priceCurrency" content="{{ microdata_currency }}">
+                  {% if microdata_price_valid_until %}
+                  <meta itemprop="priceValidUntil" content="{{ microdata_price_valid_until }}">
+                  {% endif %}
+                  {% if quantity > 0 %}
+                  <link itemprop="availability" href="http://schema.org/InStock">
+                  {% else %}
+                  <link itemprop="availability" href="https://schema.org/OutOfStock">
+                  {% endif %}
+
+									{% if not special %}
+                  <meta itemprop="price" content="{{ microdata_price }}">
+									<div class="h2 m-0 text-nowrap">{{ price }}</div>
+									{% else %}
+                  <meta itemprop="price" content="{{ microdata_special }}">
+									<s class="text-danger">{{ price }}</s>
+									<div class="h2 m-0 text-nowrap">{{ special }}</div>
+									{% endif %}
+									{% if tax %}
+									<div class="text-muted font-weight-light mt-1">{{ text_tax }} {{ tax }}</div>
+									{% endif %}
+
+								</div>
+								<div class="col-auto ml-auto">
+									<div class="btn-group btn-group-sm ml-1 ml-sm-2">
+										<button type="button" class="btn btn-light" title="{{ button_compare }}" onclick="compare.add('{{ product_id }}');">
+											<svg class="d-block ft-icon-24 m-0 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" >
+												<path d="M 12 4 A 2 2 0 0 0 10.269531 5 L 5 5 L 2 5 L 2 7 L 4 7 L 0 15 C 0 17.761 2.239 20 5 20 C 7.761 20 10 17.761 10 15 L 6 7 L 10.271484 7 A 2 2 0 0 0 12 8 A 2 2 0 0 0 13.730469 7 L 18 7 L 14 15 C 14 17.761 16.239 20 19 20 C 21.761 20 24 17.761 24 15 L 20 7 L 22 7 L 22 5 L 13.728516 5 A 2 2 0 0 0 12 4 z M 5 9.0214844 L 7.9882812 15 L 2.0117188 15 L 5 9.0214844 z M 19 9.0214844 L 21.988281 15 L 16.011719 15 L 19 9.0214844 z"/>
+											</svg>
+										</button>
+										<button type="button" class="btn btn-light" title="{{ button_wishlist }}" onclick="wishlist.add('{{ product_id }}');">
+											<svg class="d-block ft-icon-24 m-0 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+												<path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/>
+											</svg>
+										</button>
+									</div>
+								</div>
+							</div>
+							{% if discounts %}
+
+							{% for discount in discounts %}
+							<div class="mt-1">
+								{{ discount.quantity }}
+								<span class="text-muted font-weight-light">{{ text_discount }}</span>
+								<strong>{{ discount.price }}</strong>
+							</div>
+							{% endfor %}
+							{% endif %}
+							{% if points %}
+
+							<div class="mt-1"><span class="text-muted font-weight-light">{{ text_points }}</span> <b>{{ points }}</b></div>
+							{% endif %}
+							<div class="alert {% if quantity > 0 %} alert-success {% else %} alert-danger {% endif %} py-2 px-3 mt-3">
+								{{ stock }}
+							</div>
+							<div id="product">
+								{% if options %}
+								<div class="h6 d-none">{{ text_option }}</div>
+								{% set i = 0 %}
+								{% for option in options %}
+								{% set i = i + 1 %}
+								{% if option.type == 'select' %}
+								<div class="mb-3 {% if not option.product_option_value and not option.required %} d-none {% endif %}">
+									<div class="form-group{% if option.required %} required {% endif %} m-0">
+										<label class="control-label" for="input-option{{ option.product_option_id }}"><strong>{{ option.name }}</strong></label>
+										<select name="option[{{ option.product_option_id }}]" id="input-option{{ option.product_option_id }}" class="custom-select form-control">
+											<option value="">{{ text_select }}</option>
+											{% for option_value in option.product_option_value %}
+											<option value="{{ option_value.product_option_value_id }}">{{ option_value.name }}
+											{% if option_value.price %}
+											({{ option_value.price_prefix }}{{ option_value.price }})
+											{% endif %} </option>
+											{% endfor %}
+										</select>
+									</div>
+								</div>
+								{% endif %}
+								{% if option.type == 'radio'%}
+								<div class="mb-3 {% if not option.product_option_value and not option.required %} d-none {% endif %}">
+									<div class="form-group{% if option.required %} required {% endif %} m-0">
+										<label class="control-label"><strong>{{ option.name }}</strong></label>
+                    <div id="input-option{{ option.product_option_id }}" class="mx-n1">
+											<div class="d-flex flex-wrap">
+  											{% for option_value in option.product_option_value %}
+  											{% if option_value.image %}
+                        <div class="mb-2 mx-1">
+                          <input
+                            type="radio"
+                            class="option-image d-none"
+                            id="option-{{ option.product_option_id }}-{{ option_value.product_option_value_id }}"
+                            name="option[{{ option.product_option_id }}]"
+                            value="{{ option_value.product_option_value_id }}"
+                            >
+                          <label class="border overflow-hidden rounded cursor-pointer d-block m-0 p-0" for="option-{{ option.product_option_id }}-{{ option_value.product_option_value_id }}">
+                            <span class="d-block position-relative">
+        											<svg class="d-block img-fluid" width="50px" height="50px" xmlns="http://www.w3.org/2000/svg"></svg>
+        											<img class="d-block img-fluid position-absolute t-0 l-0 img-fluid d-block w-100" src="{{ option_value.image }}" {% if option_value.image2x %}srcset="{{ option_value.image }} 1x, {{ option_value.image2x }} 2x, {{ option_value.image3x }} 3x, {{ option_value.image4x }} 4x"{% endif %} alt="{{ option_value.name }} {% if option_value.price %} {{ option_value.price_prefix }} {{ option_value.price }} {% endif %}" data-toggle="tooltip" data-offset="0, 8" title="{{ option_value.name }}{% if option_value.price %} ({{ option_value.price_prefix }}{{ option_value.price }}){% endif %}" />
+        										</span>
+                          </label>
+                        </div>
+  											{% else %}
+                        <div class="custom-control custom-radio w-100 mb-1">
+                          <input
+                            type="radio"
+                            class="custom-control-input"
+                            id="option-{{ option.product_option_id }}-{{ option_value.product_option_value_id }}"
+                            name="option[{{ option.product_option_id }}]"
+                            value="{{ option_value.product_option_value_id }}"
+                            >
+                          <label class="custom-control-label cursor-pointer ml-1" for="option-{{ option.product_option_id }}-{{ option_value.product_option_value_id }}">
+                            {{ option_value.name }} <span class="text-secondary">{% if option_value.price %} ({{ option_value.price_prefix }}{{ option_value.price }}){% endif %}</span>
+                          </label>
+                        </div>
+  											{% endif %}
+  											{% endfor %}
+											</div>
+										</div>
+									</div>
+								</div>
+								{% endif %}
+								{% if option.type == 'checkbox' %}
+								<div class="mb-3 {% if not option.product_option_value and not option.required %} d-none {% endif %}">
+									<div class="form-group{% if option.required %} required {% endif %} m-0">
+										<label class="control-label"><strong>{{ option.name }}</strong></label>
+										<div id="input-option{{ option.product_option_id }}" class="mx-n1">
+											<div class="d-flex flex-wrap">
+  											{% for option_value in option.product_option_value %}
+  											{% if option_value.image %}
+                        <div class="mb-2 mx-1">
+                          <input
+                            type="checkbox"
+                            class="option-image d-none"
+                            id="option-{{ option.product_option_id }}-{{ option_value.product_option_value_id }}"
+                            name="option[{{ option.product_option_id }}][]"
+                            value="{{ option_value.product_option_value_id }}"
+                            >
+                          <label class="border overflow-hidden rounded cursor-pointer d-block m-0 p-0" for="option-{{ option.product_option_id }}-{{ option_value.product_option_value_id }}">
+                            <span class="d-block position-relative">
+        											<svg class="d-block img-fluid" width="50px" height="50px" xmlns="http://www.w3.org/2000/svg"></svg>
+        											<img class="d-block img-fluid position-absolute t-0 l-0 img-fluid d-block w-100" src="{{ option_value.image }}" {% if option_value.image2x %}srcset="{{ option_value.image }} 1x, {{ option_value.image2x }} 2x, {{ option_value.image3x }} 3x, {{ option_value.image4x }} 4x"{% endif %} alt="{{ option_value.name }} {% if option_value.price %} {{ option_value.price_prefix }} {{ option_value.price }} {% endif %}" data-toggle="tooltip" data-offset="0, 8" title="{{ option_value.name }}{% if option_value.price %} ({{ option_value.price_prefix }}{{ option_value.price }}){% endif %}" />
+        										</span>
+                          </label>
+                        </div>
+  											{% else %}
+                        <div class="custom-control custom-checkbox w-100 mb-1">
+                          <input
+                            type="checkbox"
+                            class="custom-control-input"
+                            id="option-{{ option.product_option_id }}-{{ option_value.product_option_value_id }}"
+                            name="option[{{ option.product_option_id }}][]"
+                            value="{{ option_value.product_option_value_id }}"
+                            >
+                          <label class="custom-control-label cursor-pointer ml-1" for="option-{{ option.product_option_id }}-{{ option_value.product_option_value_id }}">
+                            {{ option_value.name }} <span class="text-secondary">{% if option_value.price %} ({{ option_value.price_prefix }}{{ option_value.price }}){% endif %}</span>
+                          </label>
+                        </div>
+  											{% endif %}
+  											{% endfor %}
+											</div>
+										</div>
+									</div>
+								</div>
+								{% endif %}
+								{% if option.type == 'text' %}
+								<div class="mb-3">
+									<div class="form-group{% if option.required %} required {% endif %} m-0">
+										<label class="control-label" for="input-option{{ option.product_option_id }}"><strong>{{ option.name }}</strong></label>
+										<input type="text" name="option[{{ option.product_option_id }}]" value="{{ option.value }}" placeholder="{{ option.name }}" id="input-option{{ option.product_option_id }}" class="form-control" {% if option.required %} required {% endif %} />
+									</div>
+								</div>
+								{% endif %}
+								{% if option.type == 'textarea' %}
+								<div class="mb-3">
+									<div class="form-group{% if option.required %} required {% endif %} m-0">
+										<label class="control-label" for="input-option{{ option.product_option_id }}"><strong>{{ option.name }}</strong></label>
+										<textarea name="option[{{ option.product_option_id }}]" rows="2" placeholder="{{ option.name }}" id="input-option{{ option.product_option_id }}" class="form-control">{{ option.value }}</textarea>
+									</div>
+								</div>
+								{% endif %}
+								{% if option.type == 'file' %}
+								<div class="mb-3">
+									<div class="form-group{% if option.required %} required {% endif %} m-0">
+										<label class="control-label"><strong>{{ option.name }}</strong></label>
+										<br>
+										<button type="button" id="button-upload{{ option.product_option_id }}" data-loading-text="{{ text_loading }}" class="btn btn-light mw-100 text-truncate">
+                      <span class="row no-gutters">
+      									<span class="col-auto">
+      										<span class="loading-icon">
+      											<span class="spinner-border ft-icon-18 text-gray-500 d-block"></span>
+      										</span>
+      										<span class="static-icon">
+      											<svg class="d-block ft-icon-18 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      												<path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/>
+      											</svg>
+      										</span>
+      									</span>
+      									<span class="col-auto">
+      										<span class="button-text ml-2">{{ button_upload }}</span>
+      									</span>
+      								</span>
+										</button>
+										<input type="hidden" name="option[{{ option.product_option_id }}]" value="" id="input-option{{ option.product_option_id }}" />
+									</div>
+								</div>
+								{% endif %}
+								{% if option.type == 'date' %}
+								<div class="mb-3">
+                  <div class="form-group{% if option.required %} required {% endif %} m-0">
+      							<label class="control-label" for="input-option{{ option.product_option_id }}"><strong>{{ option.name }}</strong></label>
+      							<div class="input-group date need-dtp">
+      								<input type="text" name="option[{{ option.product_option_id }}]" value="{{ option.value }}" data-date-format="YYYY-MM-DD" id="input-option{{ option.product_option_id }}" class="form-control" />
+      								<div class="input-group-append">
+      									<button class="btn btn-light border px-2" type="button">
+      										<svg class="d-block ft-icon-18 text-gray-500 darker-on-hover" viewBox="0 0 24 24"  xmlns="http://www.w3.org/2000/svg">
+      											<path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/>
+      										</svg>
+      									</button>
+      								</div>
+      							</div>
+      						</div>
+								</div>
+								{% endif %}
+								{% if option.type == 'datetime' %}
+								<div class="mb-3">
+                  <div class="form-group{% if option.required %} required {% endif %} m-0">
+      							<label class="control-label" for="input-option{{ option.product_option_id }}"><strong>{{ option.name }}</strong></label>
+      							<div class="input-group datetime need-dtp">
+      								<input type="text" name="option[{{ option.product_option_id }}]" value="{{ option.value }}" data-date-format="YYYY-MM-DD HH:mm" id="input-option{{ option.product_option_id }}" class="form-control" />
+      								<div class="input-group-append">
+      									<button class="btn btn-light border px-2" type="button">
+      										<svg class="d-block ft-icon-18 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      											<path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/>
+      										</svg>
+      									</button>
+      								</div>
+      							</div>
+      						</div>
+								</div>
+								{% endif %}
+								{% if option.type == 'time' %}
+								<div class="mb-3">
+                  <div class="form-group{% if option.required %} required {% endif %} m-0">
+      							<label class="control-label" for="input-option{{ option.product_option_id }}"><strong>{{ option.name }}</strong></label>
+      							<div class="input-group time need-dtp">
+      								<input type="text" name="option[{{ option.product_option_id }}]" value="{{ option.value }}" data-date-format="HH:mm" id="input-option{{ option.product_option_id }}" class="form-control" />
+      								<div class="input-group-append">
+      									<button class="btn btn-light border px-2" type="button">
+      										<svg class="d-block ft-icon-18 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      											<path d="M22 5.72l-4.6-3.86-1.29 1.53 4.6 3.86L22 5.72zM7.88 3.39L6.6 1.86 2 5.71l1.29 1.53 4.59-3.85zM12.5 8H11v6l4.75 2.85.75-1.23-4-2.37V8zM12 4c-4.97 0-9 4.03-9 9s4.02 9 9 9c4.97 0 9-4.03 9-9s-4.03-9-9-9zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/>
+      										</svg>
+      									</button>
+      								</div>
+      							</div>
+      						</div>
+								</div>
+								{% endif %}
+								{% endfor %}
+								{% endif %}
+								{% if recurrings %}
+								<div class="mb-3">
+									<div class="form-group required m-0">
+										<label><strong>{{ text_payment_recurring }}</strong></label>
+										<select name="recurring_id" class="form-control custom-select">
+											<option value="">{{ text_select }}</option>
+											{% for recurring in recurrings %}
+											<option value="{{ recurring.recurring_id }}">{{ recurring.name }}</option>
+											{% endfor %}
+										</select>
+										<div class="help-block" id="recurring-description"></div>
+									</div>
+								</div>
+								{% endif %}
+								<div class="row form-row mt-4">
+									<div class="col">
+										<div class="input-group">
+											<div class="input-group-prepend">
+												<button class="btn btn-light border px-0" type="button" onclick="ff_countupd('-1', '{{ minimum }}', '#input-quantity')">
+                          <svg class="d-block ft-icon-18 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            								<path d="M19 13H5v-2h14v2z"/>
+            							</svg>
+												</button>
+											</div>
+											<input type="text" name="quantity" value="{{ minimum }}" id="input-quantity" class="form-control border text-center" />
+											<div class="input-group-append">
+												<button class="btn btn-light border px-0" type="button" onclick="ff_countupd('1', '{{ minimum }}', '#input-quantity')">
+                          <svg class="d-block ft-icon-18 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            								<path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+            							</svg>
+												</button>
+											</div>
+										</div>
+									</div>
+									<div class="col-7">
+                    <div class="row no-gutters">
+                      <div class="col">
+                        <input type="hidden" name="product_id" value="{{ product_id }}" />
+  											<button type="button" id="button-cart" data-loading-text="{{ text_loading }}" class="btn btn-danger btn-block px-1" {% if quantity <=0 and disable_btn_status %}disabled{% endif %}><b class="btn-cart-text d-block text-truncate">{% if quantity <= 0 and disable_btn_status %}{{ disable_btn_text }}{% else %}{{ button_cart }}{% endif %}</b></button>
+                      </div>
+                      {% if fastorder_status %}
+                      <div class="col-auto">
+                        <button type="button" class="btn btn-danger px-2 ml-2" title="{{ g_text_fastorder }}" onclick="ff_fastorder('{{ product_id }}')" {% if quantity <=0 and disable_btn_status %}disabled{% endif %}>
+                          <svg class="d-block ft-icon-18 text-wight" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            								<path d="M15 1H9v2h6V1zm-4 13h2V8h-2v6zm8.03-6.61l1.42-1.42c-.43-.51-.9-.99-1.41-1.41l-1.42 1.42C16.07 4.74 14.12 4 12 4c-4.97 0-9 4.03-9 9s4.02 9 9 9 9-4.03 9-9c0-2.12-.74-4.07-1.97-5.61zM12 20c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"></path>
+            							</svg>
+  											</button>
+                      </div>
+                      {% endif %}
+                    </div>
+									</div>
+								</div>
+								{% if minimum > 1 %}
+								<small class="d-block text-muted mt-2 font-weight-light">{{ text_minimum }}</small>
+								{% endif %}
+
+                {{ ff_additional_position6 }}
+							</div>
+						</div>
+					</div>
+					{{ column_right }}
+				</div>
+
+				<div class="col order-lg-2 px-xl-4">
+          {{ ff_additional_position1 }}
+					{% if show_short_description %}
+					<div class="mb-4 d-none d-lg-block">
+					<div class="mb-2">{{ short_description }} <a class="text-danger" href="#" onclick="$('a[href=\'#tab-description\']').trigger('click'); $('html, body').animate({ scrollTop: $('a[href=\'#tab-description\']').offset().top - 2}, 250); return false;">→</a></div>
+					</div>
+					{% endif %}
+          {{ ff_additional_position2 }}
+					{% if attribute_groups and show_short_attributes %}
+          {% set i = 0 %}
+					<div class="mb-4 d-none d-lg-block">
+					{% for attribute_group in attribute_groups if i < short_attributes_limit %}
+					<div class="h6 ">{{ attribute_group.name }}</div>
+					{% for attribute in attribute_group.attribute if i < short_attributes_limit %}
+					<div class="row form-row mb-3">
+						<div class="col-auto mw-100">{{ attribute.name }}</div>
+						<div class="col">
+						<div class="h-75 mt-1 border-bottom border-bottom-dotted-style"></div>
+						</div>
+						<div class="col-4">{{ attribute.text }}</div>
+					</div>
+          {% set i = i + 1 %}
+					{% endfor %}
+					{% endfor %}
+          <div class="mt-n3">
+            <a href="#" class="text-danger " onclick="$('a[href=\'#tab-specification\']').trigger('click'); $('html, body').animate({ scrollTop: $('a[href=\'#tab-specification\']').offset().top - 2}, 250); return false;">{{ g_text_more_attr }}</a>
+          </div>
+					</div>
+					{% endif %}
+          {{ ff_additional_position3 }}
+					{% if show_social_likes %}
+					<div class="mb-4 text-center text-lg-left">
+						<hr class="d-lg-none">
+						{{ social_likes_code }}
+						<hr class="d-lg-none">
+					</div>
+					{% endif %}
+          {{ ff_additional_position4 }}
+				</div>
+			</div>
+
+
+			{% if products and not related_product_position %}
+      <div id="related-products" class="mb-3">
+
+        <div class="pt-2 mb-3">
+          <div class="row">
+            <div class="col">
+              <div class="h5 mb-0 ml-1">{{ text_related }}</div>
+            </div>
+            <div class="col-auto">
+              <button class="btn btn-prev p-0 rounded-pill">
+                <svg class="d-block ft-icon-24 m-0 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"></path>
+                </svg>
+              </button>
+              <button class="btn btn-next p-0 rounded-pill">
+                <svg class="d-block ft-icon-24 m-0 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div  class="m-n1 m-sm-n2">
+          <!--noindex-->
+          <!--googleoff: all-->
+          <div class="carousel-placeholder d-flex">
+            <script>
+
+              items = 1;
+              breakpoints = [];
+              base_width = document.querySelector('#related-products').offsetWidth;
+
+              breakpoints[0] = { ww: 600, count: 2 };
+              breakpoints[1] = { ww: 860, count: 3 };
+              breakpoints[2] = { ww: 1110, count: 4 };
+              breakpoints[3] = { ww: 9999, count: 5 };
+
+              breakpoints.sort((a, b) => a.ww > b.ww ? 1 : -1);
+              breakpoints.forEach(function(breakpoint, i, breakpoints) {
+
+                prev_bp_vw = breakpoints[i - 1] != null ? breakpoints[i - 1].ww : 0;
+
+                if (prev_bp_vw <= base_width && breakpoint.ww > base_width) {
+                  items = breakpoint.count;
+                }
+              });
+
+            </script>
+            <div class="item d-flex">
+              <script>
+
+                item = document.querySelector('#related-products .carousel-placeholder .item');
+                item.style.width = items > 0 ? 100 / items + '%' : 100 + '%';
+
+              </script>
+              <div class="product-item border rounded w-100 bg-white overflow-hidden m-1 m-sm-2 d-flex flex-column">
+                <div class="w-100 text-center px-2 px-sm-3 pt-2 pb-2">
+        					<div class="d-inline-block position-relative">
+        						<svg class="d-block img-fluid" width="{{ products[0].img_width }}" height="{{ products[0].img_height }}" xmlns="http://www.w3.org/2000/svg"></svg>
+        						<div class="d-flex justify-content-center align-items-center position-absolute t-0 b-0 r-0 l-0 w-100 h-100 lazy-spinner">
+        							<div class="spinner-border text-gray-300"></div>
+        						</div>
+        					</div>
+        				</div>
+        				<div class="w-100 px-2 px-sm-3 pt-2 pb-1">
+        					<div class="product-name">
+        						<span class="bg-light"><span class="invisible" role="status">Loading product name...</span></span>
+        					</div>
+        				</div>
+        				<div class="w-100 mt-auto px-2 px-sm-3 pb-2 pb-sm-3 pt-0">
+        					<div class="price">
+        						<div class="h6 mb-1">
+        							<span class="d-inline-block">
+        								<span class="bg-light "><span class="invisible" role="status">Load...</span></span>
+        							</span>
+        						</div>
+        						{% if products[0].tax %}
+        						<small class="font-weight-light text-muted d-block">
+        							<span class="bg-light"><span class="invisible" role="status">{{ text_tax }} Loading...</span></span>
+        						</small>
+        						{% endif %}
+        					</div>
+                  {% if related_product_buttons %}
+        					<button type="button" class="btn btn-light btn-cart-add py-1 pl-2 pr-1 mt-2" disabled>
+        						<span class="invisible"><span class="invisible" role="status">Loading...</span></span>
+        					</button>
+                  {% endif %}
+        				</div>
+              </div>
+            </div>
+            <script>
+              for(let i = 1; i < items && i < {{ products|length }}; i++)  {
+                clone = item.cloneNode(true);
+                item.parentNode.appendChild(clone);
+              }
+
+              items = null;
+              item = null;
+              clone = null;
+              breakpoints = null;
+              base_width = null;
+              prev_bp_vw = null;
+
+            </script>
+          </div>
+          <!--googleon: all-->
+          <!--/noindex-->
+
+          <div class="owl-carousel">
+            {% for product in products %}
+            <div class="product-item border rounded w-100 bg-white overflow-hidden m-1 m-sm-2 d-flex flex-column">
+              <div class="image w-100 position-relative text-center px-2 px-sm-3 pt-2 pb-2">
+                <a href="{{ product.href }}">
+                  <div class="d-inline-block position-relative">
+                    <svg class="d-block img-fluid" width="{{ product.img_width }}" height="{{ product.img_height }}" xmlns="http://www.w3.org/2000/svg"></svg>
+                    {% if catalog_page_lazy %}
+                    <picture>
+                      {% if product.thumb2x %}
+                      <source class="owl-lazy" data-srcset="{{ product.thumb }} 1x, {{ product.thumb2x }} 2x, {{ product.thumb3x }} 3x, {{ product.thumb4x }} 4x" srcset="{{ product.thumb_holder }}">
+                      {% endif %}
+                      <img src="{{ product.thumb_holder }}" data-src="{{ product.thumb }}" alt="{{ product.name }}" title="{{ product.name }}" class="position-absolute t-0 l-0 img-fluid d-block w-auto owl-lazy">
+                    </picture>
+                    <div class="d-flex justify-content-center align-items-center position-absolute t-0 b-0 r-0 l-0 w-100 h-100 lazy-spinner">
+                      <div class="spinner-border text-gray-300"></div>
+                    </div>
+                    {% else %}
+                    <picture>
+                      {% if product.thumb2x %}
+                      <source srcset="{{ product.thumb }} 1x, {{ product.thumb2x }} 2x, {{ product.thumb3x }} 3x, {{ product.thumb4x }} 4x">
+                      {% endif %}
+                      <img src="{{ product.thumb }}" alt="{{ product.name }}" title="{{ product.name }}" class="position-absolute t-0 l-0 img-fluid d-block w-auto">
+                    </picture>
+                    {% endif %}
+                  </div>
+                </a>
+                {% if product.stickers %}
+                <ul class="list-unstyled position-absolute t-0 l-0 ml-3 mt-2 text-left">
+                  {% for sticker in product.stickers %}
+                  <li><span class="{{ sticker.class }}">{{ sticker.text }}</span></li>
+                  {% endfor %}
+                </ul>
+                {% endif %}
+              </div>
+              <div class="w-100 px-2 px-sm-3 pt-2 pb-1">
+      					<div class="product-name">
+      						<a href="{{ product.href }}" class="text-dark h6 font-weight-normal line-clamp-2">{{ product.name }}</a>
+      					</div>
+      				</div>
+
+              <div class="w-100 mt-auto px-2 px-sm-3 pb-2 pb-sm-3 pt-0">
+                {% if product.price %}
+      					<div class="price">
+      						{% if not product.special %}
+      						<div class="h6 mb-1">{{ product.price }}</div>
+      						{% else %}
+      						<div class="h6 mb-1">
+      							<s class="d-inline-block text-danger font-weight-light">{{ product.price }}</s>
+      							<span class="d-inline-block">{{ product.special }}</span>
+      						</div>
+      						{% endif %}
+      						{% if product.tax %}
+      						<small class="font-weight-light text-muted d-block">{{ text_tax }} {{ product.tax }}</small>
+      						{% endif %}
+      					</div>
+      					{% endif %}
+
+
+                {% if related_product_buttons %}
+                <div class="btn-group {% if qview_status or fastorder_status %}d-flex d-md-inline-flex{% endif %} dropup mt-2">
+    							<button type="button" class="btn btn-light btn-cart-add py-1 px-2 pl-md-2 pr-md-1" onclick="cart.add('{{ product.product_id }}');" {% if product.quantity <=0 and disable_btn_status %}disabled{% endif %}>
+    								<span class="row no-gutters align-items-center justify-content-center flex-nowrap">
+    									<span class="col-auto">
+    										<svg class="d-block ft-icon-18 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    											<path d="M17.21 9l-4.38-6.56c-.19-.28-.51-.42-.83-.42-.32 0-.64.14-.83.43L6.79 9H2c-.55 0-1 .45-1 1 0 .09.01.18.04.27l2.54 9.27c.23.84 1 1.46 1.92 1.46h13c.92 0 1.69-.62 1.93-1.46l2.54-9.27L23 10c0-.55-.45-1-1-1h-4.79zM9 9l3-4.4L15 9H9zm3 8c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>
+    										</svg>
+    									</span>
+    									<span class="col-auto">
+    										<span class="text-truncate mx-2 {% if qview_status or fastorder_status %}d-none d-md-block{% endif %}">{% if product.quantity <=0 and disable_btn_status %}{{ disable_btn_text }}{% else %}{{ button_cart }}{% endif %}</span>
+    									</span>
+    								</span>
+    							</button>
+    							{% if fastorder_status %}
+    							<button type="button" class="btn btn-light btn-cart-add py-1 px-1"  title="{{ g_text_fastorder }}" onclick="ff_fastorder('{{ product.product_id }}')" {% if product.quantity <=0 and disable_btn_status %}disabled{% endif %}>
+    								<svg class="d-block ft-icon-18 text-gray-500 darker-on-hover mx-auto" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    									<path d="M 13 1 L 6 14 L 12 14 L 12 23 L 19 10 L 13 10 L 13 1 z"></path>
+    								</svg>
+    							</button>
+    							{% endif %}
+    							{% if qview_status %}
+    							<button type="button" class="btn btn-light btn-cart-add py-1 px-1" title="{{ g_text_qview }}" onclick="ff_qview('{{ product.product_id }}')">
+    								<svg class="d-block ft-icon-18 text-gray-500 darker-on-hover mx-auto" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    									<path d="M12,6.5c3.79,0,7.17,2.13,8.82,5.5c-1.65,3.37-5.02,5.5-8.82,5.5S4.83,15.37,3.18,12C4.83,8.63,8.21,6.5,12,6.5 M12,4.5 C7,4.5,2.73,7.61,1,12c1.73,4.39,6,7.5,11,7.5s9.27-3.11,11-7.5C21.27,7.61,17,4.5,12,4.5L12,4.5z"/><path d="M12,9.5c1.38,0,2.5,1.12,2.5,2.5s-1.12,2.5-2.5,2.5S9.5,13.38,9.5,12S10.62,9.5,12,9.5 M12,7.5c-2.48,0-4.5,2.02-4.5,4.5 s2.02,4.5,4.5,4.5s4.5-2.02,4.5-4.5S14.48,7.5,12,7.5L12,7.5z"/>
+    								</svg>
+    							</button>
+    							{% endif %}
+    							<div class="btn-group dropdown dropup position-static">
+    								<div class="dropdown-menu dropdown-menu-right w-100" >
+    									<a href="#" class="dropdown-item dropdown-item pl-2 pr-2" onclick="wishlist.add('{{ product.product_id }}');return false">
+    										<span class="row no-gutters align-items-center flex-nowrap">
+    											<span class="col-auto">
+    												<svg class="d-block ft-icon-18 text-gray-500 darker-on-hover mr-2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    													<path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/>
+    												</svg>
+    											</span>
+    											<span class="col text-truncate">{{ button_wishlist }}</span>
+    										</span>
+    									</a>
+    									<a href="#" class="dropdown-item dropdown-item pl-2 pr-2" onclick="compare.add('{{ product.product_id }}');return false">
+    										<span class="row no-gutters align-items-center flex-nowrap">
+    											<span class="col-auto">
+    												<svg class="d-block ft-icon-18 text-gray-500 darker-on-hover mr-2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    													<path d="M 12 4 A 2 2 0 0 0 10.269531 5 L 5 5 L 2 5 L 2 7 L 4 7 L 0 15 C 0 17.761 2.239 20 5 20 C 7.761 20 10 17.761 10 15 L 6 7 L 10.271484 7 A 2 2 0 0 0 12 8 A 2 2 0 0 0 13.730469 7 L 18 7 L 14 15 C 14 17.761 16.239 20 19 20 C 21.761 20 24 17.761 24 15 L 20 7 L 22 7 L 22 5 L 13.728516 5 A 2 2 0 0 0 12 4 z M 5 9.0214844 L 7.9882812 15 L 2.0117188 15 L 5 9.0214844 z M 19 9.0214844 L 21.988281 15 L 16.011719 15 L 19 9.0214844 z"/>
+    												</svg>
+    											</span>
+    											<span class="col text-truncate">{{ button_compare }}</span>
+    										</span>
+    									</a>
+    								</div>
+    								<button type="button" class="btn btn-light btn-cart-add py-1 px-1 px-md-0" data-toggle="dropdown" data-flip="false" aria-label="more">
+    									<svg class="d-block ft-icon-18 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    										<path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+    									</svg>
+    								</button>
+    							</div>
+    						</div>
+                {% endif %}
+              </div>
+
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="owl-pagination text-center text-sm-left px-2 py-2">
+          <button class="btn btn-dot bg-dark shadow-none rounded-pill border-0 bg-secondary p-0 mr-0"><span></span></button>
+        </div>
+
+      </div>
+			<hr class="d-md-none">
+			{% endif %}
+
+			<div class="row">
+				{% if column_left %}
+				<div class="col-lg-3 col-aside">
+					{{ column_left }}
+				</div>
+				{% endif %}
+				<div class="col">
+					<ul class="nav nav-tabs justify-content-between justify-content-lg-start align-items-end mb-4">
+						<li class="nav-item flex-fill mr-lg-2">
+							<a class="nav-link active d-flex justify-content-center" href="#tab-description" data-toggle="tab">
+                <svg class="d-block ft-icon-18 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+									<path d="M8 16h8v2H8zm0-4h8v2H8zm6-10H6c-1.1 0-2 .9-2 2v16c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"/>
+								</svg>
+								<span class="text-dark ml-2 d-none d-lg-block">{{ tab_description }}</span>
+							</a>
+						</li>
+						{% if attribute_groups %}
+						<li class="nav-item flex-fill mr-lg-2">
+							<a class="nav-link d-flex justify-content-center" href="#tab-specification" data-toggle="tab">
+								<svg class="d-block ft-icon-18 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+									<path d="M11 7h6v2h-6zm0 4h6v2h-6zm0 4h6v2h-6zM7 7h2v2H7zm0 4h2v2H7zm0 4h2v2H7zM20.1 3H3.9c-.5 0-.9.4-.9.9v16.2c0 .4.4.9.9.9h16.2c.4 0 .9-.5.9-.9V3.9c0-.5-.5-.9-.9-.9zM19 19H5V5h14v14z"/>
+								</svg>
+								<span class="text-dark ml-2 d-none d-lg-block">{{ tab_attribute }}</span>
+							</a>
+						</li>
+						{% endif %}
+            {% if extra_tab_status %}
+						<li class="nav-item flex-fill mr-lg-2">
+							<a class="nav-link d-flex justify-content-center" href="#tab-extra" data-toggle="tab">
+								<svg class="d-block ft-icon-18 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+									<path d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+								</svg>
+								<span class="text-dark ml-2 d-none d-lg-block">{{ extra_tab_heading }}</span>
+							</a>
+						</li>
+						{% endif %}
+						{% if review_status %}
+						<li class="nav-item flex-fill mr-lg-2">
+							<a class="nav-link d-flex justify-content-center" href="#tab-review" data-toggle="tab">
+								<svg class="d-block ft-icon-18 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+									<path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM20 4v13.17L18.83 16H4V4h16zM6 12h12v2H6zm0-3h12v2H6zm0-3h12v2H6z"/>
+								</svg>
+								<span class="text-dark ml-2 d-none d-lg-block">{{ tab_review }}</span>
+							</a>
+						</li>
+						{% endif %}
+					</ul>
+
+					<div class="tab-content">
+						<div class="tab-pane mb-3 px-1 active" id="tab-description" itemprop="description">
+              <div class="row">
+                <div class="col">
+                  {{ description }}
+                </div>
+                {% if ff_additional_position5 %}
+                <div class="col-12 col-xl-3 col-lg-4 col-md-5">
+                  {{ ff_additional_position5 }}
+                </div>
+                {% endif %}
+              </div>
+            </div>
+
+						{% if attribute_groups %}
+						<div class="tab-pane mb-3" id="tab-specification">
+							<table class="table table-bordered">
+								{% for attribute_group in attribute_groups %}
+								<tr>
+									<td colspan="2" class="border-bottom bg-light"><strong>{{ attribute_group.name }}</strong></td>
+								</tr>
+								{% for attribute in attribute_group.attribute %}
+								<tr>
+									<td>{{ attribute.name }}</td>
+									<td>{{ attribute.text }}</td>
+								</tr>
+								{% endfor %}
+								{% endfor %}
+							</table>
+						</div>
+						{% endif %}
+
+            {% if extra_tab_status %}
+            <div class="tab-pane px-1 mb-3" id="tab-extra">{{ extra_tab_content }}</div>
+            {% endif %}
+
+						{% if review_status %}
+						<div class="tab-pane mb-3" id="tab-review">
+              <button type="button" class="btn btn-lg btn-block border btn-light mb-3 text-muted" data-toggle="collapse" data-target="#collapse-review">
+                {{ text_write }}
+              </button>
+              <div class="collapse" id="collapse-review">
+                <div class="card overflow-hidden mb-3">
+                  <div class="card-header px-3">
+                    <div class="h6 card-title m-0">
+                      <div class="row no-gutters align-items-center">
+                        <div class="col-auto">
+                          <svg class="d-block ft-icon-24 text-gray-500 m-0 mr-2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17l-.59.59-.58.58V4h16v12zm-9.5-2H18v-2h-5.5zm3.86-5.87c.2-.2.2-.51 0-.71l-1.77-1.77c-.2-.2-.51-.2-.71 0L6 11.53V14h2.47l5.89-5.87z"/>
+                          </svg>
+                        </div>
+                        <div class="col-auto">
+                          {{ text_write }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card-body bg-light p-3">
+                    <form class="form-horizontal" id="form-review">
+                      {% if review_guest %}
+                      <div class="form-group required">
+                        <input type="text" name="name" value="{{ customer_name }}" id="input-name" class="form-control" placeholder="{{ entry_name }} *" />
+                      </div>
+                      <div class="form-group required">
+                        <textarea name="text" rows="4" id="input-review" class="form-control" placeholder="{{ entry_review }} *"></textarea>
+                        <div class="help-block d-none">{{ text_note }}</div>
+                      </div>
+                      <div class="form-group required mb-0">
+                        <div class="row no-gutters align-items-center">
+                          <div class="{% if captcha %}col-12 col-md{% else %}col{% endif %}">
+                            <div class="rating-selection d-inline-flex align-middle">
+                              <label class="d-block text-gray-400 m-0 cursor-pointer" for="star-1" title="1">
+                                <svg class="d-block ft-icon-24 m-0 " viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                                </svg>
+                              </label>
+                              <label class="d-block text-gray-400 m-0 cursor-pointer" for="star-2" title="2">
+                                <svg class="d-block ft-icon-24 m-0 " viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                                </svg>
+                              </label>
+                              <label class="d-block text-gray-400 m-0 cursor-pointer" for="star-3" title="3">
+                                <svg class="d-block ft-icon-24 m-0 " viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                                </svg>
+                              </label>
+                              <label class="d-block text-gray-400 m-0 cursor-pointer" for="star-4" title="4">
+                                <svg class="d-block ft-icon-24 m-0 " viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                                </svg>
+                              </label>
+                              <label class="d-block text-gray-400 m-0 cursor-pointer" for="star-5" title="5">
+                                <svg class="d-block ft-icon-24 m-0 " viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                                </svg>
+                              </label>
+                              <input class="d-none" id="star-1" type="radio" name="rating" value="1">
+                              <input class="d-none" id="star-2" type="radio" name="rating" value="2">
+                              <input class="d-none" id="star-3" type="radio" name="rating" value="3">
+                              <input class="d-none" id="star-4" type="radio" name="rating" value="4">
+                              <input class="d-none" id="star-5" type="radio" name="rating" value="5">
+                              <script>
+                                var stars = document.querySelectorAll('.rating-selection label'),
+                                    inputs = document.querySelectorAll('.rating-selection input');
+
+                                if (stars != null) {
+                                  stars.forEach(function(star, i, stars) {
+                                    star.addEventListener('mouseover', function() {
+                                      for (k = 0; k <= i; k++) { stars[k].classList.add('hover') }
+                                    }, false);
+                                    star.addEventListener('mouseout', function() {
+                                      for (k = 0; k <= i; k++) { stars[k].classList.remove('hover') }
+                                    }, false);
+                                  });
+                                }
+
+                                if (stars != null) {
+                                  inputs.forEach(function(input, i, inputs) {
+                                    input.addEventListener('change', function() {
+                                      stars.forEach(function(star, i) { star.classList.remove('active') });
+                                      for (k = 0; k <= i; k++) { stars[k].classList.add('active') };
+                                    }, false);
+                                  });
+                                }
+                              </script>
+                            </div>
+                          </div>
+                          {% if captcha %}
+                          <div class="col-12 col-md-auto mr-md-3 my-3 my-md-0">{{ captcha }}</div>
+                          {% endif %}
+                          <div class="col-auto">
+                            <button type="button" id="button-review" data-loading-text="{{ text_loading }}" class="btn btn-primary pr-4">
+                              <span class="row no-gutters align-items-center">
+                                <span class="col-auto">
+                                  <svg class="d-block ft-icon-18 text-white mr-2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                                  </svg>
+                                </span>
+                                <span class="col-auto">
+                                  {{ button_continue }}
+                                </span>
+                              </span>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                      {% else %}
+                      {{ text_login }}
+                      {% endif %}
+                    </form>
+                  </div>
+                </div>
+              </div>
+
+							<div id="review">{{ reviews_array }}</div>
+						</div>
+						{% endif %}
+          </div>
+
+					{% if tags %}
+					<p>
+						{{ text_tags }}
+						{% for i in 0..tags|length %}
+						{% if i < (tags|length - 1) %}
+						<a class="text-danger" href="{{ tags[i].href }}">{{ tags[i].tag }}</a>,
+						{% else %}
+						<a class="text-danger" href="{{ tags[i].href }}">{{ tags[i].tag }}</a>
+						{% endif %}
+						{% endfor %}
+					</p>
+					{% endif %}
+				</div>
+			</div>
+
+			{% if products and related_product_position %}
+			<hr class="d-md-none">
+      <div id="related-products" class="mb-3">
+
+        <div class="pt-2 mb-3">
+          <div class="row">
+            <div class="col">
+              <div class="h5 mb-0 ml-1">{{ text_related }}</div>
+            </div>
+            <div class="col-auto">
+              <button class="btn btn-prev p-0 rounded-pill">
+                <svg class="d-block ft-icon-24 m-0 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"></path>
+                </svg>
+              </button>
+              <button class="btn btn-next p-0 rounded-pill">
+                <svg class="d-block ft-icon-24 m-0 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div  class="m-n1 m-sm-n2">
+          <!--noindex-->
+          <!--googleoff: all-->
+          <div class="carousel-placeholder d-flex">
+            <script>
+
+              items = 1;
+              breakpoints = [];
+              base_width = document.querySelector('#related-products').offsetWidth;
+
+              breakpoints[0] = { ww: 600, count: 2 };
+              breakpoints[1] = { ww: 860, count: 3 };
+              breakpoints[2] = { ww: 1110, count: 4 };
+              breakpoints[3] = { ww: 9999, count: 5 };
+
+              breakpoints.sort((a, b) => a.ww > b.ww ? 1 : -1);
+              breakpoints.forEach(function(breakpoint, i, breakpoints) {
+
+                prev_bp_vw = breakpoints[i - 1] != null ? breakpoints[i - 1].ww : 0;
+
+                if (prev_bp_vw <= base_width && breakpoint.ww > base_width) {
+                  items = breakpoint.count;
+                }
+              });
+
+            </script>
+            <div class="item d-flex">
+              <script>
+
+                item = document.querySelector('#related-products .carousel-placeholder .item');
+                item.style.width = items > 0 ? 100 / items + '%' : 100 + '%';
+
+              </script>
+              <div class="product-item border rounded w-100 bg-white overflow-hidden m-1 m-sm-2 d-flex flex-column">
+                <div class="w-100 text-center px-2 px-sm-3 pt-2 pb-2">
+        					<div class="d-inline-block position-relative">
+        						<svg class="d-block img-fluid" width="{{ products[0].img_width }}" height="{{ products[0].img_height }}" xmlns="http://www.w3.org/2000/svg"></svg>
+        						<div class="d-flex justify-content-center align-items-center position-absolute t-0 b-0 r-0 l-0 w-100 h-100 lazy-spinner">
+        							<div class="spinner-border text-gray-300"></div>
+        						</div>
+        					</div>
+        				</div>
+        				<div class="w-100 px-2 px-sm-3 pt-2 pb-1">
+        					<div class="product-name">
+        						<span class="bg-light"><span class="invisible" role="status">Loading product name...</span></span>
+        					</div>
+        				</div>
+        				<div class="w-100 mt-auto px-2 px-sm-3 pb-2 pb-sm-3 pt-0">
+        					<div class="price">
+        						<div class="h6 mb-1">
+        							<span class="d-inline-block">
+        								<span class="bg-light "><span class="invisible" role="status">Load...</span></span>
+        							</span>
+        						</div>
+        						{% if products[0].tax %}
+        						<small class="font-weight-light text-muted d-block">
+        							<span class="bg-light"><span class="invisible" role="status">{{ text_tax }} Loading...</span></span>
+        						</small>
+        						{% endif %}
+        					</div>
+                  {% if related_product_buttons %}
+        					<button type="button" class="btn btn-light btn-cart-add py-1 pl-2 pr-1 mt-2" disabled>
+        						<span class="invisible"><span class="invisible" role="status">Loading...</span></span>
+        					</button>
+                  {% endif %}
+        				</div>
+              </div>
+            </div>
+            <script>
+              for(let i = 1; i < items && i < {{ products|length }}; i++)  {
+                clone = item.cloneNode(true);
+                item.parentNode.appendChild(clone);
+              }
+
+              items = null;
+              item = null;
+              clone = null;
+              breakpoints = null;
+              base_width = null;
+              prev_bp_vw = null;
+
+            </script>
+          </div>
+          <!--googleon: all-->
+          <!--/noindex-->
+
+          <div class="owl-carousel">
+            {% for product in products %}
+            <div class="product-item border rounded w-100 bg-white overflow-hidden m-1 m-sm-2 d-flex flex-column">
+              <div class="image w-100 position-relative text-center px-2 px-sm-3 pt-2 pb-2">
+                <a href="{{ product.href }}">
+                  <div class="d-inline-block position-relative">
+                    <svg class="d-block img-fluid" width="{{ product.img_width }}" height="{{ product.img_height }}" xmlns="http://www.w3.org/2000/svg"></svg>
+                    {% if catalog_page_lazy %}
+                    <picture>
+                      {% if product.thumb2x %}
+                      <source class="owl-lazy" data-srcset="{{ product.thumb }} 1x, {{ product.thumb2x }} 2x, {{ product.thumb3x }} 3x, {{ product.thumb4x }} 4x" srcset="{{ product.thumb_holder }}">
+                      {% endif %}
+                      <img src="{{ product.thumb_holder }}" data-src="{{ product.thumb }}" alt="{{ product.name }}" title="{{ product.name }}" class="position-absolute t-0 l-0 img-fluid d-block w-auto owl-lazy">
+                    </picture>
+                    <div class="d-flex justify-content-center align-items-center position-absolute t-0 b-0 r-0 l-0 w-100 h-100 lazy-spinner">
+                      <div class="spinner-border text-gray-300"></div>
+                    </div>
+                    {% else %}
+                    <picture>
+                      {% if product.thumb2x %}
+                      <source srcset="{{ product.thumb }} 1x, {{ product.thumb2x }} 2x, {{ product.thumb3x }} 3x, {{ product.thumb4x }} 4x">
+                      {% endif %}
+                      <img src="{{ product.thumb }}" alt="{{ product.name }}" title="{{ product.name }}" class="position-absolute t-0 l-0 img-fluid d-block w-auto">
+                    </picture>
+                    {% endif %}
+                  </div>
+                </a>
+                {% if product.stickers %}
+                <ul class="list-unstyled position-absolute t-0 l-0 ml-3 mt-2 text-left">
+                  {% for sticker in product.stickers %}
+                  <li><span class="{{ sticker.class }}">{{ sticker.text }}</span></li>
+                  {% endfor %}
+                </ul>
+                {% endif %}
+              </div>
+              <div class="w-100 px-2 px-sm-3 pt-2 pb-1">
+      					<div class="product-name">
+      						<a href="{{ product.href }}" class="text-dark h6 font-weight-normal line-clamp-2">{{ product.name }}</a>
+      					</div>
+      				</div>
+
+              <div class="w-100 mt-auto px-2 px-sm-3 pb-2 pb-sm-3 pt-0">
+                {% if product.price %}
+      					<div class="price">
+      						{% if not product.special %}
+      						<div class="h6 mb-1">{{ product.price }}</div>
+      						{% else %}
+      						<div class="h6 mb-1">
+      							<s class="d-inline-block text-danger font-weight-light">{{ product.price }}</s>
+      							<span class="d-inline-block">{{ product.special }}</span>
+      						</div>
+      						{% endif %}
+      						{% if product.tax %}
+      						<small class="font-weight-light text-muted d-block">{{ text_tax }} {{ product.tax }}</small>
+      						{% endif %}
+      					</div>
+      					{% endif %}
+
+
+                {% if related_product_buttons %}
+                <div class="btn-group {% if qview_status or fastorder_status %}d-flex d-md-inline-flex{% endif %} dropup mt-2">
+    							<button type="button" class="btn btn-light btn-cart-add py-1 px-2 pl-md-2 pr-md-1" onclick="cart.add('{{ product.product_id }}');" {% if product.quantity <=0 and disable_btn_status %}disabled{% endif %}>
+    								<span class="row no-gutters align-items-center justify-content-center flex-nowrap">
+    									<span class="col-auto">
+    										<svg class="d-block ft-icon-18 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    											<path d="M17.21 9l-4.38-6.56c-.19-.28-.51-.42-.83-.42-.32 0-.64.14-.83.43L6.79 9H2c-.55 0-1 .45-1 1 0 .09.01.18.04.27l2.54 9.27c.23.84 1 1.46 1.92 1.46h13c.92 0 1.69-.62 1.93-1.46l2.54-9.27L23 10c0-.55-.45-1-1-1h-4.79zM9 9l3-4.4L15 9H9zm3 8c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>
+    										</svg>
+    									</span>
+    									<span class="col-auto">
+    										<span class="text-truncate mx-2 {% if qview_status or fastorder_status %}d-none d-md-block{% endif %}">{% if product.quantity <=0 and disable_btn_status %}{{ disable_btn_text }}{% else %}{{ button_cart }}{% endif %}</span>
+    									</span>
+    								</span>
+    							</button>
+    							{% if fastorder_status %}
+    							<button type="button" class="btn btn-light btn-cart-add py-1 px-1"  title="{{ g_text_fastorder }}" onclick="ff_fastorder('{{ product.product_id }}')" {% if product.quantity <=0 and disable_btn_status %}disabled{% endif %}>
+    								<svg class="d-block ft-icon-18 text-gray-500 darker-on-hover mx-auto" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    									<path d="M 13 1 L 6 14 L 12 14 L 12 23 L 19 10 L 13 10 L 13 1 z"></path>
+    								</svg>
+    							</button>
+    							{% endif %}
+    							{% if qview_status %}
+    							<button type="button" class="btn btn-light btn-cart-add py-1 px-1" title="{{ g_text_qview }}" onclick="ff_qview('{{ product.product_id }}')">
+    								<svg class="d-block ft-icon-18 text-gray-500 darker-on-hover mx-auto" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    									<path d="M12,6.5c3.79,0,7.17,2.13,8.82,5.5c-1.65,3.37-5.02,5.5-8.82,5.5S4.83,15.37,3.18,12C4.83,8.63,8.21,6.5,12,6.5 M12,4.5 C7,4.5,2.73,7.61,1,12c1.73,4.39,6,7.5,11,7.5s9.27-3.11,11-7.5C21.27,7.61,17,4.5,12,4.5L12,4.5z"/><path d="M12,9.5c1.38,0,2.5,1.12,2.5,2.5s-1.12,2.5-2.5,2.5S9.5,13.38,9.5,12S10.62,9.5,12,9.5 M12,7.5c-2.48,0-4.5,2.02-4.5,4.5 s2.02,4.5,4.5,4.5s4.5-2.02,4.5-4.5S14.48,7.5,12,7.5L12,7.5z"/>
+    								</svg>
+    							</button>
+    							{% endif %}
+    							<div class="btn-group dropdown dropup position-static">
+    								<div class="dropdown-menu dropdown-menu-right w-100" >
+    									<a href="#" class="dropdown-item dropdown-item pl-2 pr-2" onclick="wishlist.add('{{ product.product_id }}');return false">
+    										<span class="row no-gutters align-items-center flex-nowrap">
+    											<span class="col-auto">
+    												<svg class="d-block ft-icon-18 text-gray-500 darker-on-hover mr-2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    													<path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/>
+    												</svg>
+    											</span>
+    											<span class="col text-truncate">{{ button_wishlist }}</span>
+    										</span>
+    									</a>
+    									<a href="#" class="dropdown-item dropdown-item pl-2 pr-2" onclick="compare.add('{{ product.product_id }}');return false">
+    										<span class="row no-gutters align-items-center flex-nowrap">
+    											<span class="col-auto">
+    												<svg class="d-block ft-icon-18 text-gray-500 darker-on-hover mr-2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    													<path d="M 12 4 A 2 2 0 0 0 10.269531 5 L 5 5 L 2 5 L 2 7 L 4 7 L 0 15 C 0 17.761 2.239 20 5 20 C 7.761 20 10 17.761 10 15 L 6 7 L 10.271484 7 A 2 2 0 0 0 12 8 A 2 2 0 0 0 13.730469 7 L 18 7 L 14 15 C 14 17.761 16.239 20 19 20 C 21.761 20 24 17.761 24 15 L 20 7 L 22 7 L 22 5 L 13.728516 5 A 2 2 0 0 0 12 4 z M 5 9.0214844 L 7.9882812 15 L 2.0117188 15 L 5 9.0214844 z M 19 9.0214844 L 21.988281 15 L 16.011719 15 L 19 9.0214844 z"/>
+    												</svg>
+    											</span>
+    											<span class="col text-truncate">{{ button_compare }}</span>
+    										</span>
+    									</a>
+    								</div>
+    								<button type="button" class="btn btn-light btn-cart-add py-1 px-1 px-md-0" data-toggle="dropdown" data-flip="false" aria-label="more">
+    									<svg class="d-block ft-icon-18 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    										<path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+    									</svg>
+    								</button>
+    							</div>
+    						</div>
+                {% endif %}
+              </div>
+
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="owl-pagination text-center text-sm-left px-2 py-2">
+          <button class="btn btn-dot bg-dark shadow-none rounded-pill border-0 bg-secondary p-0 mr-0"><span></span></button>
+        </div>
+
+      </div>
+			{% endif %}
+      {{ content_bottom }}
+		</div>
+  </div>
+</div>
+
+
+<script>
+	$('.rat-star').hover(function () {
+		$(this).prevAll('.rat-star').addClass('active');
+		$(this).addClass('active');
+	},function () {
+		$(this).prevAll('.rat-star').removeClass('active');
+		$(this).removeClass('active');
+	});
+
+	$('.rat-star').click(function(){
+		$('.rat-star').each(function(){
+			$(this).removeClass('checked');
+			$(this).prevAll('.rat-star').removeClass('checked');
+		});
+
+		$(this).addClass('checked');
+		$(this).prevAll('.rat-star').addClass('checked');
+	});
+
+
+  function startSwp() {
+
+    var owl_product_gallery = $('#product-gallery .owl-carousel');
+
+    owl_product_gallery.owlCarousel({
+
+      animateOut: 'fadeOut',
+      mouseDrag: false,
+      touchDrag: true,
+      loop: false,
+      items: 1,
+      nav: false,
+
+      {% if catalog_page_lazy %}
+      lazyLoad: true,
+      {% else %}
+      lazyLoad: false,
+      {% endif %}
+
+      dots: false,
+			dotsContainer: '#product-gallery .owl-pagination',
+      dotClass: 'btn btn-dot bg-dark shadow-none rounded-pill border-0 bg-secondary p-0',
+
+      autoplay: false,
+      // URLhashListener:false,
+      // startPosition: 'URLHash',
+      onLoadedLazy: function(e) { e.element.parent().parent().find('.lazy-spinner').remove()},
+      onInitialized: function(e) { e.target.parentNode.querySelector('.gallery-placeholder').remove() },
+      onTranslate: function(e) {
+
+        let images = e.target.parentNode.parentNode.querySelectorAll('.additional-images a');
+        images.forEach(function(img, i) { img.classList.remove('border-secondary') });
+
+        let active = e.target.parentNode.parentNode.querySelector('[data-index=\"' + e.item.index + '\"]');
+        if (active != null)  active.classList.add('border-secondary');
+
+      }
+    });
+  };
+
+	function startRelSwp() {
+
+    var owl_related_products = $('#related-products .owl-carousel');
+
+    owl_related_products.owlCarousel({
+      mouseDrag: false,
+      touchDrag: true,
+      loop: false,
+      rewind: true,
+      items: 1,
+      responsiveBaseElement: '#related-products',
+      responsive:{
+        0:		{items: 2},
+        600:	{items: 3},
+        860:	{items: 4},
+        1110:	{items: 5},
+        1300:	{items: 6},
+      },
+
+      stageClass: 'owl-stage d-flex justify-content-between',
+      itemClass: 'owl-item d-flex float-none',
+
+      nav: false,
+      dots: true,
+      dotsContainer: '#related-products  .owl-pagination',
+      dotClass: 'btn btn-dot bg-dark shadow-none rounded-pill border-0 bg-secondary p-0',
+
+      {% if catalog_page_lazy %}
+      lazyLoad: true,
+      {% else %}
+      lazyLoad: false,
+      {% endif %}
+
+      lazyLoadEager: 0,
+
+      onLoadedLazy: function(e) { e.element.parent().parent().find('.lazy-spinner').remove() },
+      onInitialized: function(e) { $(e.target).parent().find('.carousel-placeholder').remove()},
+      onRefreshed: function(e) {
+        $(e.target).parent().find('.owl-item').each(function() { this.style.minWidth = this.style.width });
+        let arrows = $('#related-products .btn-prev, #related-products .btn-next ');
+        if (e.item.count <= e.page.size) { arrows.attr('disabled','disabled') } else { arrows.removeAttr('disabled') }
+
+      },
+    });
+
+    $('#related-products .btn-prev').click(function() { owl_related_products.trigger('prev.owl.carousel'); });
+    $('#related-products .btn-next').click(function() { owl_related_products.trigger('next.owl.carousel'); });
+
+	}
+
+	$(function () {
+    startSwp();
+    startRelSwp();
+	});
+
+
+
+	function psw_show(index_start) {
+
+		if ($('.pswp').length < 1) {
+			pswp_c  = '<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">'
+			pswp_c += '	<div class="pswp__bg"></div>'
+			pswp_c += '	<div class="pswp__scroll-wrap">'
+			pswp_c += '		<div class="pswp__container">'
+			pswp_c += '			<div class="pswp__item"></div>'
+			pswp_c += '			<div class="pswp__item"></div>'
+			pswp_c += '			<div class="pswp__item"></div>'
+			pswp_c += '		</div>'
+			pswp_c += '		<div class="pswp__ui pswp__ui--hidden">'
+			pswp_c += '			<div class="pswp__top-bar">'
+			pswp_c += '				<div class="pswp__counter"></div>'
+			pswp_c += '				<button class="pswp__button pswp__button--close" title="Close (Esc)"></button>'
+			pswp_c += '				<button class="pswp__button pswp__button--fs" title="Fullscreen"></button>'
+			pswp_c += '				<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>'
+			pswp_c += '				<div class="pswp__preloader">'
+			pswp_c += '					<div class="pswp__preloader__icn">'
+			pswp_c += '						<div class="pswp__preloader__cut">'
+			pswp_c += '							<div class="pswp__preloader__donut"></div>'
+			pswp_c += '						</div>'
+			pswp_c += '					</div>'
+			pswp_c += '				</div>'
+			pswp_c += '			</div>'
+			pswp_c += '			<div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">'
+			pswp_c += '				<div class="pswp__share-tooltip"></div>'
+			pswp_c += '			</div>'
+			pswp_c += '			<button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>'
+			pswp_c += '			<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button>'
+			pswp_c += '			<div class="pswp__caption">'
+			pswp_c += '				<div class="pswp__caption__center"></div>'
+			pswp_c += '			</div>'
+			pswp_c += '		</div>'
+			pswp_c += '	</div>'
+			pswp_c += '</div>';
+			$('body').append(pswp_c);
+		}
+
+		var pswpElement = document.querySelectorAll('.pswp')[0];
+
+		var items = [
+
+				{% if thumb or images %}
+				{% if thumb %}
+				{
+					src: '{{ popup }}',
+					w: {{ popup_width }},
+					h: {{ popup_height }}
+				},
+				{% endif %}
+				{% if images %}
+				{% for image in images %}
+				{
+					src: '{{ image.popup }}',
+					w: {{ popup_width }},
+					h: {{ popup_height }}
+				},
+				{% endfor %}
+				{% endif %}
+				{% endif %}
+
+		];
+
+		var options = {
+			index: index_start
+		};
+
+		function psw_construct() {
+
+			var psw_gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
+
+			psw_gallery.init();
+
+			$('body').addClass('psw-open');
+
+			psw_gallery.listen('destroy', function() {
+				setTimeout(function () {
+					$('body').removeClass('psw-open');
+				}, 100);
+			});
+
+		}
+
+		if (typeof PhotoSwipe != 'function'  ) {
+
+			$('.gallery-locker').css({'display':'block'});
+
+			$('head').append('<link rel="stylesheet" href="catalog/view/theme/{{ theme_dir }}/javascript/plugins/photo-swipe/photoswipe.css">');
+			$('head').append('<link rel="stylesheet" href="catalog/view/theme/{{ theme_dir }}/javascript/plugins/photo-swipe/default-skin/default-skin.css">');
+
+
+			$.getScript("catalog/view/theme/{{ theme_dir }}/javascript/plugins/photo-swipe/photoswipe.min.js", function( data, textStatus, jqxhr ) {
+				$.getScript("catalog/view/theme/{{ theme_dir }}/javascript/plugins/photo-swipe/photoswipe-ui-default.min.js", function( data, textStatus, jqxhr ) {
+					psw_construct();
+					$('.gallery-locker').css({'display':'none'});
+				});
+			});
+
+		} else {
+			psw_construct();
+		}
+
+	}
+
+	$('select[name=\'recurring_id\'], input[name="quantity"]').change(function(){
+		$.ajax({
+			url: 'index.php?route=product/product/getRecurringDescription',
+			type: 'post',
+			data: $('input[name=\'product_id\'], input[name=\'quantity\'], select[name=\'recurring_id\']'),
+			dataType: 'json',
+			beforeSend: function() {
+				$('#recurring-description').html('');
+			},
+			success: function(json) {
+				$('select[name=\'recurring_id\']').parent().find('.text-danger').remove();
+
+				if (json['success']) {
+					$('#recurring-description').html('<small class="d-block mt-2 ">'+json['success']+'</small>');
+				}
+			}
+		});
+	});
+
+	$('#button-cart').on('click', function() {
+		$.ajax({
+			url: 'index.php?route=extension/module/framefreetheme/ff_cart/add',
+			type: 'post',
+			data: $('#product input[type=\'text\'], #product input[type=\'hidden\'], #product input[type=\'radio\']:checked, #product input[type=\'checkbox\']:checked, #product select, #product textarea'),
+			dataType: 'json',
+			beforeSend: function() {
+				loading_text = $('#button-cart').attr('data-loading');
+				$('#button-cart').addClass('loading');
+				$('#button-cart .loading-wrapper').html(loading_text);
+				$('#button-cart').attr('disabled', 'disabled');
+				$('.alert-dismissible, #product .text-danger').remove();
+				$('#product').removeClass('has-error');
+				$('#product > div').removeClass('option-error');
+				$('#product .form-control, #product .btn').removeClass('border-danger');
+			},
+			complete: function() {
+				$('#button-cart').removeClass('loading');
+				$('#button-cart .loading-wrapper').html('{{ button_cart }}');
+				$('#button-cart').removeAttr('disabled');
+			},
+			success: function(json) {
+
+				if (json['error']) {
+					if (json['error']['option']) {
+						for (i in json['error']['option']) {
+							var element = $('#input-option' + i.replace('_', '-'));
+
+							if (element.parent().hasClass('input-group')) {
+								element.addClass('border-danger');
+								element.parent().find('button').addClass('border-danger');
+								element.parent().after('<div class="text-danger"><small>' + json['error']['option'][i] + '</small></div>');
+								element.parent().parent().parent().addClass('option-error');
+							} else {
+								element.addClass('border-danger');
+								element.after('<div class="text-danger"><small>' + json['error']['option'][i] + '</small></div>');
+								element.parent().parent().addClass('option-error');
+							}
+						}
+					}
+
+					if (json['error']['recurring']) {
+						$('select[name=\'recurring_id\']').addClass('border-danger');
+						$('select[name=\'recurring_id\']').after('<div class="text-danger"><small>' + json['error']['recurring'] + '</small></div>');
+						$('select[name=\'recurring_id\']').parent().parent().addClass('option-error');
+					}
+
+				}
+
+				if (json['success']) {
+
+          $('#ff_popup_cart .alert').remove();
+					$('#ff_popup_cart').modal('show');
+
+					setTimeout(function () {
+						$.ajax({
+							url: 'index.php?route=extension/module/framefreetheme/ff_cart/info',
+							type: 'post',
+							dataType: 'html',
+							beforeSend: function() {
+								loading_text = $('#ff_cart > button').attr('data-loading');
+								$('#ff_cart').addClass('loading');
+								$('#ff_cart > button').attr('disabled', 'disabled');
+								$('#ff_cart > button #ff_cart_total').html('<span class="loading-wrapper">' + loading_text + '</span>');
+							},
+							complete: function() {
+								$('#ff_cart').removeClass('loading');
+								$('#ff_cart > button').removeAttr('disabled');
+							},
+							success: function(data){
+								var data_alert 	= '<div class="alert alert-light mt-n3 mx-n3 px-3 border-bottom">';
+										data_alert += 	'<div class="row no-gutters">';
+										data_alert += 		'<div class="col-auto">';
+										data_alert += 			'<i class="fa fa-fw fa-check mr-2"></i>';
+										data_alert += 		'</div>';
+										data_alert += 		'<div class="col">';
+										data_alert += 			json['success'];
+										data_alert += 		'</div>';
+										data_alert += 		'<div class="col-auto">';
+										data_alert += 			'<button type="button" class="close mr-1" data-dismiss="alert">&times;</button>';
+										data_alert += 		'</div>';
+										data_alert += 	'</div>';
+										data_alert += '</div>';
+
+								$('#ff_cart .cart-list').before(data_alert);
+								$('#ff_cart > button #ff_cart_total').html(json['total']);
+                $('#ff_m_cart_total').html($('#ff_cart > button #ff_cart_total .products > b').text());
+								$('#ff_cart .cart-list').html($(data).find('.cart-list').html());
+							},
+							error: function(xhr, ajaxOptions, thrownError) {
+								alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+							}
+						});
+					}, 100);
+				}
+			},
+			error: function(xhr, ajaxOptions, thrownError) {
+				alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+			}
+		});
+	});
+
+	$('button[id^=\'button-upload\']').on('click', function() {
+		var node = this;
+
+		$('#form-upload').remove();
+		$('body').prepend('<form enctype="multipart/form-data" id="form-upload" class="d-none"><input type="file" name="file" /></form>');
+		$('#form-upload input[name=\'file\']').trigger('click');
+
+		if (typeof timer != 'undefined') {
+				clearInterval(timer);
+		}
+		timer = setInterval(function() {
+			if ($('#form-upload input[name=\'file\']').val() != '') {
+
+				var f_path = $('#form-upload input[name=\'file\']').val().split('\\'),
+						f_name = f_path[f_path.length - 1];
+
+				$(node).find('.button-text').html(f_name);
+
+				$(node).find('.static-icon').html('<svg class="d-block ft-icon-18 text-gray-500" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M2 12.5C2 9.46 4.46 7 7.5 7H18c2.21 0 4 1.79 4 4s-1.79 4-4 4H9.5C8.12 15 7 13.88 7 12.5S8.12 10 9.5 10H17v2H9.41c-.55 0-.55 1 0 1H18c1.1 0 2-.9 2-2s-.9-2-2-2H7.5C5.57 9 4 10.57 4 12.5S5.57 16 7.5 16H17v2H7.5C4.46 18 2 15.54 2 12.5z"/></svg>');
+
+				clearInterval(timer);
+
+				$.ajax({
+					url: 'index.php?route=tool/upload',
+					type: 'post',
+					dataType: 'json',
+					data: new FormData($('#form-upload')[0]),
+					cache: false,
+					contentType: false,
+					processData: false,
+					beforeSend: function() {
+						$(node).addClass('loading');
+					},
+					complete: function() {
+						$(node).removeClass('loading');
+					},
+					success: function(json) {
+						$('.text-danger').remove();
+						if (json['error']) {
+							$(node).parent().find('input').after('<div class="text-danger"><small>' + json['error'] + '</small></div>');
+							$(node).find('.button-text').html('{{ button_upload }}');
+							$(node).find('.static-icon').html('<svg class="d-block ft-icon-18 text-gray-500" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/></svg>');
+						}
+						if (json['success']) {
+							console.log(json['success']);
+							$(node).parent().find('input').val(json['code']);
+						}
+					},
+					error: function(xhr, ajaxOptions, thrownError) {
+						alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+					}
+				});
+			}
+		}, 500);
+	});
+
+	function start_datetimepicker() {
+		$('.date').datetimepicker({
+			locale: '{{ datepicker }}',
+			pickTime: false
+		});
+
+		$('.datetime').datetimepicker({
+			locale: '{{ datepicker }}',
+			pickDate: true,
+			pickTime: true
+		});
+
+		$('.time').datetimepicker({
+			locale: '{{ datepicker }}',
+			pickDate: false
+		});
+	}
+
+	$(function () {
+		if ($('.need-dtp').length > 0){
+			if (typeof jQuery().datetimepicker != 'function'  ) {
+
+				$('head').append('<link rel="stylesheet" href="catalog/view/theme/{{ theme_dir }}/javascript/plugins/dtpicker-b4j3fix/bootstrap-datetimepicker.min.css">');
+
+				$.getScript("catalog/view/theme/{{ theme_dir }}/javascript/plugins/dtpicker-b4j3fix/moment/moment.min.js", function( data, textStatus, jqxhr ) {
+					$.getScript("catalog/view/theme/{{ theme_dir }}/javascript/plugins/dtpicker-b4j3fix/moment/moment-with-locales.min.js", function( data, textStatus, jqxhr ) {
+						$.getScript("catalog/view/theme/{{ theme_dir }}/javascript/plugins/dtpicker-b4j3fix/bootstrap-datetimepicker.min.js", function( data, textStatus, jqxhr ) {
+							start_datetimepicker();
+						});
+					});
+				});
+
+			} else {
+				start_datetimepicker();
+			}
+		}
+	});
+
+	$('#review').delegate('.pagination a', 'click', function(e) {
+			e.preventDefault();
+
+			$('#review').load(this.href);
+
+	});
+
+	//$('#review').load('index.php?route=product/product/review&product_id={{ product_id }}');
+
+	$('#button-review').on('click', function() {
+		$.ajax({
+			url: 'index.php?route=product/product/write&product_id={{ product_id }}',
+			type: 'post',
+			dataType: 'json',
+			data: $("#form-review").serialize(),
+			beforeSend: function() {
+				$('#button-review').button('loading');
+			},
+			complete: function() {
+				$('#button-review').button('reset');
+			},
+			success: function(json) {
+				$('.alert-dismissible').remove();
+
+				if (json['error']) {
+					$('#collapse-review .card-body').prepend('<div class="alert alert-danger alert-dismissible"> ' + json['error'] + '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+				}
+
+				if (json['success']) {
+					$('#collapse-review .card-body').html('<div class="alert alert-success m-0 alert-dismissible"> ' + json['success'] + '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+
+					$('input[name=\'name\']').val('');
+					$('textarea[name=\'text\']').val('');
+					$('input[name=\'rating\']:checked').prop('checked', false);
+				}
+			}
+		});
+	});
+
+
+</script>
+{{ footer }}

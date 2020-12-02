@@ -1,0 +1,284 @@
+{% if not ajax and not popup and not as_module %}
+{% set simple_page = 'simplecheckout' %}
+{% set heading_title = heading_title  ~ (display_weight ? ' <small class="text-muted">(<span id="weight">' ~ weight  ~ '</span>)</small>' : '') %}
+{% include simple_header %}
+<style>
+  {% if left_column_width %}
+  @media (min-width: 992px) {
+    .simplecheckout-left-column {
+      flex: 0 0 {{ left_column_width + 1 }}% !important;
+      max-width: {{ left_column_width + 1 }}% !important;
+      width: {{ left_column_width + 1 }}% !important;
+    }
+  }
+  {% endif %}
+
+  {% if right_column_width %}
+  @media (min-width: 992px) {
+    .simplecheckout-right-column {
+      flex: 0 0 {{ right_column_width + 1 }}% !important;
+      max-width: {{ right_column_width + 1 }}% !important;
+      width: {{ right_column_width + 1 }}% !important;
+    }
+  }
+  {% endif %}
+
+  {% if customer_with_payment_address %}
+  #simplecheckout_customer > .card { margin-bottom: 0 !important; border-bottom: none !important; border-bottom-left-radius: 0 !important; border-bottom-right-radius: 0 !important }
+  #simplecheckout_payment_address .checkout-heading { display: none !important }
+  #simplecheckout_payment_address > .card { border-top: none !important; border-top-left-radius: 0 !important; border-top-right-radius: 0 !important }
+  #simplecheckout_payment_address > .card > .card-body { padding-top: 0 !important }
+  {% endif %}
+
+  {% if customer_with_shipping_address %}
+  #simplecheckout_customer > .card { margin-bottom: 0 !important; border-bottom: none !important; border-bottom-left-radius: 0 !important; border-bottom-right-radius: 0 !important }
+  #simplecheckout_shipping_address .checkout-heading { display: none !important }
+  #simplecheckout_shipping_address > .card { border-top: none !important; border-top-left-radius: 0 !important; border-top-right-radius: 0 !important }
+  #simplecheckout_shipping_address > .card > .card-body { padding-top: 0 !important }
+  {% endif %}
+</style>
+
+<div class="simple-content">
+{% endif %}
+    {% if not ajax or (ajax and popup) %}
+    <script type="text/javascript">
+        {% if popup %}
+            var simpleScriptsInterval = window.setInterval(function(){
+                if (typeof jQuery !== 'undefined' && jQuery.isReady) {
+                    window.clearInterval(simpleScriptsInterval);
+
+                    if (typeof Simplecheckout !== "function") {
+                        {% for script in simple_scripts %}
+                            $("head").append('<script src="' + '{{ script }}' + '"></' + 'script>');
+                        {% endfor %}
+
+                        {% for style in simple_styles %}
+                            $("head").append('<link href="' + '{{ style }}' + '" rel="stylesheet"/>');
+                        {% endfor %}
+                    }
+                }
+            },0);
+        {% endif %}
+
+        var startSimpleInterval_{{ group }} = window.setInterval(function(){
+            if (typeof jQuery !== 'undefined' && typeof Simplecheckout === "function" && jQuery.isReady) {
+                window.clearInterval(startSimpleInterval_{{ group }});
+
+                var simplecheckout_{{ group }} = new Simplecheckout({
+                    mainRoute: "checkout/simplecheckout",
+                    additionalParams: "{{ additional_params }}",
+                    additionalPath: "{{ additional_path }}",
+                    mainUrl: "{{ action }}",
+                    mainContainer: "#simplecheckout_form_{{ group }}",
+                    currentTheme: "{{ current_theme }}",
+                    loginBoxBefore: "{{ login_type == 'flat' ? '#simplecheckout_customer .simplecheckout-block-content:first' : '' }}",
+                    displayProceedText: {{ display_proceed_text ? 1 : 0 }},
+                    scrollToError: {{ scroll_to_error ? 1 : 0 }},
+                    scrollToPaymentForm: {{ scroll_to_payment_form ? 1 : 0 }},
+                    notificationDefault: {{ notification_default ? 1 : 0 }},
+                    notificationToasts: {{ notification_toasts ? 1 : 0 }},
+                    notificationCheckForm: {{ notification_check_form ? 1 : 0 }},
+                    notificationCheckFormText: "{{ notification_check_form_text }}",
+                    useAutocomplete: {{ use_autocomplete ? 1 : 0 }},
+                    useGoogleApi: {{ use_google_api ? 1 : 0 }},
+                    useStorage: {{ use_storage ? 1 : 0 }},
+                    popup: {{ popup or as_module ? 1 : 0 }},
+                    agreementCheckboxStep: {{ agreement_checkbox_step ? agreement_checkbox_step : '\'0\'' }},
+                    enableAutoReloaingOfPaymentFrom: {{ enable_reloading_of_payment_form ? 1 : 0 }},
+                    javascriptCallback: function() {try{ {{ javascript_callback }} } catch (e) {console.log(e)}},
+                    stepButtons: {{ step_buttons }},
+                    menuType: {{ menu_type ? menu_type : '1' }},
+                    languageCode: "{{ language_code }}"
+                });
+
+                if (typeof toastr !== 'undefined') {
+                    toastr.options.positionClass = "{{ notification_position ? notification_position : 'toast-top-right' }}";
+                    toastr.options.timeOut = "{{ notification_timeout ? notification_timeout : '5000' }}";
+                    toastr.options.progressBar = true;
+                }
+
+                $(document).ajaxComplete(function(e, xhr, settings) {
+                    if (settings.url.indexOf("route=module/cart&remove") > 0 || (settings.url.indexOf("route=module/cart") > 0 && settings.type == "POST") || settings.url.indexOf("route=checkout/cart/add") > 0 || settings.url.indexOf("route=checkout/cart/remove") > 0) {
+                        window.resetSimpleQuantity = true;
+                        simplecheckout_{{ group }}.reloadAll();
+                    }
+                });
+
+                $(document).ajaxSend(function(e, xhr, settings) {
+                    if (settings.url.indexOf("checkout/simplecheckout&group") > 0 && typeof window.resetSimpleQuantity !== "undefined" && window.resetSimpleQuantity) {
+                        settings.data = settings.data.replace(/quantity.+?&/g,"");
+                        window.resetSimpleQuantity = false;
+                    }
+                });
+
+                simplecheckout_{{ group }}.init();
+
+            }
+        },0);
+    </script>
+    {% endif %}
+    <div id="simplecheckout_form_{{ group }}" {{ display_error and has_error ? 'data-error="true"' : '' }} {{ logged ? 'data-logged="true"' : '' }}>
+        <div class="simplecheckout">
+            {% if not cart_empty %}
+                {% if steps_count > 1 %}
+                    {% if menu_type == '2' %}
+                        <div id="simplecheckout_step_menu" class="simplecheckout-vertical-menu simplecheckout-top-menu">
+                            {% for i in 1..steps_count %}
+                                <div class="checkout-heading simple-step-vertical" style="display:none" data-onclick="gotoStep" data-step="{{ i }}">
+                                  <h4 class="panel-title bg-light border border-primary text-primary px-3 rounded py-2 mb-4">{{ step_names[i-1] }}</h4>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div id="simplecheckout_step_menu" class="mb-4">
+                            {% for i in 1..steps_count %}
+                                <span class="simple-step btn btn-light px-4" data-onclick="gotoStep" data-step="{{ i }}">{{ step_names[i-1] }}</span>
+                                {% if i < steps_count %}
+                                <span class="simple-step-delimiter" data-step="{{ i+1 }}">
+                                  <svg class="ft-icon-24 m-0 text-gray-300" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            				<path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z"/>
+                            			</svg>
+                                </span>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endif %}
+
+                {% if steps_count > 1 and menu_type == '2' %}
+                    <div class="simplecheckout-steps-wrapper">
+                {% endif %}
+
+                {% if errors is not empty and display_error %}
+                    {% for error in errors %}
+                        <div class="alert alert-danger simplecheckout-warning-block" data-error="true">
+                          <button type="button" class="close" data-dismiss="alert">&times;</button>
+                          {{ error }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                {%
+                    set replace = {
+                        '{three_column}'     : '<div class="simplecheckout-three-column col-12 col-lg-4">',
+                        '{/three_column}'    : '</div>',
+                        '{left_column}'      : '<div class="simplecheckout-left-column col-12 col-lg-6">',
+                        '{/left_column}'     : '</div>',
+                        '{right_column}'     : '<div class="simplecheckout-right-column col-12 col-lg-6">',
+                        '{/right_column}'    : '</div>',
+                        '{step}'             : '<div class="simplecheckout-step row">',
+                        '{/step}'            : '</div>',
+                        '{clear_both}'       : '<div style="width:100%;clear:both;height:1px"></div>',
+                        '{customer}'         : simple_blocks['customer'],
+                        '{payment_address}'  : simple_blocks['payment_address'],
+                        '{shipping_address}' : simple_blocks['shipping_address'],
+                        '{cart}'             : simple_blocks['cart'],
+                        '{shipping}'         : simple_blocks['shipping'],
+                        '{payment}'          : simple_blocks['payment'],
+                        '{agreement}'        : simple_blocks['agreement'],
+                        '{help}'             : simple_blocks['help'],
+                        '{summary}'          : simple_blocks['summary'],
+                        '{comment}'          : simple_blocks['comment'],
+                        '{payment_form}'     : '<div class="simplecheckout-block" id="simplecheckout_payment_form">' ~ simple_blocks['payment_form'] ~ '</div>'
+                    }
+                %}
+
+
+                  {% for key, value in simple_blocks %}
+                      {% set key_clear = key %}
+                      {% set key = '{' ~ key ~ '}' %}
+                      {% if replace[key] is not defined %}
+                          {% set replace = replace|merge({(key): '<div class="simplecheckout-block" id="' ~ key_clear ~ '">' ~ value ~ '</div>'}) %}
+                      {% endif %}
+                  {% endfor %}
+
+
+
+
+                {{ simple_template|replace(replace) }}
+
+                <div id="simplecheckout_bottom"></div>
+                <div class="simplecheckout-proceed-payment text-center font-weight-bold my-3" id="simplecheckout_proceed_payment" style="display:none;">{{ text_proceed_payment }}</div>
+
+                {% if display_agreement_checkbox %}
+                    <div class="alert alert-danger simplecheckout-warning-block" id="agreement_warning" {% if display_error and has_error %}data-error="true"{% else %}style="display:none;"{% endif %}>
+                        <div class="agreement_all">
+                            {% for agreement_id, warning_agreement in error_warning_agreement %}
+                                <div class="agreement_{{ agreement_id }}">{{ warning_agreement }}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+
+                <div class="simplecheckout-button-block buttons row align-items-center mb-4" id="buttons">
+                  <div class="simplecheckout-button-right col-12 col-lg-auto ml-lg-auto order-lg-2 mb-3 mb-lg-0">
+                      <div class="row align-items-center">
+                        {% if display_agreement_checkbox %}
+                        <div id="agreement_checkbox" class="col-12 col-lg-auto my-3">
+                          {% for agreement_id, text_agreement in text_agreements %}
+                          <div class="form-check">
+                            <input class="form-check-input" id="agreement_{{ agreement_id }}" type="checkbox" name="agreements[]" value="{{ agreement_id }}" {{ agreement_id in agreements ? 'checked="checked"' : '' }} />
+                            <label class="form-check-label" for="agreement_{{ agreement_id }}">{{ text_agreement }}</label>
+                          </div>
+                          {% endfor %}
+                        </div>
+                        {% endif %}
+                        <div class="col-12 col-lg-auto">
+                          {% if steps_count > 1 %}
+                          <a href="javascript:void(0)" class="button button_oc btn btn-block btn-primary px-4" data-onclick="nextStep" id="simplecheckout_button_next">
+                            <span>{{ button_next }}</span>
+                          </a>
+                          {% endif %}
+                          <a href="javascript:void(0)" class="button button_oc btn btn-block btn-lg btn-primary px-4" {{ block_order ? 'disabled' : ''}} data-onclick="createOrder" id="simplecheckout_button_confirm">
+                            <span>{{ button_order }}</span>
+                          </a>
+                        </div>
+                      </div>
+                  </div>
+                  <div class="simplecheckout-button-left col-12 col-lg-auto order-lg-1">
+                      {% if display_back_button %}
+                      <a href="javascript:void(0)" class="button button_oc btn btn-block btn-outline-secondary px-4" data-onclick="backHistory" id="simplecheckout_button_back"><span>{{ button_back }}</span></a>
+                      {% endif %}
+                      {% if steps_count > 1 %}
+                      <a href="javascript:void(0)" class="button button_oc btn btn-block btn-outline-secondary px-4" data-onclick="previousStep" id="simplecheckout_button_prev"><span>{{ button_prev }}</span></a>
+                      {% endif %}
+                  </div>
+                </div>
+
+                {% if steps_count > 1 and menu_type == '2' %}
+                    </div>
+                {% endif %}
+
+                {% if steps_count > 1 and menu_type == '2' %}
+                    <div id="simplecheckout_step_menu" class="simplecheckout-vertical-menu simplecheckout-bottom-menu">
+                        {% for i in 1..steps_count %}
+                            <div class="checkout-heading simple-step-vertical" style="display:none" data-onclick="gotoStep" data-step="{{ i }}">
+                              <h4 class="panel-title bg-light border px-3 rounded py-2 mb-4">{{ step_names[i-1] }}</h4>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+            {% else %}
+                <div class="content">
+                  <p class="my-5 text-center">{{ text_error }}</p>
+                </div>
+                <div class="d-none" id="simplecheckout_cart_total">{{ cart_total }}</div>
+                {% if display_weight %}
+                <div class="d-none" id="simplecheckout_cart_weight">{{ weight }}</div>
+                {% endif %}
+                {% if not popup and not as_module %}
+                    <div class="simplecheckout-button-block buttons">
+                        <div class="simplecheckout-button-right right text-right"><a href="{{ continue }}" class="button btn-primary button_oc btn px-4"><span>{{ button_continue }}</span></a></div>
+                    </div>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+{% if not ajax and not popup and not as_module %}
+</div>
+<script>
+  $('#ff_popup_cart').on('hidden.bs.modal', function (e) { reloadAll() });
+</script>
+{% include simple_footer %}
+{% endif %}

@@ -1,0 +1,854 @@
+{{ header }}
+<div id="blog-latest" class="container">
+  <div class="row">
+		{% if column_left %}
+		<div class="col-12 col-sm col-lg-3 order-lg-1 col-aside">
+			{{ column_left }}
+		</div>
+		{% endif %}
+		{% if column_right %}
+		<div class="col-12 col-sm col-lg-3 order-lg-3 col-aside">
+			{{ column_right }}
+		</div>
+		{% endif %}
+    <div id="content" class="blog-articles-list col-12 col-lg order-lg-2" itemscope itemtype="http://schema.org/NewsArticle">
+			{{ content_top }}
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb p-0 mb-3 bg-transparent" itemscope itemtype="http://schema.org/BreadcrumbList">
+          {% for breadcrumb in breadcrumbs %}
+          {% if loop.index == 1 %}
+          <li class="breadcrumb-item p-0" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a class="text-dark" href="{{ breadcrumb.href }}"  itemprop="item">
+              <meta itemprop="name" content="{{ g_text_home }}" />
+            	<svg class="ft-icon-18 d-block" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            		<path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+            	</svg>
+            </a>
+            <meta itemprop="position" content="{{ loop.index }}" />
+          </li>
+          {% elseif breadcrumbs|length != loop.index %}
+          <li class="breadcrumb-item p-0" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a class="text-dark" href="{{ breadcrumb.href }}" itemprop="item">
+              <span itemprop="name">{{ breadcrumb.text }}</span>
+            </a>
+            <meta itemprop="position" content="{{ loop.index }}" />
+          </li>
+          {% else %}
+          <li class="breadcrumb-item p-0 active">
+            <span>{{ breadcrumb.text }}</span>
+          </li>
+          {% endif %}
+          {% endfor %}
+        </ol>
+      </nav>
+
+      <meta itemprop="author" content="{{ author }}" >
+      <span itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
+        <meta itemprop="name" content="{{ publisher }}" >
+        <meta itemprop="address" content="{{ address }}" >
+        <meta itemprop="telephone" content="{{ telephone }}" >
+        <span itemprop="logo" itemscope itemtype="https://schema.org/ImageObject">
+          <meta itemprop="image" content="{{ image }}">
+          <link itemprop="url" href="{{ image }}">
+          <meta itemprop="width" content="300">
+          <meta itemprop="height" content="150">
+        </span>
+      </span>
+
+      <meta itemprop="image" content="{{ image }}" >
+      <meta itemprop="datePublished" content="{{ date_added }}" >
+      <meta itemprop="dateModified" content="{{ date_modified }}" >
+      <meta itemprop="mainEntityOfPage" content="{{ mainEntityOfPage }}" >
+
+      <div class="row no-gutters align-items-center mb-3 mt-4">
+        <div class="col-auto">
+          <svg class="d-block ft-icon-18 text-gray-400 mr-2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2zm-7 5h5v5h-5z"/>
+          </svg>
+        </div>
+        <div class="col-auto text-secondary mr-3">
+          <small>{{ date_added_text }}</small>
+        </div>
+        <div class="col-auto">
+          <svg class="d-block ft-icon-18 text-gray-400 mr-2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 6c3.79 0 7.17 2.13 8.82 5.5C19.17 14.87 15.79 17 12 17s-7.17-2.13-8.82-5.5C4.83 8.13 8.21 6 12 6m0-2C7 4 2.73 7.11 1 11.5 2.73 15.89 7 19 12 19s9.27-3.11 11-7.5C21.27 7.11 17 4 12 4zm0 5c1.38 0 2.5 1.12 2.5 2.5S13.38 14 12 14s-2.5-1.12-2.5-2.5S10.62 9 12 9m0-2c-2.48 0-4.5 2.02-4.5 4.5S9.52 16 12 16s4.5-2.02 4.5-4.5S14.48 7 12 7z"/>
+          </svg>
+        </div>
+        <div class="col-auto text-secondary mr-3">
+          <small>{{ viewed }}</small>
+        </div>
+        {% if review_status %}
+        <div class="col-auto">
+          <div class="d-flex flex-nowrap mr-2">
+            {% if rating %}
+            {% endif %}
+            {% for i in 1..5 %}
+            {% if rating < i %}
+            <svg class="d-block ft-icon-18 m-0 text-gray-400" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"/>
+            </svg>
+            {% else %}
+            <svg class="d-block ft-icon-18 text-warning m-0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+            </svg>
+            {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+        <div class="col-auto text-secondary text-nowrap">
+          <a href="#review" class="text-secondary"><small>{{ reviews }}</small></a>
+        </div>
+        {% endif %}
+      </div>
+
+      <h1 class="h2 mb-4" itemprop="headline">{{ heading_title }}</h1>
+
+      {% if share %}
+      <div class="mb-4">
+        {{ share_code }}
+      </div>
+      {% endif %}
+
+      <div id="description" class="mb-4" itemprop="articleBody">
+        {{ description }}
+      </div>
+
+  	  {% if download_status %}
+  		<div class="mb-3">
+  			{% if downloads %}
+  			{% for download in downloads %}
+  			<a class="btn btn-light mr-2 mb-2" href="{{ download.href }}" title="{{ download.name }}">
+          <span class="row no-gutters align-items-center">
+            <span class="col-auto">
+              <svg class="ft-icon-24 text-gray-500 darker-onhover mr-2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    						<path d="M2 12.5C2 9.46 4.46 7 7.5 7H18c2.21 0 4 1.79 4 4s-1.79 4-4 4H9.5C8.12 15 7 13.88 7 12.5S8.12 10 9.5 10H17v2H9.41c-.55 0-.55 1 0 1H18c1.1 0 2-.9 2-2s-.9-2-2-2H7.5C5.57 9 4 10.57 4 12.5S5.57 16 7.5 16H17v2H7.5C4.46 18 2 15.54 2 12.5z"/>
+    					</svg>
+            </span>
+            <span class="col-auto">
+              {{ download.name }} <small class="text-muted">({{ download.size }})</small>
+            </span>
+          </span>
+        </a>
+  			{% endfor %}
+  			{% endif %}
+  		</div>
+  	  {% endif %}
+
+      {% if products %}
+      <div id="related-products" class="mb-3">
+
+        <div class="pt-2 mb-3">
+          <div class="row">
+            <div class="col">
+              <div class="h5 mb-0 ml-1">{{ text_related_product }}</div>
+            </div>
+            <div class="col-auto">
+              <button class="btn btn-prev p-0 rounded-pill">
+                <svg class="d-block ft-icon-24 m-0 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"></path>
+                </svg>
+              </button>
+              <button class="btn btn-next p-0 rounded-pill">
+                <svg class="d-block ft-icon-24 m-0 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div  class="m-n1 m-sm-n2">
+          <!--noindex-->
+          <!--googleoff: all-->
+          <div class="carousel-placeholder d-flex">
+            <script>
+
+              items = 1;
+              breakpoints = [];
+              base_width = document.querySelector('#related-products').offsetWidth;
+
+              breakpoints[0] = { ww: 600, count: 2 };
+              breakpoints[1] = { ww: 860, count: 3 };
+              breakpoints[2] = { ww: 1110, count: 4 };
+              breakpoints[3] = { ww: 9999, count: 5 };
+
+              breakpoints.sort((a, b) => a.ww > b.ww ? 1 : -1);
+              breakpoints.forEach(function(breakpoint, i, breakpoints) {
+
+                prev_bp_vw = breakpoints[i - 1] != null ? breakpoints[i - 1].ww : 0;
+
+                if (prev_bp_vw <= base_width && breakpoint.ww > base_width) {
+                  items = breakpoint.count;
+                }
+              });
+
+            </script>
+            <div class="item d-flex">
+              <script>
+
+                item = document.querySelector('#related-products .carousel-placeholder .item');
+                item.style.width = items > 0 ? 100 / items + '%' : 100 + '%';
+
+              </script>
+              <div class="product-item border rounded w-100 bg-white overflow-hidden m-1 m-sm-2 d-flex flex-column">
+                <div class="w-100 text-center px-2 px-sm-3 pt-2 pb-2">
+        					<div class="d-inline-block position-relative">
+        						<svg class="d-block img-fluid" width="{{ products[0].img_width }}" height="{{ products[0].img_height }}" xmlns="http://www.w3.org/2000/svg"></svg>
+        						<div class="d-flex justify-content-center align-items-center position-absolute t-0 b-0 r-0 l-0 w-100 h-100 lazy-spinner">
+        							<div class="spinner-border text-gray-300"></div>
+        						</div>
+        					</div>
+        				</div>
+        				<div class="w-100 px-2 px-sm-3 pt-2 pb-1">
+        					<div class="product-name">
+        						<span class="bg-light"><span class="invisible" role="status">Loading product name...</span></span>
+        					</div>
+        				</div>
+        				<div class="w-100 mt-auto px-2 px-sm-3 pb-2 pb-sm-3 pt-0">
+        					<div class="price">
+        						<div class="h6 mb-1">
+        							<span class="d-inline-block">
+        								<span class="bg-light "><span class="invisible" role="status">Load...</span></span>
+        							</span>
+        						</div>
+        						{% if products[0].tax %}
+        						<small class="font-weight-light text-muted d-block">
+        							<span class="bg-light"><span class="invisible" role="status">{{ text_tax }} Loading...</span></span>
+        						</small>
+        						{% endif %}
+        					</div>
+                  {% if related_product_buttons %}
+        					<button type="button" class="btn btn-light btn-cart-add py-1 pl-2 pr-1 mt-2" disabled>
+        						<span class="invisible"><span class="invisible" role="status">Loading...</span></span>
+        					</button>
+                  {% endif %}
+        				</div>
+              </div>
+            </div>
+            <script>
+              for(let i = 1; i < items && i < {{ products|length }}; i++)  {
+                clone = item.cloneNode(true);
+                item.parentNode.appendChild(clone);
+              }
+
+              items = null;
+              item = null;
+              clone = null;
+              breakpoints = null;
+              base_width = null;
+              prev_bp_vw = null;
+
+            </script>
+          </div>
+          <!--googleon: all-->
+          <!--/noindex-->
+
+          <div class="owl-carousel">
+            {% for product in products %}
+            <div class="product-item border rounded w-100 bg-white overflow-hidden m-1 m-sm-2 d-flex flex-column">
+              <div class="image w-100 position-relative text-center px-2 px-sm-3 pt-2 pb-2">
+                <a href="{{ product.href }}">
+                  <div class="d-inline-block position-relative">
+                    <svg class="d-block img-fluid" width="{{ product.img_width }}" height="{{ product.img_height }}" xmlns="http://www.w3.org/2000/svg"></svg>
+                    {% if catalog_page_lazy %}
+                    <picture>
+                      {% if product.thumb2x %}
+                      <source class="owl-lazy" data-srcset="{{ product.thumb }} 1x, {{ product.thumb2x }} 2x, {{ product.thumb3x }} 3x, {{ product.thumb4x }} 4x" srcset="{{ product.thumb_holder }}">
+                      {% endif %}
+                      <img src="{{ product.thumb_holder }}" data-src="{{ product.thumb }}" alt="{{ product.name }}" title="{{ product.name }}" class="position-absolute t-0 l-0 img-fluid d-block w-auto owl-lazy">
+                    </picture>
+                    <div class="d-flex justify-content-center align-items-center position-absolute t-0 b-0 r-0 l-0 w-100 h-100 lazy-spinner">
+                      <div class="spinner-border text-gray-300"></div>
+                    </div>
+                    {% else %}
+                    <picture>
+                      {% if product.thumb2x %}
+                      <source srcset="{{ product.thumb }} 1x, {{ product.thumb2x }} 2x, {{ product.thumb3x }} 3x, {{ product.thumb4x }} 4x">
+                      {% endif %}
+                      <img src="{{ product.thumb }}" alt="{{ product.name }}" title="{{ product.name }}" class="position-absolute t-0 l-0 img-fluid d-block w-auto">
+                    </picture>
+                    {% endif %}
+                  </div>
+                </a>
+                {% if product.stickers %}
+                <ul class="list-unstyled position-absolute t-0 l-0 ml-3 mt-2 text-left">
+                  {% for sticker in product.stickers %}
+                  <li><span class="{{ sticker.class }}">{{ sticker.text }}</span></li>
+                  {% endfor %}
+                </ul>
+                {% endif %}
+              </div>
+              <div class="w-100 px-2 px-sm-3 pt-2 pb-1">
+      					<div class="product-name">
+      						<a href="{{ product.href }}" class="text-dark h6 font-weight-normal line-clamp-2">{{ product.name }}</a>
+      					</div>
+      				</div>
+
+              <div class="w-100 mt-auto px-2 px-sm-3 pb-2 pb-sm-3 pt-0">
+                {% if product.price %}
+      					<div class="price">
+      						{% if not product.special %}
+      						<div class="h6 mb-1">{{ product.price }}</div>
+      						{% else %}
+      						<div class="h6 mb-1">
+      							<s class="d-inline-block text-danger font-weight-light">{{ product.price }}</s>
+      							<span class="d-inline-block">{{ product.special }}</span>
+      						</div>
+      						{% endif %}
+      						{% if product.tax %}
+      						<small class="font-weight-light text-muted d-block">{{ text_tax }} {{ product.tax }}</small>
+      						{% endif %}
+      					</div>
+      					{% endif %}
+
+
+                {% if related_product_buttons %}
+                <div class="btn-group {% if qview_status or fastorder_status %}d-flex d-md-inline-flex{% endif %} dropup mt-2">
+    							<button type="button" class="btn btn-light btn-cart-add py-1 px-2 pl-md-2 pr-md-1" onclick="cart.add('{{ product.product_id }}');" {% if product.quantity <=0 and disable_btn_status %}disabled{% endif %}>
+    								<span class="row no-gutters align-items-center justify-content-center flex-nowrap">
+    									<span class="col-auto">
+    										<svg class="d-block ft-icon-18 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    											<path d="M17.21 9l-4.38-6.56c-.19-.28-.51-.42-.83-.42-.32 0-.64.14-.83.43L6.79 9H2c-.55 0-1 .45-1 1 0 .09.01.18.04.27l2.54 9.27c.23.84 1 1.46 1.92 1.46h13c.92 0 1.69-.62 1.93-1.46l2.54-9.27L23 10c0-.55-.45-1-1-1h-4.79zM9 9l3-4.4L15 9H9zm3 8c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>
+    										</svg>
+    									</span>
+    									<span class="col-auto">
+    										<span class="text-truncate mx-2 {% if qview_status or fastorder_status %}d-none d-md-block{% endif %}">{% if product.quantity <=0 and disable_btn_status %}{{ disable_btn_text }}{% else %}{{ button_cart }}{% endif %}</span>
+    									</span>
+    								</span>
+    							</button>
+    							{% if fastorder_status %}
+    							<button type="button" class="btn btn-light btn-cart-add py-1 px-1"  title="{{ g_text_fastorder }}" onclick="ff_fastorder('{{ product.product_id }}')" {% if product.quantity <=0 and disable_btn_status %}disabled{% endif %}>
+    								<svg class="d-block ft-icon-18 text-gray-500 darker-on-hover mx-auto" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    									<path d="M 13 1 L 6 14 L 12 14 L 12 23 L 19 10 L 13 10 L 13 1 z"></path>
+    								</svg>
+    							</button>
+    							{% endif %}
+    							{% if qview_status %}
+    							<button type="button" class="btn btn-light btn-cart-add py-1 px-1" title="{{ g_text_qview }}" onclick="ff_qview('{{ product.product_id }}')">
+    								<svg class="d-block ft-icon-18 text-gray-500 darker-on-hover mx-auto" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    									<path d="M12,6.5c3.79,0,7.17,2.13,8.82,5.5c-1.65,3.37-5.02,5.5-8.82,5.5S4.83,15.37,3.18,12C4.83,8.63,8.21,6.5,12,6.5 M12,4.5 C7,4.5,2.73,7.61,1,12c1.73,4.39,6,7.5,11,7.5s9.27-3.11,11-7.5C21.27,7.61,17,4.5,12,4.5L12,4.5z"/><path d="M12,9.5c1.38,0,2.5,1.12,2.5,2.5s-1.12,2.5-2.5,2.5S9.5,13.38,9.5,12S10.62,9.5,12,9.5 M12,7.5c-2.48,0-4.5,2.02-4.5,4.5 s2.02,4.5,4.5,4.5s4.5-2.02,4.5-4.5S14.48,7.5,12,7.5L12,7.5z"/>
+    								</svg>
+    							</button>
+    							{% endif %}
+    							<div class="btn-group dropdown dropup position-static">
+    								<div class="dropdown-menu dropdown-menu-right w-100" >
+    									<a href="#" class="dropdown-item dropdown-item pl-2 pr-2" onclick="wishlist.add('{{ product.product_id }}');return false">
+    										<span class="row no-gutters align-items-center flex-nowrap">
+    											<span class="col-auto">
+    												<svg class="d-block ft-icon-18 text-gray-500 darker-on-hover mr-2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    													<path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/>
+    												</svg>
+    											</span>
+    											<span class="col text-truncate">{{ button_wishlist }}</span>
+    										</span>
+    									</a>
+    									<a href="#" class="dropdown-item dropdown-item pl-2 pr-2" onclick="compare.add('{{ product.product_id }}');return false">
+    										<span class="row no-gutters align-items-center flex-nowrap">
+    											<span class="col-auto">
+    												<svg class="d-block ft-icon-18 text-gray-500 darker-on-hover mr-2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    													<path d="M 12 4 A 2 2 0 0 0 10.269531 5 L 5 5 L 2 5 L 2 7 L 4 7 L 0 15 C 0 17.761 2.239 20 5 20 C 7.761 20 10 17.761 10 15 L 6 7 L 10.271484 7 A 2 2 0 0 0 12 8 A 2 2 0 0 0 13.730469 7 L 18 7 L 14 15 C 14 17.761 16.239 20 19 20 C 21.761 20 24 17.761 24 15 L 20 7 L 22 7 L 22 5 L 13.728516 5 A 2 2 0 0 0 12 4 z M 5 9.0214844 L 7.9882812 15 L 2.0117188 15 L 5 9.0214844 z M 19 9.0214844 L 21.988281 15 L 16.011719 15 L 19 9.0214844 z"/>
+    												</svg>
+    											</span>
+    											<span class="col text-truncate">{{ button_compare }}</span>
+    										</span>
+    									</a>
+    								</div>
+    								<button type="button" class="btn btn-light btn-cart-add py-1 px-1 px-md-0" data-toggle="dropdown" data-flip="false" aria-label="more">
+    									<svg class="d-block ft-icon-18 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    										<path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+    									</svg>
+    								</button>
+    							</div>
+    						</div>
+                {% endif %}
+              </div>
+
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="owl-pagination text-center text-sm-left px-2 py-2">
+          <button class="btn btn-dot bg-dark shadow-none rounded-pill border-0 bg-secondary p-0 mr-0"><span></span></button>
+        </div>
+
+      </div>
+      {% endif %}
+
+  		{% if articles %}
+      <div id="related-article-news" class="mb-3">
+        <div class="pt-2 mb-3">
+          <div class="row">
+            <div class="col">
+              <div class="h5 mb-0 ml-1">{{ text_related }}</div>
+            </div>
+            <div class="col-auto">
+              <button class="btn btn-prev p-0 rounded-pill">
+                <svg class="d-block ft-icon-24 m-0 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"></path>
+                </svg>
+              </button>
+              <button class="btn btn-next p-0 rounded-pill">
+                <svg class="d-block ft-icon-24 m-0 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="m-n1 m-sm-n2">
+          <!--noindex-->
+          <!--googleoff: all-->
+          <div class="carousel-placeholder d-flex">
+            <script>
+
+              items = 1;
+              breakpoints = [];
+              base_width = document.querySelector('#related-article-news').offsetWidth;
+
+              breakpoints[0] = { ww: 360, count: 1 };
+              breakpoints[1] = { ww: 700, count: 2 };
+              breakpoints[2] = { ww: 1110, count: 3 };
+              breakpoints[3] = { ww: 9999, count: 4 };
+
+              breakpoints.sort((a, b) => a.ww > b.ww ? 1 : -1);
+              breakpoints.forEach(function(breakpoint, i, breakpoints) {
+
+                prev_bp_vw = breakpoints[i - 1] != null ? breakpoints[i - 1].ww : 0;
+
+                if (prev_bp_vw <= base_width && breakpoint.ww > base_width) {
+                  items = breakpoint.count;
+                }
+              });
+
+            </script>
+            <div class="item d-flex">
+              <script>
+
+                item = document.querySelector('#related-article-news .carousel-placeholder .item');
+                item.style.width = items > 0 ? 100 / items + '%' : 100 + '%';
+
+              </script>
+
+
+              <div class="article-item border rounded w-100 bg-white overflow-hidden m-1 m-sm-2 d-flex flex-column">
+                 <a href="{{ article.href }}" class="d-block position-relative">
+                   <svg class="d-block img-fluid w-100" width="{{ articles[0].img_width }}" height="{{ articles[0].img_height }}" xmlns="http://www.w3.org/2000/svg"></svg>
+                   <div class="d-flex justify-content-center align-items-center position-absolute t-0 b-0 r-0 l-0 w-100 h-100 lazy-spinner">
+                     <div class="spinner-border text-gray-400"></div>
+                   </div>
+                 </a>
+                 <div class="px-3 px-sm-3 pt-3">
+                   <div class="article-name h6 {% if review_status %}mb-2{% else %}mb-0{% endif %} overflow-hiddden">
+                     <span class="bg-light">
+                       <span class="invisible">
+                         Lorem ipsum dolor sit amet, consectetur...
+                       </span>
+                     </span>
+                   </div>
+                   {% if review_status %}
+                   <div class="d-flex mb-3">
+                     {% for i in 1..5 %}
+                     <svg class="d-block ft-icon-18 text-light m-0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                       <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                     </svg>
+                     {% endfor %}
+                   </div>
+                   {% endif %}
+                 </div>
+                 <div class="px-3 pb-3 mt-auto">
+                   <div class="row no-gutters align-items-center">
+                     <div class="col-auto">
+                      <span class="badge d-block badge-light px-1 py-0 mr-2">
+          						  <svg class="d-block ft-icon-18 m-0 text-gray-500" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"></svg>
+                      </span>
+                     </div>
+                     <div class="col-auto">
+                       <span class="badge d-block badge-light py-0 pl-1 pr-3">
+                         <span class="row no-gutters align-items-center">
+                           <span class="col-auto">
+                             <svg class="d-block ft-icon-18 m-0 text-gray-500" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"></svg>
+                           </span>
+                         </span>
+                      </span>
+                     </div>
+                     <div class="col text-right">
+                       <small class="d-block text-secondary">
+                         <span class="bg-light">
+                           <span class="invisible">
+                             Date...
+                           </span>
+                         </span>
+                       </small>
+                     </div>
+                  </div>
+                 </div>
+              </div>
+            </div>
+            <script>
+
+              for(let i = 1; i < items && i < {{ articles|length }}; i++)  {
+                clone = item.cloneNode(true);
+                item.parentNode.appendChild(clone);
+              }
+
+              items = null;
+              item = null;
+              clone = null;
+              breakpoints = null;
+              base_width = null;
+              prev_bp_vw = null;
+
+            </script>
+          </div>
+          <!--googleon: all-->
+          <!--/noindex-->
+          <div class="owl-carousel">
+            {% for article in articles %}
+             <div class="article-item border rounded w-100 bg-white overflow-hidden m-1 m-sm-2 d-flex flex-column">
+                <a href="{{ article.href }}" class="d-block position-relative">
+                  <svg class="d-block img-fluid w-100" width="{{ article.img_width }}" height="{{ article.img_height }}" xmlns="http://www.w3.org/2000/svg"></svg>
+
+                  {% if catalog_page_lazy %}
+                  <picture>
+                    {% if article.thumb2x %}
+                    <source class="owl-lazy" data-srcset="{{ article.thumb }} 1x, {{ article.thumb2x }} 2x, {{ article.thumb3x }} 3x, {{ article.thumb4x }} 4x" srcset="{{ article.thumb_holder }}">
+                    {% endif %}
+                    <img src="{{ article.thumb_holder }}" data-src="{{ article.thumb }}" alt="{{ article.name }}" title="{{ article.name }}" class="position-absolute t-0 l-0 img-fluid w-100 d-block owl-lazy">
+                  </picture>
+                  <div class="d-flex justify-content-center align-items-center position-absolute t-0 b-0 r-0 l-0 w-100 h-100 lazy-spinner">
+                    <div class="spinner-border text-gray-400"></div>
+                  </div>
+                  {% else %}
+                  <picture>
+                    {% if article.thumb2x %}
+                    <source srcset="{{ article.thumb }} 1x, {{ article.thumb2x }} 2x, {{ article.thumb3x }} 3x, {{ article.thumb4x }} 4x">
+                    {% endif %}
+                    <img src="{{ article.thumb }}" alt="{{ article.name }}" title="{{ article.name }}" class="position-absolute t-0 l-0 img-fluid w-100 d-block">
+                  </picture>
+                  {% endif %}
+                </a>
+                <div class="px-3 px-sm-3 pt-3">
+                  <div class="article-name h6 {% if review_status %}mb-2{% else %}mb-0{% endif %}">
+                    <a href="{{ article.href }}" class="text-dark  font-weight-normal line-clamp-3">{{ article.name }}</a>
+                  </div>
+                  {% if review_status %}
+                  <div class="d-flex mb-3">
+                    {% for i in 1..5 %}
+                    {% if article.rating < i %}
+                    <svg class="d-block ft-icon-18 text-gray-400 m-0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"/>
+                    </svg>
+                    {% else %}
+                    <svg class="d-block ft-icon-18 text-warning m-0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                    </svg>
+                    {% endif %}
+                    {% endfor %}
+                  </div>
+                  {% endif %}
+                </div>
+                <div class="px-3 pb-3 mt-auto">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col-auto">
+                      <span class="badge d-block badge-light px-1 py-0 mr-2 cursor-pointer" title="{{ article.description }}" onclick="location.href = ('{{ article.href }}')">
+         								<svg class="d-block ft-icon-18 m-0 text-gray-500" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+         									<path d="M3 18h12v-2H3v2zM3 6v2h18V6H3zm0 7h18v-2H3v2z"/>
+         								</svg>
+                     </span>
+                    </div>
+                    <div class="col-auto">
+                      <span class="badge d-block badge-light py-0 pl-1 pr-2" title="{{ text_views }} {{ article.viewed }}">
+                        <span class="row no-gutters align-items-center">
+                          <span class="col-auto">
+                            <svg class="d-block ft-icon-18 m-0 text-gray-500" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M12 6.5c3.79 0 7.17 2.13 8.82 5.5-1.65 3.37-5.02 5.5-8.82 5.5S4.83 15.37 3.18 12C4.83 8.63 8.21 6.5 12 6.5m0-2C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zm0 5c1.38 0 2.5 1.12 2.5 2.5s-1.12 2.5-2.5 2.5-2.5-1.12-2.5-2.5 1.12-2.5 2.5-2.5m0-2c-2.48 0-4.5 2.02-4.5 4.5s2.02 4.5 4.5 4.5 4.5-2.02 4.5-4.5-2.02-4.5-4.5-4.5z"/>
+                            </svg>
+                          </span>
+                          <span class="col-auto font-weight-normal text-secondary">
+                            <span class="d-block ml-1">{{ article.viewed }}</span>
+                          </span>
+                        </span>
+                     </span>
+                    </div>
+                    <div class="col text-right">
+                      <small class="d-block text-secondary">{{ article.date_added }}</small>
+                    </div>
+                 </div>
+                </div>
+             </div>
+             {% endfor %}
+          </div>
+        </div>
+        <div class="owl-pagination text-center text-sm-left px-2 py-2">
+          <button class="btn btn-dot bg-dark shadow-none rounded-pill border-0 bg-secondary p-0 mr-0"><span></span></button>
+        </div>
+      </div>
+      {% endif %}
+
+  		{% if review_status %}
+      <button type="button" class="btn btn-lg btn-block border btn-light mb-3 text-muted" data-toggle="collapse" data-target="#collapse-review">
+        {{ text_write }}
+      </button>
+      <div class="collapse" id="collapse-review">
+        <div class="card overflow-hidden mb-3">
+          <div class="card-header px-3">
+            <div class="h6 card-title m-0">
+              <div class="row no-gutters align-items-center">
+                <div class="col-auto">
+                  <svg class="d-block ft-icon-24 text-gray-500 m-0 mr-2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17l-.59.59-.58.58V4h16v12zm-9.5-2H18v-2h-5.5zm3.86-5.87c.2-.2.2-.51 0-.71l-1.77-1.77c-.2-.2-.51-.2-.71 0L6 11.53V14h2.47l5.89-5.87z"/>
+                  </svg>
+                </div>
+                <div class="col-auto">
+                  {{ text_write }}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-body bg-light p-3">
+            <form class="form-horizontal" id="form-review">
+              {% if review_guest %}
+              <div class="form-group required">
+                <input type="text" name="name" value="{{ customer_name }}" id="input-name" class="form-control" placeholder="{{ entry_name }} *" />
+              </div>
+              <div class="form-group required">
+                <textarea name="text" rows="4" id="input-review" class="form-control" placeholder="{{ entry_review }} *"></textarea>
+                <div class="help-block d-none">{{ text_note }}</div>
+              </div>
+              <div class="form-group required mb-0">
+                <div class="row no-gutters align-items-center">
+                  <div class="col">
+                    <div class="rating-selection d-inline-flex align-middle">
+                      <label class="d-block text-gray-400 m-0 cursor-pointer" for="star-1" title="1">
+                        <svg class="d-block ft-icon-24 m-0 " viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                        </svg>
+                      </label>
+                      <label class="d-block text-gray-400 m-0 cursor-pointer" for="star-2" title="2">
+                        <svg class="d-block ft-icon-24 m-0 " viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                        </svg>
+                      </label>
+                      <label class="d-block text-gray-400 m-0 cursor-pointer" for="star-3" title="3">
+                        <svg class="d-block ft-icon-24 m-0 " viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                        </svg>
+                      </label>
+                      <label class="d-block text-gray-400 m-0 cursor-pointer" for="star-4" title="4">
+                        <svg class="d-block ft-icon-24 m-0 " viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                        </svg>
+                      </label>
+                      <label class="d-block text-gray-400 m-0 cursor-pointer" for="star-5" title="5">
+                        <svg class="d-block ft-icon-24 m-0 " viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                        </svg>
+                      </label>
+                      <input class="d-none" id="star-1" type="radio" name="rating" value="1">
+                      <input class="d-none" id="star-2" type="radio" name="rating" value="2">
+                      <input class="d-none" id="star-3" type="radio" name="rating" value="3">
+                      <input class="d-none" id="star-4" type="radio" name="rating" value="4">
+                      <input class="d-none" id="star-5" type="radio" name="rating" value="5">
+                      <script>
+                        var stars = document.querySelectorAll('.rating-selection label'),
+                            inputs = document.querySelectorAll('.rating-selection input');
+
+                        if (stars != null) {
+                          stars.forEach(function(star, i, stars) {
+                            star.addEventListener('mouseover', function() {
+                              for (k = 0; k <= i; k++) { stars[k].classList.add('hover') }
+                            }, false);
+                            star.addEventListener('mouseout', function() {
+                              for (k = 0; k <= i; k++) { stars[k].classList.remove('hover') }
+                            }, false);
+                          });
+                        }
+
+                        if (stars != null) {
+                          inputs.forEach(function(input, i, inputs) {
+                            input.addEventListener('change', function() {
+                              stars.forEach(function(star, i) { star.classList.remove('active') });
+                              for (k = 0; k <= i; k++) { stars[k].classList.add('active') };
+                            }, false);
+                          });
+                        }
+                      </script>
+                    </div>
+                  </div>
+                  <div class="col-auto">
+                    <button type="button" id="button-review" data-loading-text="{{ text_loading }}" class="btn btn-primary pr-4">
+                      <span class="row no-gutters align-items-center">
+                        <span class="col-auto">
+                          <svg class="d-block ft-icon-18 text-white mr-2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                          </svg>
+                        </span>
+                        <span class="col-auto">
+                          {{ button_continue }}
+                        </span>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {% if captcha %}
+              <div class="mt-3">{{ captcha }}</div>
+              {% endif %}
+
+              {% else %}
+              {{ text_login }}
+              {% endif %}
+            </form>
+          </div>
+        </div>
+      </div>
+      <div id="review"></div>
+      {% endif %}
+
+    </div>
+  </div>
+  {{ content_bottom }}
+</div>
+
+<script>
+
+  $('#button-review').on('click', function() {
+    $.ajax({
+      url: 'index.php?route=blog/article/write&article_id={{ article_id }}',
+      type: 'post',
+      dataType: 'json',
+      data: $("#form-review").serialize(),
+      beforeSend: function() {
+        $('#button-review').button('loading');
+        console.log('b+');
+      },
+      complete: function() {
+        $('#button-review').button('reset');
+        console.log('c+');
+      },
+      success: function(json) {
+        $('.alert-dismissible').remove();
+
+        console.log('s+');
+
+        if (json['error']) {
+          $('#collapse-review .card-body').prepend('<div class="alert alert-danger alert-dismissible"> ' + json['error'] + '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+        }
+
+        if (json['success']) {
+
+          $('#collapse-review .card-body').html('<div class="alert alert-success m-0 alert-dismissible"> ' + json['success'] + '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+
+          $('input[name=\'name\']').val('');
+          $('textarea[name=\'text\']').val('');
+          $('input[name=\'rating\']:checked').prop('checked', false);
+        }
+      }
+    });
+  });
+
+  $('#review').delegate('.pagination a', 'click', function(e) {
+      e.preventDefault();
+      $('#review').load(this.href);
+  });
+
+  $(function () {
+
+    $('#review').load('index.php?route=blog/article/review&article_id={{ article_id }}');
+
+    $('#description').find('a > img').each(function(){
+      $(this).parent().addClass('gallery');
+    });
+
+    $('#description').magnificPopup({
+      delegate: 'a.gallery',
+      type: 'image',
+      gallery: { enabled: true }
+    });
+
+    var owl_related_products = $('#related-products .owl-carousel');
+
+    owl_related_products.owlCarousel({
+      mouseDrag: false,
+      touchDrag: true,
+      loop: false,
+      rewind: true,
+      items: 1,
+      responsiveBaseElement: '#related-products',
+      responsive:{
+        0:		{items: 2},
+        600:	{items: 3},
+        860:	{items: 4},
+        1110:	{items: 5},
+        1300:	{items: 6},
+      },
+
+      stageClass: 'owl-stage d-flex justify-content-between',
+      itemClass: 'owl-item d-flex float-none',
+
+      nav: false,
+      dots: true,
+      dotsContainer: '#related-products  .owl-pagination',
+      dotClass: 'btn btn-dot bg-dark shadow-none rounded-pill border-0 bg-secondary p-0',
+
+      lazyLoad: true,
+      lazyLoadEager: 0,
+
+      onLoadedLazy: function(e) { e.element.parent().parent().find('.lazy-spinner').remove() },
+      onInitialized: function(e) { $(e.target).parent().find('.carousel-placeholder').remove()},
+      onRefreshed: function(e) {
+        $(e.target).parent().find('.owl-item').each(function() { this.style.minWidth = this.style.width });
+        let arrows = $('#related-products .btn-prev, #related-products .btn-next ');
+        if (e.item.count <= e.page.size) { arrows.attr('disabled','disabled') } else { arrows.removeAttr('disabled') }
+      },
+    });
+
+    $('#related-products .btn-prev').click(function() { owl_related_products.trigger('prev.owl.carousel'); });
+    $('#related-products .btn-next').click(function() { owl_related_products.trigger('next.owl.carousel'); });
+
+
+    var owl_related_news = $('#related-article-news .owl-carousel');
+
+    owl_related_news.owlCarousel({
+      mouseDrag: false,
+      touchDrag: true,
+      loop: false,
+      rewind: true,
+      items: 1,
+      responsiveBaseElement: '#related-article-news',
+      responsive:{
+        0:		{items: 1},
+        360:	{items: 2},
+        700:	{items: 3},
+        1110:	{items: 4},
+        1300: {items: 5},
+      },
+
+      stageClass: 'owl-stage d-flex justify-content-between',
+      itemClass: 'owl-item d-flex float-none',
+
+      nav: false,
+      dots: true,
+      dotsContainer: '#related-article-news  .owl-pagination',
+      dotClass: 'btn btn-dot bg-dark shadow-none rounded-pill border-0 bg-secondary p-0',
+
+      lazyLoad: true,
+      lazyLoadEager: 0,
+
+      onLoadedLazy: function(e) { e.element.parent().parent().find('.lazy-spinner').remove() },
+      onInitialized: function(e) { $(e.target).parent().find('.carousel-placeholder').remove()},
+      onRefreshed: function(e) {
+        $(e.target).parent().find('.owl-item').each(function() { this.style.minWidth = this.style.width });
+        let arrows = $('#related-article-news .btn-prev, #related-article-news .btn-next ');
+        if (e.item.count <= e.page.size) { arrows.attr('disabled','disabled') } else { arrows.removeAttr('disabled') }
+      },
+    });
+
+    $('#related-article-news .btn-prev').click(function() { owl_related_news.trigger('prev.owl.carousel'); });
+    $('#related-article-news .btn-next').click(function() { owl_related_news.trigger('next.owl.carousel'); });
+
+  });
+
+</script>
+{{ footer }}

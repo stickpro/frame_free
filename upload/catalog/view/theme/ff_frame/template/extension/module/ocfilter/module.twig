@@ -1,0 +1,113 @@
+{% if options or show_price %}
+<div class="ocf-offcanvas ocfilter-mobile d-lg-none">
+  <div class="ocfilter-mobile-handle"  data-toggle="offcanvas">
+    <button type="button" class="btn btn-link py-2 px-2">
+      <svg class="d-block m-1" fill="#fff" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+      </svg>
+    </button>
+  </div>
+  <button type="button" class="btn btn-light border pl-2 pr-sm-2 pr-md-3 ml-2 d-none d-lg-none ocfilter-mobile-handle-ft" data-toggle="offcanvas">
+    <span class="row no-gutters align-items-center">
+      <span class="col-auto">
+        <svg class="d-block ft-icon-18 text-gray-500 darker-on-hover" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z"/>
+        </svg>
+      </span>
+      <span class="col-auto d-sm-none d-md-block ml-2">
+        {{ heading_title }}
+      </span>
+    </span>
+  </button>
+  <div class="ocf-offcanvas-body">
+    <div class="d-table w-100 h-100">
+      <div class="d-table-cell w-100 h-100 text-center align-middle">
+        <button type="button" class="btn btn-link" onclick="location.reload()">
+          <svg class="d-block mx-auto" fill="#ddd" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24">
+          	<path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm-2 16c-2.05 0-3.81-1.24-4.58-3h1.71c.63.9 1.68 1.5 2.87 1.5 1.93 0 3.5-1.57 3.5-3.5S13.93 9.5 12 9.5c-1.35 0-2.52.78-3.1 1.9l1.6 1.6h-4V9l1.3 1.3C8.69 8.92 10.23 8 12 8c2.76 0 5 2.24 5 5s-2.24 5-5 5z"/>
+          </svg>
+          Refresh this page
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="d-none d-lg-block">
+  <button type="button" class="btn btn-light border-like-form btn-block px-1 page-refresher-desktop mb-3" onclick="location.reload()">
+    <svg class="d-block mx-auto" fill="#ccc" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24">
+      <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm-2 16c-2.05 0-3.81-1.24-4.58-3h1.71c.63.9 1.68 1.5 2.87 1.5 1.93 0 3.5-1.57 3.5-3.5S13.93 9.5 12 9.5c-1.35 0-2.52.78-3.1 1.9l1.6 1.6h-4V9l1.3 1.3C8.69 8.92 10.23 8 12 8c2.76 0 5 2.24 5 5s-2.24 5-5 5z"/>
+    </svg>
+    <span class="text-muted">Refresh this page</span>
+  </button>
+  <div class="card m-0 mb-lg-3 ocfilter" id="ocfilter">
+    <div class="card-header border-0 px-2">
+
+      <div class="row no-gutters align-items-center">
+  			<div class="col-auto">
+  				<svg class="d-block ft-icon-24 my-0 text-gray-500 mr-2 ml-1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  					<path d="M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z"/>
+  				</svg>
+  			</div>
+  			<div class="col"> {{ heading_title }} </div>
+  		</div>
+
+    </div>
+    <div class="list-group list-group-flush">
+      {% include 'ff_frame/template/extension/module/ocfilter/selected_filter.twig' %}
+      {% include 'ff_frame/template/extension/module/ocfilter/filter_price.twig' %}
+      {% include 'ff_frame/template/extension/module/ocfilter/filter_list.twig' %}
+    </div>
+    <div class="card-footer d-none">
+      <div class="" id="ocfilter-button">
+        <button class="btn btn-primary disabled" data-loading-text="Загрузка.."></button>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript"><!--
+$(function () {
+
+  $('body').append($('.ocfilter-mobile').remove().get(0).outerHTML);
+
+	var options = {
+    mobile: $('.ocfilter-mobile').is(':visible'),
+    php: {
+      searchButton : {{ search_button ? 'true' : 'false' }},
+      showPrice    : {{ show_price ? 'true' : 'false' }},
+	    showCounter  : {{ show_counter ? 'true' : 'false' }},
+			manualPrice  : {{ manual_price ? 'true' : 'false' }},
+      link         : '{{ link }}',
+	    path         : '{{ path }}',
+	    params       : '{{ params }}',
+	    index        : '{{ index }}'
+	  },
+    text: {
+	    show_all: '{{ text_show_all }}',
+	    hide    : '{{ text_hide }}',
+	    load    : '{{ text_load }}',
+			any     : '{{ text_any }}',
+	    select  : '{{ button_select }}'
+	  }
+	};
+
+  if (options.mobile) {
+    $('.ocf-offcanvas-body').html($('#ocfilter').remove().get(0).outerHTML);
+
+    $('#ft-list-view').parent().after($('.ocfilter-mobile-handle-ft').removeClass('d-none').remove().get(0).outerHTML);
+
+  } else {
+    $('.page-refresher-desktop').remove();
+  }
+
+  $('[data-toggle="offcanvas"]').on('click', function(e) {
+    $(this).toggleClass('active');
+    $('body').toggleClass('modal-open');
+    $('.ocfilter-mobile').toggleClass('active');
+  });
+
+  setTimeout(function() {
+    $('#ocfilter').ocfilter(options);
+  }, 1);
+});
+//--></script>
+{% endif %}

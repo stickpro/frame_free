@@ -1,0 +1,105 @@
+<div class="col-12">
+  <div class="form-group {% if required %}required{% endif %} row-{{id}}">
+    <label class="control-label {{ page == 'checkout' ? '' : '' }}" for="{{id}}">{{label}}</label>
+    {% if type == 'select' or type == 'select2' %}
+      <select class="form-control custom-select" name="{{ name }}" id="{{ id }}" {{ bootstrap ? 'data-theme="bootstrap"' : '' }} {{ type == 'select2' ? 'data-type="select2"' : '' }} {{ reload ? 'data-onchange="reloadAll"' : 'data-reload-payment-form="true"'}}>
+        {% for info in values %}
+          <option value="{{ info['id'] | escape }}" {{ value == info['id'] ? 'selected="selected"' : '' }}>{{ info['text'] }}</option>
+        {% endfor %}
+      </select>
+    {% elseif type == 'radio' %}
+      <div>
+      {% for info in values %}
+        <div class="radio form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="{{ name }}" id="{{ id }}_{{ info['id'] }}" value="{{ info['id'] | escape }}" {{ value == info['id'] ? 'checked="checked"' : '' }} {{ reload ? 'data-onchange="reloadAll"' : 'data-reload-payment-form="true"' }}>
+          <label class="form-check-label cursor-pointer" for="{{ id }}_{{ info['id'] }}">{{ info['text'] }}</label>
+        </div>
+      {% endfor %}
+      </div>
+
+    {% elseif type == 'checkbox' %}
+      <div>
+      {% for info in values %}
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" name="{{ name }}[]" id="{{ id }}_{{ info['id'] }}" value="{{ info['id'] | escape }}" {{ info['id'] in value ? 'checked="checked"' : '' }} {{ reload ? 'data-onchange="reloadAll"' : 'data-reload-payment-form="true"'}}>
+        <label class="form-check-label cursor-pointer" for="{{ id }}_{{ info['id'] }}">{{ info['text'] }}</label>
+      </div>
+      {% endfor %}
+      </div>
+
+    {% elseif type == 'switcher' %}
+      <div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" name="{{ name }}" id="{{ id }}" value="1" {{ value == '1' ? 'checked="checked"' : '' }} {{ reload ? 'data-onchange="reloadAll"' : 'data-reload-payment-form="true"'}}>
+          <label class="form-check-label cursor-pointer" for="{{ id }}">{{ placeholder }}</label>
+        </div>
+      </div>
+
+    {% elseif type == 'textarea' %}
+      <textarea class="form-control" name="{{ name }}" id="{{ id }}" placeholder="{{ placeholder }}" {{ reload ? 'data-onchange="reloadAll"' : 'data-reload-payment-form="true"'}}>{{ value }}</textarea>
+    {% elseif type == 'captcha' %}
+      {% if site_key %}
+        <script src="https://www.google.com/recaptcha/api.js?hl={{ lang }}&onload=recaptchaInit&render=explicit" type="text/javascript" async defer></script>
+        <input type="hidden" name="{{ name }}" id="{{ id }}" value="{{ value }}">
+        <script type="text/javascript">
+          function recaptchaCallback(value) {
+            $('#{{ id }}').val(value).trigger('change');
+          }
+          function recaptchaInit(){
+            grecaptcha.render('simple-recaptcha');
+          }
+        </script>
+        <div id="simple-recaptcha" data-sitekey="{{ site_key }}" data-callback="recaptchaCallback"></div>
+      {% else %}
+      <div class="input-group">
+        <input type="text" class="form-control" name="{{ name }}" id="{{ id }}" value="" placeholder="{{ placeholder }}" {{ reload ? 'data-onchange="reloadAll"' : 'data-reload-payment-form="true"'}}>
+        <div class="input-group-append">
+          <span class="input-group-text p-0 overflow-hidden">
+            <div class="mx-n4 my-n1">
+              <img src="index.php?{{ additional_path }}route=common/simple_connector/captcha&t={{ time }}" alt="" id="captcha" class="d-block img-fluid ">
+            </div>
+          </span>
+        </div>
+      </div>
+      {% endif %}
+    {% elseif type == 'file' %}
+      <input type="button" value="{{ button_upload }}" data-file="{{ id }}" class="button form-control">
+      <div id="text_{{ id }}" style="margin-top:3px;max-width:200px;">{{ filename }}</div>
+      <input type="hidden" name="{{ name }}" id="{{ id }}" value="{{ value }}">
+    {% elseif type == 'date' %}
+      <div class="input-group date">
+        <input class="form-control" type="text" name="{{ name }}" id="{{ id }}" value="{{ value }}" placeholder="{{ placeholder }}" {{ attrs }} {{ reload ? 'data-onchange="reloadAll"' : 'data-reload-payment-form="true"'}}>
+        <div class="input-group-append">
+          <button type="button" class="btn btn-light border px-2">
+            <svg class="d-block ft-icon-18 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+							<path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/>
+						</svg>
+          </button>
+        </div>
+      </div>
+    {% elseif type == 'time' %}
+    <div class="input-group time">
+      <input class="form-control" type="text" name="{{ name }}" id="{{ id }}" value="{{ value }}" placeholder="{{ placeholder }}" {{ attrs }} {{ reload ? 'data-onchange="reloadAll"' : 'data-reload-payment-form="true"'}}>
+      <span class="input-group-append">
+        <button type="button" class="btn btn-light border px-2">
+          <svg class="d-block ft-icon-18 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M22 5.72l-4.6-3.86-1.29 1.53 4.6 3.86L22 5.72zM7.88 3.39L6.6 1.86 2 5.71l1.29 1.53 4.59-3.85zM12.5 8H11v6l4.75 2.85.75-1.23-4-2.37V8zM12 4c-4.97 0-9 4.03-9 9s4.02 9 9 9c4.97 0 9-4.03 9-9s-4.03-9-9-9zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/>
+          </svg>
+        </button>
+      </span>
+    </div>
+    {% else %}
+      <input  class="form-control" type="{{ type }}" name="{{ name }}" id="{{ id }}" {{ type == 'password' ? 'data-validate-on="keyup"' : '' }} value="{{ value }}" placeholder="{{ placeholder }}" {{ attrs }} {{ reload ? 'data-onchange="reloadAll"' : 'data-reload-payment-form="true"'}}>
+    {% endif %}
+    {% if rules is not empty %}
+      <div class="simplecheckout-rule-group" data-for="{{ id }}">
+        {% for rule in rules %}
+          <div {{ rule['display'] and not rule['passed'] ? '' : 'style="display:none;"' }} data-for="{{ id }}" data-rule="{{ rule['id'] }}" class="simplecheckout-error-text simplecheckout-rule invalid-feedback" {{ rule['attrs'] }}>{{ rule['text'] }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+    {% if description %}
+      <div class="simplecheckout-tooltip" data-for="{{ id }}">{{ description }}</div>
+    {% endif %}
+  </div>
+</div>

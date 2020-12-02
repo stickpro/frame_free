@@ -1,0 +1,73 @@
+{{ header }}
+<div id="information-information" class="container">
+	<div class="row">
+		{% if column_left %}
+		<div class="col-12 col-sm col-lg-3 order-lg-1 col-aside">
+			{{ column_left }}
+		</div>
+		{% endif %}
+		{% if column_right %}
+		<div class="col-12 col-sm col-lg-3 order-lg-3 col-aside">
+			{{ column_right }}
+		</div>
+		{% endif %}
+		<div id="content" class="col-12 col-lg order-lg-2 mb-3" itemscope itemtype="http://schema.org/Thing">
+			<nav aria-label="breadcrumb">
+        <ol class="breadcrumb p-0 mb-3 bg-transparent" itemscope itemtype="http://schema.org/BreadcrumbList">
+          {% for breadcrumb in breadcrumbs %}
+          {% if loop.index == 1 %}
+          <li class="breadcrumb-item p-0" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a class="text-dark" href="{{ breadcrumb.href }}"  itemprop="item">
+              <meta itemprop="name" content="{{ g_text_home }}" />
+            	<svg class="ft-icon-18 d-block" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            		<path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+            	</svg>
+            </a>
+            <meta itemprop="position" content="{{ loop.index }}" />
+          </li>
+          {% elseif breadcrumbs|length != loop.index %}
+          <li class="breadcrumb-item p-0" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a class="text-dark" href="{{ breadcrumb.href }}" itemprop="item">
+              <span itemprop="name">{{ breadcrumb.text }}</span>
+            </a>
+            <meta itemprop="position" content="{{ loop.index }}" />
+          </li>
+          {% else %}
+          <li class="breadcrumb-item p-0 active">
+            <span>{{ breadcrumb.text }}</span>
+          </li>
+          {% endif %}
+          {% endfor %}
+        </ol>
+      </nav>
+			{{ content_top }}
+
+			{#
+
+			<meta itemprop="author" content="{{ author }}" >
+      <span itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
+        <meta itemprop="name" content="{{ publisher }}" >
+        <meta itemprop="address" content="{{ address }}" >
+        <meta itemprop="telephone" content="{{ telephone }}" >
+        <span itemprop="logo" itemscope itemtype="https://schema.org/ImageObject">
+          <meta itemprop="image" content="{{ image }}">
+          <link itemprop="url" href="{{ image }}">
+          <meta itemprop="width" content="300">
+          <meta itemprop="height" content="150">
+        </span>
+      </span>
+
+      <meta itemprop="image" content="{{ image }}" >
+      <meta itemprop="datePublished" content="{{ date_added }}" >
+      <meta itemprop="dateModified" content="{{ date_modified }}" >
+      <meta itemprop="mainEntityOfPage" content="{{ mainEntityOfPage }}" >
+
+			#}
+
+			<h1 class="h2 mb-3" itemprop="name">{{ heading_title }}</h1>
+			<div itemprop="description">{{ description }}</div>
+		</div>
+	</div>
+	{{ content_bottom }}
+</div>
+{{ footer }}

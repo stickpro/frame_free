@@ -1,0 +1,13 @@
+:root {
+  @each $color, $value in $grays {
+    --gray-#{$color}: #{$value};
+  }
+
+  --black: #{$black};
+}
+
+@each $color, $value in $grays {
+  .text-gray-#{$color} {
+    color: #{$value} !important;
+  }
+}

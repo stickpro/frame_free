@@ -1,0 +1,32 @@
+{% if show_options_limit > 0 and options|length > show_options_limit %}
+{% set hidden_options = options[show_options_limit:] %}
+{% set visibled_options = options[:show_options_limit] %}
+{% else %}
+{% set hidden_options = [] %}
+{% set visibled_options = options %}
+{% endif %}
+
+{% for option in visibled_options %}
+{% include 'ff_frame/template/extension/module/ocfilter/filter_item.twig' %}
+{% endfor %}
+
+{% if hidden_options|length > 0 %}
+
+{% if show_options %}
+{% set class = 'collapse in' %}
+{% else %}
+{% set class = 'collapse' %}
+{% endif %}
+
+<div class="{{ class }} list-group-flush" id="ocfilter-hidden-options">
+  {% for option in hidden_options %}
+  {% include 'ff_frame/template/extension/module/ocfilter/filter_item.twig' %}
+  {% endfor %}
+
+</div>
+<button type="button" class="btn btn-light btn-block rounded-0 rounded-bottom" data-toggle="collapse" data-target="#ocfilter-hidden-options" aria-expanded="false">
+  <svg class="ft-icon-24 d-block mx-auto text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M7.41 7.84L12 12.42l4.59-4.58L18 9.25l-6 6-6-6z"></path>
+  </svg>
+</button>
+{% endif %}

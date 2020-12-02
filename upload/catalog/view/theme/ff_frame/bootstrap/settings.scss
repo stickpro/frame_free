@@ -1,0 +1,15 @@
+$grays:                 ("150": $gray-150);
+$enable-caret:          false;
+$grid-columns:          12;
+$grid-gutter-width:     1.5rem;
+$grid-row-columns:      8;
+$border-radius:         0.35rem !default;
+$border-radius-lg:      $border-radius * 1.25;
+$border-radius-sm:      $border-radius * .75;
+$box-shadow:            0 .25rem 1rem rgba($black, .15);
+$headings-font-weight:  600;
+$spinner-border-width:  0.2rem;
+$modal-fade-transform:  scale(.9, .9);
+$hr-border-color:       $border-color;
+$card-border-color:     $border-color;
+$nav-tabs-border-color: $border-color;

@@ -1,0 +1,160 @@
+<div id="ftSearch" class="position-relative">
+	<div class="input-group border border-current text-gray-400 rounded bg-white">
+		{% if categories %}
+		<div class="input-group-prepend">
+			<button class="btn btn-light border-top-0 border-bottom-0 border-left-0 border-right dropdown-toggle select-button py-2 px-3 pr-md-2" type="button" data-toggle="dropdown">
+				<span class="row no-gutters align-items-center m-1">
+					<span class="col-auto">
+						<span class="select-text d-none d-md-block float-left text-truncate mr-1">{{ category_name }}</span>
+					</span>
+					<span class="col-auto">
+						<svg class="d-block ft-icon-24 text-secondary darker-on-hover" viewBox="0 0 24 20" xmlns="http://www.w3.org/2000/svg">
+							<path d="M7.41 7.84L12 12.42l4.59-4.58L18 9.25l-6 6-6-6z"></path>
+						</svg>
+					</span>
+				</span>
+			</button>
+			<div class="select-list dropdown-menu ">
+				<span class="dropdown-item cursor-pointer{% if category_name == text_anywhere %} active{% endif %}" data-category="0">{{ text_anywhere }}</span>
+				{% for category in categories %}
+				<span class="dropdown-item cursor-pointer{% if category_name == category.name %} active{% endif %}" data-category="{{ category.category_id }}">{{ category.name }}</span>
+				{% endfor %}
+			</div>
+		</div>
+		{% endif %}
+		<input type="search" name="search" value="{{ search }}" placeholder="{{ text_search }}" class="form-control border-left border-0 bg-transparent h-auto text-center text-md-left" autocomplete="off">
+		<input type="hidden" name="category_id" value="{{ category_id }}" />
+		<div class="input-group-append">
+			<button type="button" class="search-button btn btn-light border-top-0 border-bottom-0 border-right-0 border-left py-2 px-3">
+				<span class="d-blok my-1">
+					<svg class="d-block ft-icon-24 text-secondary darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+						<path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+					</svg>
+				</span>
+			</button>
+		</div>
+	</div>
+	{% if livesearch_toggle %}
+	<div class="dropdown w-100"><div class="livesearch dropdown-menu p-0 border w-100"></div></div>
+	{% endif %}
+</div>
+{% if livesearch_toggle %}
+{% if mask %}
+<div class="search-backdrop ft-backdrop bg-black position-fixed t-0 l-0"></div>
+{% endif %}
+<template id="ftLivesearchResults">
+	<a class="product dropdown-item text-wrap border-bottom border-gray-150 py-2" href="">
+		<span class="row no-gutters">
+			<span class="col-auto">
+				<span class="d-block position-relative overflow-hidden border rounded my-1 mr-4">
+					<svg width="50px" height="50px" class="d-block" viewBox="0 0 1 1" xmlns="http://www.w3.org/2000/svg"></svg>
+					<img src="" srcset="" alt="" class="image d-block position-absolute t-0 l-0">
+				</span>
+			</span>
+			<span class="col">
+				<span class="name d-block"></span>
+				{% if show_description %}
+				<small class="description d-block"></small>
+				{% endif %}
+				<span class="d-block">
+					<s class="special text-danger mr-2"></s>
+					<span class="price text-dark mr-2"></span>
+				</span>
+			</span>
+		</span>
+	</a>
+	<a class="link-all dropdown-item text-wrap text-center result-text" href="">
+		<small class="d-block py-1">
+		{{ text_all_results }} (<span class="count"></span>)
+		</small>
+	</a>
+	<span class="spinner dropdown-item disabled text-center p-3">
+		<span class="d-block spinner-border text-gray-300 mx-auto"></span>
+	</span>
+	<span class="message dropdown-item text-wrap text-center disabled py-3 my-1">
+		<span class="error">{{ text_connection_error }}</span>
+		<span class="not-found">{{ text_no_results }}</span>
+	</span>
+</template>
+{% endif %}
+
+<script>
+
+	window.addEventListener('DOMContentLoaded', function(e) {
+
+		var btn_search = document.querySelector('#ftSearch .search-button');
+
+		if (btn_search != null) {
+
+			btn_search.addEventListener('click', function(e) {
+				if (typeof ftSearch !== 'undefined' && typeof ftSearch.search == 'function') {
+					ftSearch.search(btn_search)
+				}
+			});
+
+		}
+
+		var caregories_selects = document.querySelectorAll('#ftSearch .select-list .dropdown-item');
+
+		if (caregories_selects != null) {
+
+			caregories_selects.forEach(function(item, i) {
+
+				var category_id = item.getAttribute('data-category');
+
+				item.addEventListener('click', function(e) {
+					if (typeof ftSearch !== 'undefined' && typeof ftSearch.category_select == 'function') {
+						ftSearch.category_select(e, category_id)
+					}
+				});
+
+			});
+		}
+
+		var	search_field = document.querySelector('#ftSearch [name=\'search\']');
+
+		if (search_field != null) {
+
+			search_field.addEventListener('keypress', function(e) {
+				if (typeof ftSearch !== 'undefined' && typeof ftSearch.key_enter == 'function') {
+					ftSearch.key_enter(e);
+				}
+			});
+
+			{% if livesearch_toggle %}
+			var ls_script = document.querySelector('#ftLiveSearchScript');
+
+			ls_script.onload = () => {
+
+				search_field.addEventListener('input', function(e) {
+
+					if (typeof ftLiveSearchDebounce == 'function') {
+						ftLiveSearchDebounce(e, '{{ subcat_search }}', '{{ description_search }}', '{{ characters }}');
+					}
+
+				});
+
+				search_field.addEventListener('focus', function(e) {
+
+					if (typeof ftLiveSearchDebounce == 'function') {
+						ftLiveSearchDebounce(e, '{{ subcat_search }}', '{{ description_search }}', '{{ characters }}');
+					}
+
+				});
+
+				search_field.addEventListener('blur', function(e) {
+
+					if (typeof ftLiveSearchDebounce == 'function') {
+						ftLiveSearchDebounce(e, '{{ subcat_search }}', '{{ description_search }}', '{{ characters }}');
+					}
+
+				});
+
+			}
+			{% endif %}
+
+		}
+
+	});
+
+</script>

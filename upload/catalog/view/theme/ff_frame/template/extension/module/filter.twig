@@ -1,0 +1,68 @@
+<div class="card mb-3">
+  <div class="card-header border-0 px-2">
+		<div class="row no-gutters align-items-center">
+			<div class="col-auto">
+				<svg class="d-block ft-icon-24 my-0 text-gray-500 mr-2 ml-1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+					<path d="M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z"/>
+				</svg>
+			</div>
+			<div class="col"> {{ heading_title }} </div>
+			<div class="col-auto">
+				<a id="button-clear" href="{{ action }}" class="d-none">
+					<svg class="d-block ft-icon-18 my-0 text-danger darker-on-hover ml-2 mr-1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+						<path d="M15 16h4v2h-4zm0-8h7v2h-7zm0 4h6v2h-6zM3 18c0 1.1.9 2 2 2h6c1.1 0 2-.9 2-2V8H3v10zM14 5h-3l-1-1H6L5 5H2v2h12z"/>
+					</svg>
+				</a>
+			</div>
+		</div>
+	</div>
+  <ul class="list-group list-group-flush">
+		{% for filter_group in filter_groups %}
+		<li class="list-group-item pl-3 pr-2">
+			<span class="row no-gutters align-items-center">
+				<span class="col">
+					<strong>{{ filter_group.name }}</strong>
+				</span>
+				<span class="col-auto">
+					<a href="#filter-group{{ filter_group.filter_group_id }}" class="d-flex cursor-pointer mr-1" data-toggle="collapse">
+						<svg class="ft-icon-24 m-0 text-gray-500 darker-on-hover toggle-hidden" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+							<path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+						</svg>
+						<svg class="ft-icon-24 m-0 text-gray-500 darker-on-hover toggle-shown" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+							<path d="M19 13H5v-2h14v2z"></path>
+						</svg>
+					</a>
+				</span>
+			</span>
+			<ul id="filter-group{{ filter_group.filter_group_id }}" class="list-unstyled collapse show">
+				<li class="pb-2 pt-1"></li>
+				{% for filter in filter_group.filter %}
+				<li class="checkbox mb-1">
+					<span class="custom-control custom-checkbox">
+						{% if filter.filter_id in filter_category %}
+						<input class="custom-control-input" type="checkbox" name="filter[]" value="{{ filter.filter_id }}" checked="checked" id="filter-{{ filter.filter_id }}" /><label class="custom-control-label" for="filter-{{ filter.filter_id }}">{{ filter.name }}</label>
+						{% else %}
+						<input class="custom-control-input" type="checkbox" name="filter[]" value="{{ filter.filter_id }}" id="filter-{{ filter.filter_id }}" /><label class="custom-control-label" for="filter-{{ filter.filter_id }}">{{ filter.name }}</label>
+						{% endif %}
+					</span>
+				</li>
+				{% endfor %}
+			</ul>
+		</li>
+    {% endfor %}
+	</ul>
+	<div class="card-footer border-0 p-1 overflow-hidden">
+		<button type="button" id="button-filter" class="btn btn-light btn-block py-1" onclick="default_filter()">{{ button_filter }}</button>
+	</div>
+</div>
+<script>
+	function default_filter() {
+		filter = [];
+		$('input[name^=\'filter\']:checked').each(function(element) {
+			filter.push(this.value);
+		});
+
+		location = '{{ action }}&filter=' + filter.join(',');
+	}
+	if ($('input[name^=\'filter\']').is('input[name^=\'filter\']:checked')) { $('#button-clear').removeClass('d-none'); }
+</script>

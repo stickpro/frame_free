@@ -1,0 +1,25 @@
+body{font-family: "Open Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";}.stiker-special{background-color:#dc3545;color:#ffffff}.stiker-upc{background-color:#007bff;color:#ffffff}.stiker-ean{background-color:#28a745;color:#ffffff}.stiker-jan{background-color:#ffc107;color:#343a40}.stiker-isbn{background-color:#17a2b8;color:#ffffff}.stiker-mpn{background-color:#f037dd;color:#ffffff}/* Иконки в меню категорий */
+.svg-menu-icon, .svg-submenu-icon { fill: var(--gray-500); display: block; margin: -2px 0 }
+.item-level-1.hover .svg-menu-icon, .item-level-2:hover .svg-submenu-icon { fill: var(--danger) }
+
+/* Кнопки социальных сетей */
+.social-likes [class*=vkontakte] [class*=ft-icon] { color: #5181b8 !important }
+.social-likes [class*=facebook] [class*=ft-icon] { color: #1877f2 !important }
+.social-likes [class*=twitter] [class*=ft-icon] { color: #1da1f2 !important; }
+
+/* Дополнительный баннер на главной странице */
+.ft-additional-position-3 .bg-light { height: 294px }
+
+/* Слайд-шоу на главной странице */
+[class*=main-slide-] p { max-width: 220px }
+[class*=main-slide-] .image { max-height: 200px }
+@media (min-width: 576px) {
+  [class*=main-slide-] .col-12 { height: 200px }
+  .main-slide-1 .image { transform: translate3d(0,30px,0) rotate(20deg) }
+}
+@media (min-width: 768px) {
+  [class*=main-slide-] .col-12 { height: 294px }
+  [class*=main-slide-] .image { max-height: none }
+  .main-slide-1 .image { transform: translate3d(40px,30px,0) rotate(20deg) }
+  .main-slide-2 .image { transform: translate3d(-40px,0,0) }
+}

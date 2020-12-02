@@ -1,0 +1,51 @@
+.simplecheckout-three-column {
+    float:right;
+}
+.simplecheckout-left-column {
+    float:right;
+    margin-right: 0px;
+}
+.simplecheckout-right-column {
+    float:left;
+    margin-right: 10px;
+}
+.simplecheckout-customer-block td {
+    text-align: right;
+}
+.simplecheckout-customer-left {
+    text-align: right;
+}
+.simplecheckout-customer-right {
+    text-align: right;
+}
+.simplecheckout-button-right {
+    float: left;
+    text-align: left;
+}
+.simplecheckout-block-heading-button {
+    float:left;
+} 
+.checkout-heading span {
+    float: right !important;
+}
+.checkout-heading-button {
+    float: left !important;
+}
+.simplecheckout-methods-table td.title {
+    float:right;    
+}
+.simpleregister-button-right {
+    float: left;
+}
+.simplecheckout-button-right {
+    float: left;
+}
+.simplecheckout-button-left {
+    float: right;
+}
+.simplecheckout-table-form {
+    width: 49%;
+    margin-left: 1%;
+    float: right;
+    text-align: right;
+}

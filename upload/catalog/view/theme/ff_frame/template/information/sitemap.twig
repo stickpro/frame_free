@@ -1,0 +1,101 @@
+{{ header }}
+<div id="information-sitemap" class="container">
+  <div class="row">
+		{% if column_left %}
+		<div class="col-12 col-sm col-lg-3 order-lg-1 col-aside">
+			{{ column_left }}
+		</div>
+		{% endif %}
+		{% if column_right %}
+		<div class="col-12 col-sm col-lg-3 order-lg-3 col-aside">
+			{{ column_right }}
+		</div>
+		{% endif %}
+    <div id="content" class="col-12 col-lg order-lg-2 mb-3">
+			{{ content_top }}
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb p-0 mb-3 bg-transparent" itemscope itemtype="http://schema.org/BreadcrumbList">
+          {% for breadcrumb in breadcrumbs %}
+          {% if loop.index == 1 %}
+          <li class="breadcrumb-item p-0" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a class="text-dark" href="{{ breadcrumb.href }}"  itemprop="item">
+              <meta itemprop="name" content="{{ g_text_home }}" />
+            	<svg class="ft-icon-18 d-block" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            		<path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+            	</svg>
+            </a>
+            <meta itemprop="position" content="{{ loop.index }}" />
+          </li>
+          {% elseif breadcrumbs|length != loop.index %}
+          <li class="breadcrumb-item p-0" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a class="text-dark" href="{{ breadcrumb.href }}" itemprop="item">
+              <span itemprop="name">{{ breadcrumb.text }}</span>
+            </a>
+            <meta itemprop="position" content="{{ loop.index }}" />
+          </li>
+          {% else %}
+          <li class="breadcrumb-item p-0 active">
+            <span>{{ breadcrumb.text }}</span>
+          </li>
+          {% endif %}
+          {% endfor %}
+        </ol>
+      </nav>
+      <h1 class="h2 mb-4">{{ heading_title }}</h1>
+      <hr>
+      <div class="row">
+        <div class="col-12 col-sm-6">
+          <ul>
+            {% for category_1 in categories %}
+            <li><a class="text-dark" href="{{ category_1.href }}">{{ category_1.name }}</a>
+              {% if category_1.children %}
+              <ul>
+                {% for category_2 in category_1.children %}
+                <li><a class="text-dark" href="{{ category_2.href }}">{{ category_2.name }}</a>
+                  {% if category_2.children %}
+                  <ul>
+                    {% for category_3 in category_2.children %}
+                    <li><a class="text-dark" href="{{ category_3.href }}">{{ category_3.name }}</a></li>
+                    {% endfor %}
+                  </ul>
+                  {% endif %}
+                </li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+        <div class="col-12 col-sm-6">
+          <ul>
+            <li><a class="text-dark" href="{{ special }}">{{ text_special }}</a></li>
+            <li><a class="text-dark" href="{{ account }}">{{ text_account }}</a>
+              <ul>
+                <li><a class="text-dark" href="{{ edit }}">{{ text_edit }}</a></li>
+                <li><a class="text-dark" href="{{ password }}">{{ text_password }}</a></li>
+                <li><a class="text-dark" href="{{ address }}">{{ text_address }}</a></li>
+                <li><a class="text-dark" href="{{ history }}">{{ text_history }}</a></li>
+                <li><a class="text-dark" href="{{ download }}">{{ text_download }}</a></li>
+              </ul>
+            </li>
+            <li><a class="text-dark" href="{{ history }}">{{ text_cart }}</a></li>
+            <li><a class="text-dark" href="{{ checkout }}">{{ text_checkout }}</a></li>
+            <li><a class="text-dark" href="{{ search }}">{{ text_search }}</a></li>
+            <li>{{ text_information }}
+              <ul>
+                {% for information in informations %}
+                <li><a class="text-dark" href="{{ information.href }}">{{ information.title }}</a></li>
+                {% endfor %}
+                <li><a class="text-dark" href="{{ contact }}">{{ text_contact }}</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <hr>
+    </div>
+  </div>
+	{{ content_bottom }}
+</div>
+{{ footer }}

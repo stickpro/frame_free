@@ -1,0 +1,63 @@
+{% if currencies|length > 1 %}
+<div class="btn-group">
+	<button class="btn btn-light dropdown-toggle p-1 px-sm-2" data-toggle="dropdown" aria-label="Currency">
+		<span class="row no-gutters align-items-start">
+			{% for currency in currencies %}
+			{% if currency.code == code %}
+			<span class="col-auto mx-2 mx-lg-0">
+				<strong class="d-block text-center ft-icon text-gray-500 darker-on-hover mx-1">{{ currency.symbol_left }}{{ currency.symbol_right }}</strong>
+			</span>
+			<span class="col-auto d-none d-lg-block mx-1">
+				{{ currency.code }}
+			</span>
+			{% endif %}
+			{% endfor %}
+			<span class="col-auto d-none d-lg-block">
+				<svg class="d-block ft-icon-24 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" >
+					<path transform="translate(0 2)" d="M7.41 7.84L12 12.42l4.59-4.58L18 9.25l-6 6-6-6z"/>
+				</svg>
+			</span>
+		</span>
+	</button>
+	<div class="dropdown-menu">
+		<form action="{{ action }}" method="post" enctype="multipart/form-data" id="ft-form-currency">
+			{% for currency in currencies %}
+			{% if currency.symbol_left %}
+			{% if currency.code != code %}
+			<a href="#" class="dropdown-item pl-3 currency-select">
+				<strong class="d-inline-block text-center ft-icon text-gray-500 darker-on-hover ml-1 mr-2">{{ currency.symbol_left }}</strong> {{ currency.code }} <small>({{ currency.title }})</small>
+				<input type="hidden" name="{{ currency.code }}" />
+			</a>
+			{% else %}
+			<span class="dropdown-item pl-3 d-lg-none font-weight-bold">
+				<strong class="d-inline-block text-center ft-icon text-gray-500 darker-on-hover ml-1 mr-2">{{ currency.symbol_left }}</strong> {{ currency.code }} <small>({{ currency.title }})</small>
+			</span>
+			{% endif%}
+			{% else %}
+			{% if currency.code != code %}
+			<a href="#" class="dropdown-item pl-3 currency-select">
+				<strong class="d-inline-block text-center ft-icon text-gray-500 darker-on-hover ml-1 mr-2">{{ currency.symbol_right }}</strong> {{ currency.code }} <small>({{ currency.title }})</small>
+				<input type="hidden" name="{{ currency.code }}" />
+			</a>
+			{% else %}
+			<span class="dropdown-item pl-3 d-lg-none font-weight-bold">
+				<strong class="d-inline-block text-center ft-icon text-gray-500 darker-on-hover ml-1 mr-2">{{ currency.symbol_right }}</strong> {{ currency.code }} <small>({{ currency.title }})</small>
+			</span>
+			{% endif%}
+			{% endif %}
+			{% endfor %}
+			<input type="hidden" name="code" value="" />
+			<input type="hidden" name="redirect" value="{{ redirect }}" />
+		</form>
+	</div>
+	<script>
+		$('#ft-form-currency .currency-select').on('click', function(e) {
+			e.preventDefault();
+
+			$('#ft-form-currency input[name=\'code\']').val($(this).find('input').attr('name'));
+
+			$('#ft-form-currency').submit();
+		});
+	</script>
+</div>
+{% endif %}

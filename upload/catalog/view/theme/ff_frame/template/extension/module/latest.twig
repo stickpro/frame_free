@@ -1,0 +1,102 @@
+<div class="products-wall mb-3">
+	<div class="h5 pt-2 mb-3 ml-1">{{ heading_title }}</div>
+	<div class="m-n1 m-sm-n2">
+		<div class="row no-gutters row-cols-2 row-cols-lg-4 row-cols-xxl-5">
+			{% for product in products %}
+			<div class="col">
+				<div class="product-item">
+					<div class="border rounded bg-white m-1 m-sm-2 d-flex flex-column">
+						<div class="w-100 position-relative text-center px-2 px-sm-3 pt-2 pb-2">
+							<a href="{{ product.href }}">
+								<div class="d-inline-block position-relative mx-auto">
+									<svg class="d-block img-fluid" width="{{ product.img_width }}" height="{{ product.img_height }}" xmlns="http://www.w3.org/2000/svg"></svg>
+									<img src="{{ product.thumb }}" {% if product.thumb2x %}srcset="{{ product.thumb }} 1x, {{ product.thumb2x }} 2x, {{ product.thumb3x }} 3x, {{ product.thumb4x }} 4x"{% endif %} alt="{{ product.name }}" title="{{ product.name }}" class="position-absolute t-0 l-0 img-fluid d-block w-auto" />
+								</div>
+							</a>
+						</div>
+						<div class="px-2 px-sm-3 pt-2 pb-0">
+							<div class="caption">
+								<div class="product-name"><a href="{{ product.href }}" class="text-dark h6 font-weight-normal line-clamp-2">{{ product.name }}</a></div>
+							</div>
+						</div>
+						<div class=" px-2 px-sm-3 pb-2 pb-sm-3 pt-0 bg-white border-0">
+							{% if product.price %}
+							<div class="price">
+								{% if not product.special %}
+								<div class="h6 mb-1">{{ product.price }}</div>
+								{% else %}
+								<div class="h6 mb-1">
+									<s class="d-inline-block text-danger font-weight-light">{{ product.price }}</s>
+									<span class="d-inline-block">{{ product.special }}</span>
+								</div>
+								{% endif %}
+								{% if product.tax %}
+								<small class="font-weight-light text-muted d-block">{{ text_tax }} {{ product.tax }}</small>
+								{% endif %}
+							</div>
+							{% endif %}
+							<div class="btn-group {% if qview_status or fastorder_status %}d-flex d-md-inline-flex{% endif %} dropup mt-2">
+								<button type="button" class="btn btn-light btn-cart-add py-1 px-2 pl-md-2 pr-md-1" onclick="cart.add('{{ product.product_id }}');" {% if product.quantity <=0 and disable_btn_status %}disabled{% endif %}>
+									<span class="row no-gutters align-items-center justify-content-center flex-nowrap">
+										<span class="col-auto">
+											<svg class="d-block ft-icon-18 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+												<path d="M17.21 9l-4.38-6.56c-.19-.28-.51-.42-.83-.42-.32 0-.64.14-.83.43L6.79 9H2c-.55 0-1 .45-1 1 0 .09.01.18.04.27l2.54 9.27c.23.84 1 1.46 1.92 1.46h13c.92 0 1.69-.62 1.93-1.46l2.54-9.27L23 10c0-.55-.45-1-1-1h-4.79zM9 9l3-4.4L15 9H9zm3 8c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>
+											</svg>
+										</span>
+										<span class="col-auto">
+											<span class="text-truncate mx-2 {% if qview_status or fastorder_status %}d-none d-md-block{% endif %}">{% if product.quantity <=0 and disable_btn_status %}{{ disable_btn_text }}{% else %}{{ button_cart }}{% endif %}</span>
+										</span>
+									</span>
+								</button>
+								{% if fastorder_status %}
+								<button type="button" class="btn btn-light btn-cart-add py-1 px-1"  title="{{ g_text_fastorder }}" onclick="ff_fastorder('{{ product.product_id }}')" {% if product.quantity <=0 and disable_btn_status %}disabled{% endif %}>
+									<svg class="d-block ft-icon-18 text-gray-500 darker-on-hover mx-auto" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+										<path d="M 13 1 L 6 14 L 12 14 L 12 23 L 19 10 L 13 10 L 13 1 z"></path>
+									</svg>
+								</button>
+								{% endif %}
+								{% if qview_status %}
+								<button type="button" class="btn btn-light btn-cart-add py-1 px-1" title="{{ g_text_qview }}" onclick="ff_qview('{{ product.product_id }}')">
+									<svg class="d-block ft-icon-18 text-gray-500 darker-on-hover mx-auto" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+										<path d="M12,6.5c3.79,0,7.17,2.13,8.82,5.5c-1.65,3.37-5.02,5.5-8.82,5.5S4.83,15.37,3.18,12C4.83,8.63,8.21,6.5,12,6.5 M12,4.5 C7,4.5,2.73,7.61,1,12c1.73,4.39,6,7.5,11,7.5s9.27-3.11,11-7.5C21.27,7.61,17,4.5,12,4.5L12,4.5z"/><path d="M12,9.5c1.38,0,2.5,1.12,2.5,2.5s-1.12,2.5-2.5,2.5S9.5,13.38,9.5,12S10.62,9.5,12,9.5 M12,7.5c-2.48,0-4.5,2.02-4.5,4.5 s2.02,4.5,4.5,4.5s4.5-2.02,4.5-4.5S14.48,7.5,12,7.5L12,7.5z"/>
+									</svg>
+								</button>
+								{% endif %}
+								<div class="btn-group dropdown dropup position-static">
+									<div class="dropdown-menu dropdown-menu-right w-100" >
+										<a href="#" class="dropdown-item dropdown-item pl-2 pr-2" onclick="wishlist.add('{{ product.product_id }}');return false">
+											<span class="row no-gutters align-items-center flex-nowrap">
+												<span class="col-auto">
+													<svg class="d-block ft-icon-18 text-gray-500 darker-on-hover mr-2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+														<path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/>
+													</svg>
+												</span>
+												<span class="col text-truncate">{{ button_wishlist }}</span>
+											</span>
+										</a>
+										<a href="#" class="dropdown-item dropdown-item pl-2 pr-2" onclick="compare.add('{{ product.product_id }}');return false">
+											<span class="row no-gutters align-items-center flex-nowrap">
+												<span class="col-auto">
+													<svg class="d-block ft-icon-18 text-gray-500 darker-on-hover mr-2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+														<path d="M 12 4 A 2 2 0 0 0 10.269531 5 L 5 5 L 2 5 L 2 7 L 4 7 L 0 15 C 0 17.761 2.239 20 5 20 C 7.761 20 10 17.761 10 15 L 6 7 L 10.271484 7 A 2 2 0 0 0 12 8 A 2 2 0 0 0 13.730469 7 L 18 7 L 14 15 C 14 17.761 16.239 20 19 20 C 21.761 20 24 17.761 24 15 L 20 7 L 22 7 L 22 5 L 13.728516 5 A 2 2 0 0 0 12 4 z M 5 9.0214844 L 7.9882812 15 L 2.0117188 15 L 5 9.0214844 z M 19 9.0214844 L 21.988281 15 L 16.011719 15 L 19 9.0214844 z"/>
+													</svg>
+												</span>
+												<span class="col text-truncate">{{ button_compare }}</span>
+											</span>
+										</a>
+									</div>
+									<button type="button" class="btn btn-light btn-cart-add py-1 px-1 px-md-0" data-toggle="dropdown" data-flip="false" aria-label="more">
+										<svg class="d-block ft-icon-18 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+											<path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+										</svg>
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+</div>

@@ -1,0 +1,1127 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="row no-gutters">
+        <div class="col-xs-8 col-lg-10">
+          <ul class="breadcrumb">
+            {% for breadcrumb in breadcrumbs %}
+            {% if loop.first %}
+            <li><a href="{{ breadcrumb.href }}"><i class="fa fa-fw fa-home" title="{{ breadcrumb.text }}"></i></a> &nbsp;/&nbsp; </li>
+            {% elseif loop.last %}
+
+            {% elseif loop.revindex == 2 %}
+            <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a> &nbsp;/&nbsp; </li>
+            {% else %}
+            <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a> &nbsp;/&nbsp; </li>
+            {% endif %}
+            {% endfor %}
+          </ul>
+          <h1>{{ heading_title }}</h1>
+        </div>
+        <div class="col-xs-4 col-lg-2">
+          <div class="control-btns text-right mb-3">
+            {% if apply_button %}
+    				<button type="button" onclick="apply()" data-toggle="tooltip" title="{{ button_apply }}" class="btn btn-success mb-1">
+    					<span class="l-icon">
+                <svg class="show" fill="currentColor" width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path>
+                    <animate attributeName="d" calcMode="discrete" dur="1.25s" repeatCount="indefinite" values="M6,2l0.01,6L10,12l-3.99,4.01L6,22h12v-6l-4-4l4-3.99V2H6z M16,16.5V20H8v-3.5l4-4L16,16.5z;M6 2v6h.01L6 8.01 10 12l-4 4 .01.01H6V22h12v-5.99h-.01L18 16l-4-4 4-3.99-.01-.01H18V2H6zm10 11v4H8l4-4 4 4zm-4-2L8 7V4h8v3H8z;M18,22l-0.01-6L14,12l3.99-4.01L18,2H6v6l4,4l-4,3.99V22H18z M8,7.5V4h8v3.5l-4,4L8,7.5z;M18,22l-0.01-6L14,12l3.99-4.01L18,2H6v6l4,4l-4,3.99V22H18z M8,7.5V4h8v3.5l-4,4L8,7.5z"/>
+                    <animateTransform attributeName="transform" type="rotate" dur="1.25s" repeatCount="indefinite" values="0 12 12;0 12 12;0 12 12;0 12 12;180 12 12"/>
+                  </path>
+                </svg>
+              </span>
+    					<span class="s-icon">
+                <svg class="show" fill="currentColor" width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                </svg>
+              </span>
+    				</button>
+    				{% endif %}
+            <button type="submit" form="form-module" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary mb-1">
+              <svg class="show" fill="currentColor" width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              	<path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm2 16H5V5h11.17L19 7.83V19zm-7-7c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zM6 6h9v4H6z"/>
+              </svg>
+            </button>
+            <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-danger mb-1">
+              <svg class="show" fill="currentColor" width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              	<path d="M18.4 10.6C16.55 8.99 14.15 8 11.5 8c-4.65 0-8.58 3.03-9.96 7.22L3.9 16c1.05-3.19 4.05-5.5 7.6-5.5 1.95 0 3.73.72 5.12 1.88L13 16h9V7l-3.6 3.6z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid">
+		{% if error_warning %}
+    <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    <div class="panel panel-default panel-main" id="module-controls">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          {{ text_edit }}
+        </h4>
+      </div>
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-module" class="form-horizontal">
+
+
+          <h4 class="block-header">
+            <svg class="icon-24" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            	<path d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z"/>
+            </svg>
+            {{ text_settings }}
+          </h4>
+
+          <div class="form-group">
+            <label class="col-md-3 control-label" for="input-name">{{ entry_name }}</label>
+            <div class="col-md-9">
+              <input type="text" name="name" value="{{ name }}" id="input-name" class="form-control" />
+							{% if error_name %}
+              <small class="text-danger">{{ error_name }}</small>
+              {% endif %}
+            </div>
+          </div>
+          <hr>
+
+          <div class="form-group">
+            <label class="col-md-3 control-label">{{ entry_status }}</label>
+            <div class="col-md-9">
+              <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-default {% if not status %} active {% endif %}">
+                  <input type="radio" name="status" value="0" {% if not status %} checked {% endif %}>
+                  <span class="on-off">{{ text_disabled }}</span>
+                </label>
+                <label class="btn btn-default {% if status %} active {% endif %}">
+                  <input type="radio" name="status" value="1" {% if status %} checked {% endif %}>
+                  <span class="on-off">{{ text_enabled }}</span>
+                </label>
+              </div>
+            </div>
+          </div>
+          <hr>
+
+          <div class="form-group">
+						<label class="col-md-3 control-label">
+              {{ entry_title }}
+              <svg class="text-info cursor-pointer" height="12" width="12" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" onclick="info_show(this, 'code')" data-text="{% autoescape %}{{ help_title }}{% endautoescape %}"><path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"/></svg>
+            </label>
+						<div class="col-md-9">
+							{% for language in languages %}
+							<div class="input-group">
+								<span class="input-group-addon">
+									<img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" />
+								</span>
+								<input type="text" name="title[{{ language.language_id }}]" value="{{ title[language.language_id] }}" class="form-control" />
+							</div>
+							{% endfor %}
+						</div>
+					</div>
+					<hr>
+          <div class="form-group">
+            <label class="col-md-3 control-label">
+              {{ entry_type }}
+              <svg class="text-info cursor-pointer" height="12" width="12" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" onclick="info_show(this, 'code')" data-text="{% autoescape %}{{ help_module_type }}{% endautoescape %}"><path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"/></svg>
+            </label>
+            <div class="col-md-9">
+              <div id="module_type" data-toggle="buttons">
+                <label class="btn btn-default btn-slideshow {% if type == 'slideshow' %}active{% endif %}">
+                  <input type="radio" name="type" value="slideshow" {% if type == 'slideshow' %}checked{% endif %}>
+                  {{ text_slideshow }}
+                </label>
+                <label class="btn btn-default btn-carousel {% if type == 'carousel' %}active{% endif %}">
+                  <input type="radio" name="type" value="carousel" {% if type == 'carousel' %}checked{% endif %}>
+                  {{ text_carousel }}
+                </label>
+                <label class="btn btn-default btn-banner {% if type == 'single_banner' %}active{% endif %}">
+                  <input type="radio" name="type" value="single_banner" {% if type == 'single_banner' %}checked{% endif %}>
+                  {{ text_single_banner }}
+                </label>
+              </div>
+            </div>
+          </div>
+          <hr>
+
+          <div id="carousel_prop" class="collapse fade {% if type == 'carousel' %}in{% endif %}">
+            <div class="form-group">
+              <label class="col-md-3 control-label">{{ entry_items }}</label>
+              <div class="col-md-9 form-inline">
+                <input type="number" name="items" value="{{ items }}" class="form-control">
+              </div>
+            </div>
+            <hr>
+
+            <div class="form-group">
+              <label class="col-md-3 control-label">
+                {{ entry_items_responsive }}
+                <svg class="text-info cursor-pointer" height="12" width="12" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" onclick="info_show(this, 'code')" data-text="{% autoescape %}{{ help_items_responsive }}{% endautoescape %}"><path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"/></svg>
+              </label>
+              <div class="col-md-9">
+                <table id="breakpoints">
+                  {% set breakpoint_row = 1 %}
+                  {% for responsive_item in responsive_items %}
+                  <tr id="breakpoint-{{ breakpoint_row }}">
+                    <td><input type="number" name="responsive_items[{{ breakpoint_row }}][breakpoint]" value="{{ responsive_item.breakpoint }}" class="form-control mb-2" placeholder="{{ entry_breakpoint }}"></td>
+                    <td>&nbsp;⇢&nbsp;</td>
+                    <td><input type="number" name="responsive_items[{{ breakpoint_row }}][amount]" value="{{ responsive_item.amount }}" class="form-control mb-2" placeholder="{{ entry_breakpoint_items }}"></td>
+                    <td>&nbsp;</td>
+                    <td>
+                      <button type="button" class="btn btn-default mb-2" onclick="removeBreakpoint('#breakpoint-{{ breakpoint_row }}')">
+                        <svg class="btn-just-icon text-danger" width="18" height="18" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  												<path d="M19 13H5v-2h14v2z"/>
+  											</svg>
+                      </button>
+                    </td>
+                  </tr>
+                  {% set breakpoint_row = breakpoint_row + 1 %}
+                  {% endfor %}
+                </table>
+                <button type="button" class="btn btn-default" onclick="addBreakpoint()">
+                  <svg class="btn-left-icon" width="18" height="18" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  									<path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+  								</svg>
+                  {{ entry_breakpoint_add }}
+                </button>
+
+                <script>
+    							var breakpoint_row = {{ breakpoint_row }};
+
+    							function addBreakpoint() {
+
+    								breakpoint_content  = '<tr id="breakpoint-' + breakpoint_row + '"  class="new-breakpoint">';
+    								breakpoint_content += '  <td>';
+    								breakpoint_content += '    <input type="number" name="responsive_items[' + breakpoint_row + '][breakpoint]" value="" class="form-control mb-2" placeholder="{{ entry_breakpoint }}">';
+    								breakpoint_content += '  </td>';
+    								breakpoint_content += '  <td>&nbsp;⇢&nbsp;</td>';
+    								breakpoint_content += '  <td>';
+    								breakpoint_content += '  <input type="number" name="responsive_items[' + breakpoint_row + '][amount]" value="" class="form-control mb-2" placeholder="{{ entry_breakpoint_items }}">';
+    								breakpoint_content += '  </td>';
+    								breakpoint_content += '  <td>&nbsp;</td>';
+    								breakpoint_content += '  <td>';
+    								breakpoint_content += '    <button type="button" class="btn btn-default mb-2" onclick="removeBreakpoint(\'#breakpoint-' + breakpoint_row + '\')">';
+    								breakpoint_content += '      <svg class="btn-just-icon text-danger" width="18" height="18" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 13H5v-2h14v2z"/></svg>';
+    								breakpoint_content += '    </button>';
+    								breakpoint_content += '  </td>';
+    								breakpoint_content += '</tr>';
+
+    								$('#breakpoints').append(breakpoint_content)
+
+    								breakpoint_row++;
+    							}
+
+    							function removeBreakpoint(id) {
+    								$(id).remove();
+    							}
+  							</script>
+              </div>
+            </div>
+            <hr>
+            <!-- <div class="form-group">
+              <label class="col-md-3 control-label">
+                {{ entry_responsive_base }}
+                <i class="fa fa-fw fa-question-circle-o text-info cursor-pointer" onclick="info_show(this, 'code')" data-text="{% autoescape %}{{ help_responsive_base }}{% endautoescape %}"></i>
+              </label>
+              <div class="col-md-9">
+
+                <div id="responsive_base" class="btn-group" data-toggle="buttons">
+  								<label class="btn btn-default {% if responsive_base == 'viewport' %} active {% endif %}">
+  									<input type="radio" name="responsive_base" value="viewport" {% if responsive_base == 'viewport' %} checked {% endif %}>
+  									{{ entry_vievport }}
+  								</label>
+  								<label class="btn btn-default {% if responsive_base  == 'parent' %} active {% endif %}">
+  									<input type="radio" name="responsive_base" value="parent" {% if responsive_base  == 'parent' %} checked {% endif %}>
+  									{{ entry_parent }}
+  								</label>
+                  <label class="btn btn-default btn-selector {% if responsive_base  == 'custom' %} active {% endif %}">
+  									<input type="radio" name="responsive_base" value="custom" {% if responsive_base  == 'custom' %} checked {% endif %}>
+  									{{ entry_selector }}
+  								</label>
+  							</div>
+                <div class="base-selector-wrapper">
+                  <div id="base_selector" class="collapse fade {% if responsive_base == 'custom' %}in{% endif %}">
+                    <div class="pt-2">
+                      <input type="text" name="responsive_base_selector" value="{{ responsive_base_selector }}" class="form-control" placeholder="{{ placeholder_selector }}">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr> -->
+          </div>
+          <div id="slideshow_prop" class="collapse fade {% if type == 'slideshow' %}in{% endif %}">
+            <div class="form-group">
+              <label class="col-md-3 control-label">
+                {{ entry_animation }}
+                <svg class="text-info cursor-pointer" height="12" width="12" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" onclick="info_show(this, 'code')" data-text="{% autoescape %}{{ help_animation }}{% endautoescape %}"><path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"/></svg>
+                </label>
+              <div class="col-md-9">
+                <div class="row">
+                  <div class="col-md-12 form-inline">
+                    <div class="input-group">
+                      <span class="input-group-addon" style="width:50px">in</span>
+                      <select type="text" name="animation_in" class="form-control">
+
+  	                    <optgroup label="{{ text_no_animation }}">
+  	                      <option value="">{{ text_no_animation }}</option>
+  	                    </optgroup>
+
+  	                    <optgroup label="Attention Seekers">
+  	                      <option value="bounce">bounce</option>
+  	                      <option value="flash">flash</option>
+  	                      <option value="pulse">pulse</option>
+  	                      <option value="rubberBand">rubberBand</option>
+  	                      <option value="shake">shake</option>
+  	                      <option value="swing">swing</option>
+  	                      <option value="tada">tada</option>
+  	                      <option value="wobble">wobble</option>
+  	                      <option value="jello">jello</option>
+  	                      <option value="heartBeat">heartBeat</option>
+  	                    </optgroup>
+
+  	                    <optgroup label="Bouncing Entrances">
+  	                     <option value="bounceIn">bounceIn</option>
+  	                     <option value="bounceInDown">bounceInDown</option>
+  	                     <option value="bounceInLeft">bounceInLeft</option>
+  	                     <option value="bounceInRight">bounceInRight</option>
+  	                     <option value="bounceInUp">bounceInUp</option>
+  	                    </optgroup>
+
+                       <optgroup label="Bouncing Exits">
+                         <option value="bounceOut">bounceOut</option>
+                         <option value="bounceOutDown">bounceOutDown</option>
+                         <option value="bounceOutLeft">bounceOutLeft</option>
+                         <option value="bounceOutRight">bounceOutRight</option>
+                         <option value="bounceOutUp">bounceOutUp</option>
+                       </optgroup>
+
+                       <optgroup label="Fading Entrances">
+                         <option value="fadeIn">fadeIn</option>
+                         <option value="fadeInDown">fadeInDown</option>
+                         <option value="fadeInDownBig">fadeInDownBig</option>
+                         <option value="fadeInLeft">fadeInLeft</option>
+                         <option value="fadeInLeftBig">fadeInLeftBig</option>
+                         <option value="fadeInRight">fadeInRight</option>
+                         <option value="fadeInRightBig">fadeInRightBig</option>
+                         <option value="fadeInUp">fadeInUp</option>
+                         <option value="fadeInUpBig">fadeInUpBig</option>
+                       </optgroup>
+
+                       <optgroup label="Fading Exits">
+                         <option value="fadeOut">fadeOut</option>
+                         <option value="fadeOutDown">fadeOutDown</option>
+                         <option value="fadeOutDownBig">fadeOutDownBig</option>
+                         <option value="fadeOutLeft">fadeOutLeft</option>
+                         <option value="fadeOutLeftBig">fadeOutLeftBig</option>
+                         <option value="fadeOutRight">fadeOutRight</option>
+                         <option value="fadeOutRightBig">fadeOutRightBig</option>
+                         <option value="fadeOutUp">fadeOutUp</option>
+                         <option value="fadeOutUpBig">fadeOutUpBig</option>
+                       </optgroup>
+
+                       <optgroup label="Flippers">
+                         <option value="flip">flip</option>
+                         <option value="flipInX">flipInX</option>
+                         <option value="flipInY">flipInY</option>
+                         <option value="flipOutX">flipOutX</option>
+                         <option value="flipOutY">flipOutY</option>
+                       </optgroup>
+
+                       <optgroup label="Lightspeed">
+                         <option value="lightSpeedIn">lightSpeedIn</option>
+                         <option value="lightSpeedOut">lightSpeedOut</option>
+                       </optgroup>
+
+                       <optgroup label="Rotating Entrances">
+                         <option value="rotateIn">rotateIn</option>
+                         <option value="rotateInDownLeft">rotateInDownLeft</option>
+                         <option value="rotateInDownRight">rotateInDownRight</option>
+                         <option value="rotateInUpLeft">rotateInUpLeft</option>
+                         <option value="rotateInUpRight">rotateInUpRight</option>
+                       </optgroup>
+
+                       <optgroup label="Rotating Exits">
+                         <option value="rotateOut">rotateOut</option>
+                         <option value="rotateOutDownLeft">rotateOutDownLeft</option>
+                         <option value="rotateOutDownRight">rotateOutDownRight</option>
+                         <option value="rotateOutUpLeft">rotateOutUpLeft</option>
+                         <option value="rotateOutUpRight">rotateOutUpRight</option>
+                       </optgroup>
+
+                       <optgroup label="Sliding Entrances">
+                         <option value="slideInUp">slideInUp</option>
+                         <option value="slideInDown">slideInDown</option>
+                         <option value="slideInLeft">slideInLeft</option>
+                         <option value="slideInRight">slideInRight</option>
+
+                       </optgroup>
+                       <optgroup label="Sliding Exits">
+                         <option value="slideOutUp">slideOutUp</option>
+                         <option value="slideOutDown">slideOutDown</option>
+                         <option value="slideOutLeft">slideOutLeft</option>
+                         <option value="slideOutRight">slideOutRight</option>
+
+                       </optgroup>
+
+                       <optgroup label="Zoom Entrances">
+                         <option value="zoomIn">zoomIn</option>
+                         <option value="zoomInDown">zoomInDown</option>
+                         <option value="zoomInLeft">zoomInLeft</option>
+                         <option value="zoomInRight">zoomInRight</option>
+                         <option value="zoomInUp">zoomInUp</option>
+                       </optgroup>
+
+                       <optgroup label="Zoom Exits">
+                         <option value="zoomOut">zoomOut</option>
+                         <option value="zoomOutDown">zoomOutDown</option>
+                         <option value="zoomOutLeft">zoomOutLeft</option>
+                         <option value="zoomOutRight">zoomOutRight</option>
+                         <option value="zoomOutUp">zoomOutUp</option>
+                       </optgroup>
+
+                       <optgroup label="Specials">
+                         <option value="hinge">hinge</option>
+                         <option value="jackInTheBox">jackInTheBox</option>
+                         <option value="rollIn">rollIn</option>
+                         <option value="rollOut">rollOut</option>
+                       </optgroup>
+
+                      </select>
+                    </div>
+                    <div class="input-group">
+                      <span class="input-group-addon" style="width:50px">out</span>
+                      <select type="text" name="animation_out" class="form-control">
+
+                        <optgroup label="{{ text_no_animation }}">
+                          <option value="">{{ text_no_animation }}</option>
+                        </optgroup>
+
+                        <optgroup label="Attention Seekers">
+                          <option value="bounce">bounce</option>
+                          <option value="flash">flash</option>
+                          <option value="pulse">pulse</option>
+                          <option value="rubberBand">rubberBand</option>
+                          <option value="shake">shake</option>
+                          <option value="swing">swing</option>
+                          <option value="tada">tada</option>
+                          <option value="wobble">wobble</option>
+                          <option value="jello">jello</option>
+                          <option value="heartBeat">heartBeat</option>
+                        </optgroup>
+
+                        <optgroup label="Bouncing Entrances">
+                          <option value="bounceIn">bounceIn</option>
+                          <option value="bounceInDown">bounceInDown</option>
+                          <option value="bounceInLeft">bounceInLeft</option>
+                          <option value="bounceInRight">bounceInRight</option>
+                          <option value="bounceInUp">bounceInUp</option>
+                        </optgroup>
+
+                        <optgroup label="Bouncing Exits">
+                          <option value="bounceOut">bounceOut</option>
+                          <option value="bounceOutDown">bounceOutDown</option>
+                          <option value="bounceOutLeft">bounceOutLeft</option>
+                          <option value="bounceOutRight">bounceOutRight</option>
+                          <option value="bounceOutUp">bounceOutUp</option>
+                        </optgroup>
+
+                        <optgroup label="Fading Entrances">
+                          <option value="fadeIn">fadeIn</option>
+                          <option value="fadeInDown">fadeInDown</option>
+                          <option value="fadeInDownBig">fadeInDownBig</option>
+                          <option value="fadeInLeft">fadeInLeft</option>
+                          <option value="fadeInLeftBig">fadeInLeftBig</option>
+                          <option value="fadeInRight">fadeInRight</option>
+                          <option value="fadeInRightBig">fadeInRightBig</option>
+                          <option value="fadeInUp">fadeInUp</option>
+                          <option value="fadeInUpBig">fadeInUpBig</option>
+                        </optgroup>
+
+                        <optgroup label="Fading Exits">
+                          <option value="fadeOut">fadeOut</option>
+                          <option value="fadeOutDown">fadeOutDown</option>
+                          <option value="fadeOutDownBig">fadeOutDownBig</option>
+                          <option value="fadeOutLeft">fadeOutLeft</option>
+                          <option value="fadeOutLeftBig">fadeOutLeftBig</option>
+                          <option value="fadeOutRight">fadeOutRight</option>
+                          <option value="fadeOutRightBig">fadeOutRightBig</option>
+                          <option value="fadeOutUp">fadeOutUp</option>
+                          <option value="fadeOutUpBig">fadeOutUpBig</option>
+                        </optgroup>
+
+                        <optgroup label="Flippers">
+                          <option value="flip">flip</option>
+                          <option value="flipInX">flipInX</option>
+                          <option value="flipInY">flipInY</option>
+                          <option value="flipOutX">flipOutX</option>
+                          <option value="flipOutY">flipOutY</option>
+                        </optgroup>
+
+                        <optgroup label="Lightspeed">
+                          <option value="lightSpeedIn">lightSpeedIn</option>
+                          <option value="lightSpeedOut">lightSpeedOut</option>
+                        </optgroup>
+
+                        <optgroup label="Rotating Entrances">
+                          <option value="rotateIn">rotateIn</option>
+                          <option value="rotateInDownLeft">rotateInDownLeft</option>
+                          <option value="rotateInDownRight">rotateInDownRight</option>
+                          <option value="rotateInUpLeft">rotateInUpLeft</option>
+                          <option value="rotateInUpRight">rotateInUpRight</option>
+                        </optgroup>
+
+                        <optgroup label="Rotating Exits">
+                          <option value="rotateOut">rotateOut</option>
+                          <option value="rotateOutDownLeft">rotateOutDownLeft</option>
+                          <option value="rotateOutDownRight">rotateOutDownRight</option>
+                          <option value="rotateOutUpLeft">rotateOutUpLeft</option>
+                          <option value="rotateOutUpRight">rotateOutUpRight</option>
+                        </optgroup>
+
+                        <optgroup label="Sliding Entrances">
+                          <option value="slideInUp">slideInUp</option>
+                          <option value="slideInDown">slideInDown</option>
+                          <option value="slideInLeft">slideInLeft</option>
+                          <option value="slideInRight">slideInRight</option>
+
+                        </optgroup>
+                        <optgroup label="Sliding Exits">
+                          <option value="slideOutUp">slideOutUp</option>
+                          <option value="slideOutDown">slideOutDown</option>
+                          <option value="slideOutLeft">slideOutLeft</option>
+                          <option value="slideOutRight">slideOutRight</option>
+
+                        </optgroup>
+
+                        <optgroup label="Zoom Entrances">
+                          <option value="zoomIn">zoomIn</option>
+                          <option value="zoomInDown">zoomInDown</option>
+                          <option value="zoomInLeft">zoomInLeft</option>
+                          <option value="zoomInRight">zoomInRight</option>
+                          <option value="zoomInUp">zoomInUp</option>
+                        </optgroup>
+
+                        <optgroup label="Zoom Exits">
+                          <option value="zoomOut">zoomOut</option>
+                          <option value="zoomOutDown">zoomOutDown</option>
+                          <option value="zoomOutLeft">zoomOutLeft</option>
+                          <option value="zoomOutRight">zoomOutRight</option>
+                          <option value="zoomOutUp">zoomOutUp</option>
+                        </optgroup>
+
+                        <optgroup label="Specials">
+                          <option value="hinge">hinge</option>
+                          <option value="jackInTheBox">jackInTheBox</option>
+                          <option value="rollIn">rollIn</option>
+                          <option value="rollOut">rollOut</option>
+                        </optgroup>
+
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr>
+          </div>
+          <div id="owl_prop" class="collapse fade {% if type != 'single_banner' %}in{% endif %}">
+            <div class="form-group">
+              <label class="col-md-3 control-label">{{ entry_controls }}</label>
+              <div class="col-md-9">
+                <div class="" data-toggle="buttons">
+                  <label class="btn btn-default  {% if 'pagination' in controls %} active{% endif %}">
+                    <input type="checkbox" name="controls[]" value="pagination" {% if 'pagination' in controls %}checked{% endif %}>
+                    {{ text_pagination }}
+                  </label>
+                  <label class="btn btn-default {% if 'arrows' in controls %}active{% endif %}">
+                    <input type="checkbox" name="controls[]" value="arrows" {% if 'arrows' in controls %}checked{% endif %}>
+                    {{ text_arrows }}
+                  </label>
+                </div>
+              </div>
+            </div>
+            <hr>
+            <div class="form-group">
+  						<label class="col-md-3 control-label">{{ entry_loop }}</label>
+  						<div class="col-md-9">
+  							<div class="btn-group" data-toggle="buttons">
+  								<label class="btn btn-default {% if not loop %} active {% endif %}">
+  									<input type="radio" name="loop" value="0" {% if not loop %} checked {% endif %}>
+  									<span class="on-off">{{ text_no }}</span>
+  								</label>
+  								<label class="btn btn-default {% if loop %} active {% endif %}">
+  									<input type="radio" name="loop" value="1" {% if loop %} checked {% endif %}>
+  									<span class="on-off">{{ text_yes }}</span>
+  								</label>
+  							</div>
+  						</div>
+  					</div>
+  					<hr>
+            <div class="form-group">
+  						<label class="col-md-3 control-label">{{ entry_autoplay }}</label>
+  						<div class="col-md-9">
+  							<div class="btn-group" data-toggle="buttons">
+  								<label class="btn btn-default {% if not autoplay %} active {% endif %}" >
+  									<input type="radio" name="autoplay" value="0" {% if not autoplay %} checked {% endif %}>
+  									<span class="on-off">{{ text_no }}</span>
+  								</label>
+  								<label class="btn btn-default {% if autoplay %} active {% endif %}">
+  									<input type="radio" name="autoplay" value="1" {% if autoplay %} checked {% endif %}>
+  									<span class="on-off">{{ text_yes }}</span>
+  								</label>
+  							</div>
+
+  							<div class="h-row-wrapper form-inline">
+  								<div id="autoplay-speed" class="collapse fade {% if autoplay %}in{% endif %}">
+  									<div class="pt-2">
+  										<input type="number" name="autoplay_speed" value="{{ autoplay_speed }}" class="form-control" placeholder="{{ entry_autoplay_speed }}" /> {{ text_ms }}
+  									</div>
+  								</div>
+  								<script>
+  									$('[name=autoplay]').parent().click(function(e) {
+  										setTimeout( () => {
+  											if ($(this).find('[value=1]').prop('checked')) {
+  												$('#autoplay-speed').collapse('show');
+  											} else {
+  												$('#autoplay-speed').collapse('hide');
+  											}
+  										}, 100)
+  									})
+  								</script>
+  							</div>
+  						</div>
+  					</div>
+            <hr>
+          </div>
+					<div class="form-group">
+						<label class="col-md-3 control-label">
+              {{ entry_hd_images }}
+              <svg class="text-info cursor-pointer" height="12" width="12" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" onclick="info_show(this, 'code')" data-text="{% autoescape %}{{ help_hd_images }}{% endautoescape %}"><path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"/></svg>
+            </label>
+						<div class="col-md-9">
+							<div class="btn-group" data-toggle="buttons">
+								<label class="btn btn-default {% if not hd_images %} active {% endif %}">
+									<input type="radio" name="hd_images" value="0" {% if not hd_images %} checked {% endif %}>
+									<span class="on-off">{{ text_disabled }}</span>
+								</label>
+								<label class="btn btn-default {% if hd_images %} active {% endif %}">
+									<input type="radio" name="hd_images" value="1" {% if hd_images %} checked {% endif %}>
+									<span class="on-off">{{ text_enabled }}</span>
+								</label>
+							</div>
+						</div>
+					</div>
+					<hr>
+          <div class="form-group">
+						<label class="col-md-3 control-label">{{ entry_lazyload }}</label>
+						<div class="col-md-9">
+							<div class="btn-group" data-toggle="buttons">
+								<label class="btn btn-default {% if not lazyload %} active {% endif %}" >
+									<input type="radio" name="lazyload" value="0" {% if not lazyload %} checked {% endif %}>
+									<span class="on-off">{{ text_no }}</span>
+								</label>
+								<label class="btn btn-default {% if lazyload %} active {% endif %}">
+									<input type="radio" name="lazyload" value="1" {% if lazyload %} checked {% endif %}>
+									<span class="on-off">{{ text_yes }}</span>
+								</label>
+							</div>
+						</div>
+					</div>
+					<hr>
+          <!-- Slides -->
+          <h4 class="block-header">
+            <svg class="icon-24" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            	<path d="M1 5h2v14H1zm4 0h2v14H5zm17 0H10c-.55 0-1 .45-1 1v12c0 .55.45 1 1 1h12c.55 0 1-.45 1-1V6c0-.55-.45-1-1-1zm-1 12H11V7h10v10zm-3.57-4.38l-2 2.57L14 13.47l-2 2.52h8z"/>
+            </svg>
+            {{ text_slides }}
+          </h4>
+          <div>
+            <div class="form-group">
+              <div class="col-lg-3 control-label">
+                <ul id="slides-labels" class="nav nav-pills nav-stacked">
+                  {% set item_row = 1 %}
+                  {% for cust_blocks_item in cust_blocks_items %}
+                  <li {% if item_row == 1 %}class="active"{% endif %}><a href="#slide-{{ item_row }}" data-toggle="tab" class="slide-label">
+                    {{ text_slide }} {{ item_row }}
+                    <svg onclick="removeSlide('#slide-{{ item_row }}')" class="btn-just-icon pull-right" width="18" height="18" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7 11v2h10v-2H7zm5-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+                  </a></li>
+                  {% set item_row = item_row + 1 %}
+                  {% endfor %}
+                  <li class="add-new-slide">
+                    <a href="" onclick="addSlide();return false">
+                      <svg class="btn-left-icon" width="18" height="18" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      									<path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+      								</svg>
+                      {{ text_add_slide }}
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-lg-9 border-left">
+                <div class="tab-content slide-content-wrapper">
+                  {% set item_row = 1 %}
+                  {% for cust_blocks_item in cust_blocks_items %}
+                  <div id="slide-{{ item_row }}" class="slide-content tab-pane{% if item_row == 1 %} active{% endif %}">
+                    <ul class="nav nav-tabs slide-content-language" id="slide_content_language-{{ item_row }}">
+                      {% for language in languages %}
+                      <li class="{% if loop.index == 1 %}active{% endif %}">
+                        <a href="#slide_content_language-{{ item_row }}-{{ language.language_id }}" data-toggle="tab">
+                          <img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" />
+                          {{ language.name }}
+                        </a>
+                      </li>
+                      {% endfor %}
+                    </ul>
+                    <div class="tab-content">
+                      {% for language in languages %}
+                      <div class="tab-pane {% if loop.index == 1 %}active{% endif %}" id="slide_content_language-{{ item_row }}-{{ language.language_id }}">
+												<div class="form-group slide-type">
+                          <label class="col-lg-2 control-label">{{ entry_type_slide }}</label>
+                          <div class="col-lg-10">
+														<div class="btn-group" data-toggle="buttons" data-slide-id="{{ item_row }}_{{ language.language_id }}">
+															<label class="btn btn-default btn-img-type {% if not cust_blocks_item.type[language.language_id] %} active {% endif %}" onclick="html_collapse(this)">
+																<input type="radio" name="cust_blocks_item[{{ item_row }}][type][{{ language.language_id }}]" value="0" {% if not cust_blocks_item.type[language.language_id] %} checked {% endif %}>
+																{{ entry_type_img }}
+															</label>
+															<label class="btn btn-default btn-html-type {% if cust_blocks_item.type[language.language_id] %} active {% endif %}" onclick="html_collapse(this)">
+																<input type="radio" name="cust_blocks_item[{{ item_row }}][type][{{ language.language_id }}]" value="1" {% if cust_blocks_item.type[language.language_id] %} checked {% endif %}>
+																{{ entry_type_html }}
+															</label>
+														</div>
+                          </div>
+                        </div>
+                        <hr>
+												<div class="form-group">
+                          <label class="col-lg-2 control-label">{{ entry_image }}</label>
+                          <div class="col-lg-10 logo-thumb">
+                            <a href="" id="thumb-image-{{ language.language_id }}-{{ item_row }}" data-toggle="image" class="img-thumbnail"><img src="{{ cust_blocks_item.thumb[language.language_id] }}" alt="" title="" data-placeholder="{{ placeholder }}"  /></a>
+                            <input type="hidden" name="cust_blocks_item[{{ item_row }}][image][{{ language.language_id }}]" value="{{ cust_blocks_item.image[language.language_id] }}" id="input-image-{{ language.language_id }}-{{ item_row }}" />
+                          </div>
+                        </div>
+                        <hr>
+												<div class="form-group">
+                          <label class="col-lg-2 control-label">{{ entry_img_size }}</label>
+                          <div class="col-lg-10 form-inline">
+														<input class="form-control" type="number" name="cust_blocks_item[{{ item_row }}][img_width][{{ language.language_id }}]" value="{{ cust_blocks_item.img_width[language.language_id] }}" /> x
+														<input class="form-control" type="number" name="cust_blocks_item[{{ item_row }}][img_height][{{ language.language_id }}]" value="{{ cust_blocks_item.img_height[language.language_id] }}" /> px
+                          </div>
+                        </div>
+                        <hr>
+												<div class="form-group">
+                          <label class="col-lg-2 control-label">
+                            {{ entry_alt }}
+                            <svg class="text-info cursor-pointer" height="12" width="12" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" onclick="info_show(this, 'code')" data-text="{% autoescape %}{{ help_alt }}{% endautoescape %}"><path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"/></svg>
+                          </label>
+                          <div class="col-lg-10">
+                            <input class="form-control" type="text" name="cust_blocks_item[{{ item_row }}][alt][{{ language.language_id }}]" value="{{ cust_blocks_item.alt[language.language_id] }}" />
+                          </div>
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                          <label class="col-lg-2 control-label">{{ entry_link }}</label>
+                          <div class="col-lg-10">
+														<div class="input-group">
+												      <div class="input-group-btn">
+																<div class="btn-group" data-toggle="buttons">
+																  <label class="btn btn-default {% if cust_blocks_item.target[language.language_id] %} active {% endif %}" title="{{ entry_target }}" data-toggle="tooltip" >
+																    <input type="checkbox" name="cust_blocks_item[{{ item_row }}][target][{{ language.language_id }}]" {% if cust_blocks_item.target[language.language_id] %} checked {% endif %}>
+																		<svg class="show" fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 0 24 24" width="18px">
+																			<path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/>
+																		</svg>
+																  </label>
+																</div>
+												      </div>
+												      <input class="form-control" type="text" name="cust_blocks_item[{{ item_row }}][link][{{ language.language_id }}]" value="{{ cust_blocks_item.link[language.language_id] }}" />
+												    </div>
+                          </div>
+                        </div>
+                        <hr>
+                        <div id="slide_html_{{ item_row }}_{{ language.language_id }}" class="collapse fade {% if cust_blocks_item.type[language.language_id] %} in {% endif %}">
+                          <div class="form-group">
+                            <label class="col-lg-2 control-label">
+  														{{ entry_description }}
+                              <svg class="text-info cursor-pointer" height="12" width="12" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" onclick="info_show(this, 'code')" data-text="{% autoescape %}{{ help_slide_html }}{% endautoescape %}"><path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"/></svg>
+  													</label>
+                            <div class="col-lg-10">
+  														<div class="code-editor-controls hidden-xs">
+  															<button type="button" class="btn btn-sm btn-default" data-toggle="button" onclick="toggleCM(this)">
+  																<svg class="show pull-left" fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="18" width="18" viewBox="0 0 24 24"><path d="M3.55 19.09l1.41 1.41 1.79-1.8-1.41-1.41zM11 20h2v3h-2zM1 11h3v2H1zm12-6.95v3.96l1 .58c1.24.72 2 2.04 2 3.46 0 2.21-1.79 4-4 4s-4-1.79-4-4c0-1.42.77-2.74 2-3.46l1-.58V4.05h2m2-2H9v4.81C7.21 7.9 6 9.83 6 12.05c0 3.31 2.69 6 6 6s6-2.69 6-6c0-2.22-1.21-4.15-3-5.19V2.05zM20 11h3v2h-3zm-2.76 7.71l1.79 1.8 1.41-1.41-1.8-1.79z"/></svg>&nbsp;&nbsp;{{ editor_hilight }}
+  															</button>
+  															<button type="button" class="btn btn-sm btn-default btn-autoheight" data-toggle="button" aria-pressed="false" onclick="autoheightCM(this)" disabled="disabled">
+  																<svg class="show pull-left" fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="18" width="18" viewBox="0 0 24 24"><path d="M6 7h2.5L5 3.5 1.5 7H4v10H1.5L5 20.5 8.5 17H6V7zm4-2v2h12V5H10zm0 14h12v-2H10v2zm0-6h12v-2H10v2z"/></svg>&nbsp;&nbsp;{{ editor_autoheight }}
+  															</button>
+  														</div>
+  														<textarea rows="5" name="cust_blocks_item[{{ item_row }}][description][{{ language.language_id }}]" class="form-control text-monospace" placeholder="{{ placeholder_description }}">{{ cust_blocks_item.description[language.language_id] }}</textarea>
+                            </div>
+                          </div>
+                          <hr>
+                        </div>
+                      </div>
+                      {% endfor %}
+                    </div>
+                    <div class="form-group">
+                      <label class="col-lg-2 control-label">{{ entry_sort_order }}</label>
+                      <div class="col-lg-10 form-inline">
+                        <input  class="form-control" type="number" name="cust_blocks_item[{{ item_row }}][sort]" value="{{ cust_blocks_item.sort }}" />
+                      </div>
+                    </div>
+                    <hr>
+                  </div>
+                  {% set item_row = item_row + 1 %}
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="modal info fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" style="margin-left: 10px">&times;</span></button>
+          <div class="text"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+
+  $(function () {
+  	$('select[name="animation_in"] option[value="{{ animation_in }}"]').attr('selected','selected');
+  	$('select[name="animation_out"] option[value="{{ animation_out }}"]').attr('selected','selected');
+  });
+
+  $('#module_type .btn').click( function(e) {
+    setTimeout(function () {
+      var banner_active = $(e.target).hasClass('btn-banner') && $(e.target).hasClass('active'),
+          carousel_active = $(e.target).hasClass('btn-carousel') && $(e.target).hasClass('active'),
+          slideshow_active = $(e.target).hasClass('btn-slideshow') && $(e.target).hasClass('active')  ;
+
+      if (banner_active) { $('#owl_prop').collapse('hide') } else { $('#owl_prop').collapse('show') }
+      if (carousel_active) { $('#carousel_prop').collapse('show') } else { $('#carousel_prop').collapse('hide') }
+      if (slideshow_active) { $('#slideshow_prop').collapse('show') } else { $('#slideshow_prop').collapse('hide') }
+    }, 10);
+  });
+
+  $('#responsive_base .btn').click( function(e) {
+    setTimeout(function () {
+      var selector_active = $(e.target).hasClass('btn-selector') && $(e.target).hasClass('active') ;
+      if (selector_active) { $('#base_selector').collapse('show') } else { $('#base_selector').collapse('hide') }
+    }, 10);
+  });
+
+  function info_show(element, tag_name) {
+
+    String.prototype.replaceArray = function(find, replace) {
+      var replaceString = this;
+      var regex;
+      for (var i = 0; i < find.length; i++) {
+        regex = new RegExp(find[i], "g");
+        replaceString = replaceString.replace(regex, replace[i]);
+      }
+      return replaceString;
+    }
+
+    String.prototype.htmlDecode = function() {
+      var e = document.createElement('textarea');
+      e.innerHTML = this;
+      return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+    }
+
+    var text = element.getAttribute('data-text'),
+        html = '',
+        regex = new RegExp('&lt;' + tag_name + '.*?&gt;(.*?)&lt;\/' + tag_name + '&gt;', 'g'),
+        matches = text.match(regex) || [],
+        matches_text = [],
+        matches_html = [];
+
+    for (var i = 0; i < matches.length; i++) {
+      matches_text[i] = matches[i].slice( tag_name.length + 8, -(tag_name.length + 9) );
+      matches_html[i] = matches_text[i].htmlDecode();
+    }
+
+    html = text.htmlDecode().replaceArray(matches_html, matches_text);
+
+    $('.modal.info .text').html(html);
+    $('.modal.info').modal('show')
+  }
+
+  function html_collapse(element) {
+    setTimeout(function () {
+      var slide_id = $(element).parent().attr('data-slide-id'),
+          html_active = $(element).hasClass('btn-html-type') && $(element).hasClass('active');
+
+      if (html_active) {
+        $( '#slide_html_' + slide_id ).collapse('show');
+      } else {
+        $( '#slide_html_' + slide_id ).collapse('hide');
+      }
+    }, 10);
+  }
+
+  function toggleCM(element) {
+  	var autoheight_btn = element.parentNode.querySelector('.btn-autoheight');
+
+  	if (!element.classList.contains('active')) {
+  		var startCodeMirror = CodeMirror.fromTextArea(element.parentNode.parentNode.querySelector('textarea') ,{
+  			mode: 'text/html',
+  			tabSize: 2,
+  			viewportMargin: Infinity,
+  			lineNumbers: true,
+  			//autofocus: true,
+  			lineWrapping: false,
+  			theme: 'github',
+  		});
+
+    	autoheight_btn.removeAttribute("disabled");
+
+  	} else {
+  		element.parentNode.parentNode.querySelector('.CodeMirror').CodeMirror.toTextArea();
+  		autoheight_btn.setAttribute("disabled", "disabled");
+  		autoheight_btn.classList.remove("active");
+  	}
+  }
+
+  function autoheightCM(element) {
+  	var editor = element.parentNode.parentNode.querySelector('.CodeMirror');
+
+  	if (!element.classList.contains('active')) {
+  		editor.style.height = 'auto';
+  	} else {
+  		editor.style.height = '';
+  	}
+
+  	editor.CodeMirror.refresh();
+  }
+
+
+  var item_row = {{ item_row }};
+
+  function addSlide() {
+    slide_label = '<li>';
+    slide_label += '  <a href="#slide-' + item_row + '" data-toggle="tab" class="slide-label new-slide">';
+    slide_label += '    {{ text_slide }} ' + item_row;
+    slide_label += '    <svg onclick="removeSlide(\'#slide-' + item_row + '\')" class="btn-just-icon pull-right" width="18" height="18" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7 11v2h10v-2H7zm5-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>';
+    slide_label += '  </a>';
+    slide_label += '</li>';
+
+    slide_content  = '<div class="tab-pane slide-content" id="slide-' + item_row + '">';
+    slide_content += '  <ul class="nav nav-tabs slide-content-language" id="slide_content_language-' + item_row + '">';
+    {% for language in languages %}
+    slide_content += '    <li class="{% if loop.index == 1 %}active{% endif %}">';
+    slide_content += '      <a href="#slide_content_language-' + item_row + '-{{ language.language_id }}" data-toggle="tab">';
+    slide_content += '        <img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}">';
+    slide_content += '        {{ language.name }}';
+    slide_content += '      </a>';
+    slide_content += '    </li>';
+    {% endfor %}
+    slide_content += '  </ul>';
+    slide_content += '  <div class="tab-content">';
+    {% for language in languages %}
+    slide_content += '    <div class="tab-pane {% if loop.index == 1 %}active{% endif %}" id="slide_content_language-' + item_row + '-{{ language.language_id }}">';
+    slide_content += '      <div class="form-group slide-type">';
+  	slide_content += '        <label class="col-lg-2 control-label">{{ entry_type_slide }}</label>';
+  	slide_content += '        <div class="col-lg-10">';
+  	slide_content += '          <div class="btn-group" data-toggle="buttons" data-slide-id="' + item_row + '_{{ language.language_id }}">';
+  	slide_content += '            <label class="btn btn-default btn-img-type active" onclick="html_collapse(this)">';
+  	slide_content += '              <input type="radio" name="cust_blocks_item[' + item_row + '][type][{{ language.language_id }}]" value="0" checked >';
+  	slide_content += '              {{ entry_type_img }}';
+  	slide_content += '            </label>';
+  	slide_content += '            <label class="btn btn-default btn-html-type" onclick="html_collapse(this)">';
+  	slide_content += '              <input type="radio" name="cust_blocks_item[' + item_row + '][type][{{ language.language_id }}]" value="1">';
+  	slide_content += '              {{ entry_type_html }}';
+  	slide_content += '            </label>';
+  	slide_content += '          </div>';
+  	slide_content += '        </div>';
+  	slide_content += '      </div>';
+  	slide_content += '      <hr>';
+    slide_content += '      <div class="form-group">';
+    slide_content += '        <label class="col-lg-2 control-label">{{ entry_image }}</label>';
+    slide_content += '        <div class="col-lg-10 logo-thumb">';
+    slide_content += '          <a href="" id="thumb-image-{{ language.language_id }}-' + item_row + '" data-toggle="image" class="img-thumbnail"><img src="{{ placeholder }}" data-placeholder="{{ placeholder }}"></a>';
+    slide_content += '          <input type="hidden" name="cust_blocks_item[' + item_row + '][image][{{ language.language_id }}]" value="" id="input-image-{{ language.language_id }}-' + item_row + '">';
+    slide_content += '        </div>';
+    slide_content += '      </div>';
+    slide_content += '      <hr>';
+  	slide_content += '      <div class="form-group">';
+  	slide_content += '        <label class="col-lg-2 control-label">{{ entry_img_size }}</label>';
+  	slide_content += '        <div class="col-lg-10 form-inline">';
+  	slide_content += '          <input class="form-control" type="number" name="cust_blocks_item[' + item_row + '][img_width][{{ language.language_id }}]" value="100"> x';
+  	slide_content += '          <input class="form-control" type="number" name="cust_blocks_item[' + item_row + '][img_height][{{ language.language_id }}]" value="100"> px';
+  	slide_content += '        </div>';
+  	slide_content += '      </div>';
+  	slide_content += '      <hr>';
+  	slide_content += '			<div class="form-group">';
+  	slide_content += '				<label class="col-lg-2 control-label">';
+    slide_content += '				  {{ entry_alt }}';
+    slide_content += '				  <svg class="text-info cursor-pointer" height="12" width="12" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" onclick="info_show(this, \'code\')" data-text="{% autoescape %}{{ help_alt }}{% endautoescape %}"><path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"/></svg>';
+    slide_content += '				</label>';
+  	slide_content += '				<div class="col-lg-10">';
+  	slide_content += '					<input class="form-control" type="text" name="cust_blocks_item[{{ item_row }}][alt][{{ language.language_id }}]" value="{{ cust_blocks_item.alt[language.language_id] }}" />';
+  	slide_content += '				</div>';
+  	slide_content += '			</div>';
+  	slide_content += '			<hr>';
+    slide_content += '      <div class="form-group">';
+    slide_content += '        <label class="col-lg-2 control-label">{{ entry_link }}</label>';
+    slide_content += '        <div class="col-lg-10">';
+  	slide_content += '          <div class="input-group">';
+  	slide_content += '            <div class="input-group-btn">';
+  	slide_content += '              <div class="btn-group" data-toggle="buttons">';
+  	slide_content += '                <label class="btn btn-default" title="{{ entry_target }}">';
+  	slide_content += '                  <input type="checkbox" name="cust_blocks_item[' + item_row + '][target][{{ language.language_id }}]">';
+  	slide_content += '                  <svg class="show" fill="currentColor" xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" viewBox="0 0 24 24">';
+    slide_content += '                    <path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/>';
+    slide_content += '                  </svg>';
+  	slide_content += '                </label>';
+  	slide_content += '              </div>';
+  	slide_content += '            </div>';
+    slide_content += '            <input class="form-control" type="text" name="cust_blocks_item[' + item_row + '][link][{{ language.language_id }}]" value="">';
+  	slide_content += '          </div>';
+    slide_content += '        </div>';
+    slide_content += '      </div>';
+    slide_content += '      <hr>';
+    slide_content += '      <div id="slide_html_' + item_row + '_{{ language.language_id }}" class="collapse fade">';
+    slide_content += '      <div class="form-group">';
+    slide_content += '        <label class="col-lg-2 control-label">';
+    slide_content += '          {{ entry_description }}';
+    slide_content += '          <svg class="text-info cursor-pointer" height="12" width="12" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" onclick="info_show(this, \'code\')" data-text="{% autoescape %}{{ help_slide_html }}{% endautoescape %}"><path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"/></svg>';
+    slide_content += '        </label>';
+    slide_content += '        <div class="col-lg-10">';
+    slide_content += '          <div class="code-editor-controls hidden-xs">';
+    slide_content += '            <button type="button" class="btn btn-sm btn-default" data-toggle="button" aria-pressed="false" onclick="toggleCM(this)">';
+    slide_content += '              <svg class="show pull-left" fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="18" width="18" viewBox="0 0 24 24">';
+    slide_content += '                <path d="M3.55 19.09l1.41 1.41 1.79-1.8-1.41-1.41zM11 20h2v3h-2zM1 11h3v2H1zm12-6.95v3.96l1 .58c1.24.72 2 2.04 2 3.46 0 2.21-1.79 4-4 4s-4-1.79-4-4c0-1.42.77-2.74 2-3.46l1-.58V4.05h2m2-2H9v4.81C7.21 7.9 6 9.83 6 12.05c0 3.31 2.69 6 6 6s6-2.69 6-6c0-2.22-1.21-4.15-3-5.19V2.05zM20 11h3v2h-3zm-2.76 7.71l1.79 1.8 1.41-1.41-1.8-1.79z"/>';
+    slide_content += '              </svg>&nbsp;&nbsp;{{ editor_hilight }}';
+    slide_content += '            </button>';
+    slide_content += '            <button type="button" class="btn btn-sm btn-default btn-autoheight" data-toggle="button" aria-pressed="false" onclick="autoheightCM(this)" disabled="disabled">';
+    slide_content += '              <svg class="show pull-left" fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="18" width="18" viewBox="0 0 24 24">';
+    slide_content += '                <path d="M6 7h2.5L5 3.5 1.5 7H4v10H1.5L5 20.5 8.5 17H6V7zm4-2v2h12V5H10zm0 14h12v-2H10v2zm0-6h12v-2H10v2z"/>';
+    slide_content += '              </svg>&nbsp;&nbsp;{{ editor_autoheight }}';
+    slide_content += '            </button>';
+    slide_content += '          </div>';
+    slide_content += '          <textarea rows="5" name="cust_blocks_item[' + item_row + '][description][{{ language.language_id }}]" class="form-control text-monospace" placeholder="{{ placeholder_description }}"></textarea>';
+    slide_content += '        </div>';
+    slide_content += '      </div>';
+    slide_content += '      <hr>';
+    slide_content += '      </div>';
+    slide_content += '    </div>';
+    {% endfor %}
+    slide_content += '  </div>';
+    slide_content += '  <div class="form-group">';
+    slide_content += '    <label class="col-lg-2 control-label">{{ entry_sort_order }}</label>';
+    slide_content += '    <div class="col-lg-10 form-inline">';
+    slide_content += '      <input  class="form-control" type="number" name="cust_blocks_item[' + item_row + '][sort]" value="0" />';
+    slide_content += '    </div>';
+    slide_content += '  </div>';
+    slide_content += '  <hr>';
+    slide_content += '</div>';
+
+
+    $('.add-new-slide').before(slide_label);
+    $('.slide-content-wrapper').append(slide_content)
+
+    $('a[href = #slide-' + item_row + ']').tab('show');
+
+    item_row++;
+  }
+
+  function removeSlide(id) {
+    var item = $('a[href=' + id + ']').parent(),
+        next = item.next(),
+        prev = item.prev();
+
+    if ( item.hasClass('active') ) {
+
+      if ( prev.length > 0 ) {
+
+        prev.find('a').tab('show');
+
+      } else if ( next.length > 0 && !next.hasClass('add-new-slide') ) {
+
+        next.find('a').tab('show');
+      }
+    }
+
+    item.remove();
+
+    $(id).remove();
+  }
+
+</script>
+{% if apply_button %}
+<script>
+	function apply(){
+
+		$(".alert").remove();
+
+    $.when(
+
+      $('.CodeMirror').each( function(index) {
+        this.CodeMirror.toTextArea();
+        $('.code-editor-controls button').removeClass("active");
+        $('.code-editor-controls .btn-autoheight').attr('disabled', 'disabled');
+      })
+
+    ).done( function(x) {
+
+      var form_data = $("#form-module").serialize();
+
+  		$.ajax({
+  			type: "post",
+  			url: $("#form-module").attr('action'),
+  			data: form_data,
+  			dataType: 'html',
+  			beforeSend: function() {
+  				$('body').addClass('loading');
+  				$('.control-btns .btn').addClass('disabled');
+  			},
+  			success: function(html) {
+  				var $href = $(html).find(".well [selected=\"selected\"]").val();
+  				if ($href) {
+  					$.ajax({
+  						type: "post",
+  						url: $href,
+  						data: '',
+  						dataType: 'html',
+  						success: function(html) {
+  							var $success = $(html).find('.alert-success, .alert-danger');
+  							if ($success.length > 0) {
+  								$('#module-controls').before($success);
+  								$('body').removeClass('loading');
+  								$('.control-btns .btn').removeClass('disabled');
+                  $('.new-slide').removeClass('new-slide');
+  							}
+  						}
+  					});
+
+            $('.has-error .text-danger').remove();
+  					$('.has-error').removeClass('has-error');
+  				} else {
+  					var $success = $(html).find('.alert-success, .alert-danger'),
+  							$content = $(html).find('#module-controls').html();
+
+  					if ($success.length > 0) {
+  						$('#module-controls').before($success);
+  					} else {
+  						$('#module-controls').html($content);
+  					}
+
+  					$('body').removeClass('loading');
+  					$('.control-btns .btn').removeClass('disabled');
+  				}
+  			}
+  		});
+
+    });
+
+	}
+</script>
+{% endif %}
+{{ footer }}

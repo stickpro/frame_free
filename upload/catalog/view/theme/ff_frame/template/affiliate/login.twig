@@ -1,0 +1,99 @@
+{{ header }}
+<div id="affiliate-login" class="container">
+
+  {% if success %}
+  <div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> {{ success }}</div>
+  {% endif %}
+  {% if error_warning %}
+  <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}</div>
+  {% endif %}
+
+  <div class="row">
+		{% if column_left %}
+		<div class="col-12 col-sm col-lg-3 order-lg-1 col-aside">
+			{{ column_left }}
+		</div>
+		{% endif %}
+
+		{% if column_right %}
+		<div class="col-12 col-sm col-lg-3 order-lg-3 col-aside">
+			{{ column_right }}
+		</div>
+		{% endif %}
+		<div id="content" class="col-12 col-lg order-lg-2 mb-3">
+			{{ content_top }}
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb p-0 mb-3 bg-transparent" itemscope itemtype="http://schema.org/BreadcrumbList">
+          {% for breadcrumb in breadcrumbs %}
+          {% if loop.index == 1 %}
+          <li class="breadcrumb-item p-0" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a class="text-dark" href="{{ breadcrumb.href }}"  itemprop="item">
+              <meta itemprop="name" content="{{ g_text_home }}" />
+            	<svg class="ft-icon-18 d-block" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            		<path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+            	</svg>
+            </a>
+            <meta itemprop="position" content="{{ loop.index }}" />
+          </li>
+          {% elseif breadcrumbs|length != loop.index %}
+          <li class="breadcrumb-item p-0" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a class="text-dark" href="{{ breadcrumb.href }}" itemprop="item">
+              <span itemprop="name">{{ breadcrumb.text }}</span>
+            </a>
+            <meta itemprop="position" content="{{ loop.index }}" />
+          </li>
+          {% else %}
+          <li class="breadcrumb-item p-0 active">
+            <span>{{ breadcrumb.text }}</span>
+          </li>
+          {% endif %}
+          {% endfor %}
+        </ol>
+      </nav>
+			<h1 class="h2 mb-4">{{ heading_title }}</h1>
+			<div class="row">
+				<div class="col-12 col-md-6 mb-4">
+					<div class="card h-100">
+						<div class="card-header">
+							{{ text_returning_affiliate }}
+						</div>
+						<div class="card-body">
+							<p class="">{{ text_i_am_returning_affiliate }}</p>
+							<form action="{{ action }}" method="post" enctype="multipart/form-data">
+								<div class="form-group">
+									<label class="d-none" for="input-email">{{ entry_email }}</label>
+									<input type="text" name="email" value="{{ email }}" placeholder="{{ entry_email }}" id="input-email" class="form-control" />
+								</div>
+								<div class="form-group">
+									<label class="d-none" for="input-password">{{ entry_password }}</label>
+									<input type="password" name="password" value="{{ password }}" placeholder="{{ entry_password }}" id="input-password" class="form-control" />
+								</div>
+								<input type="submit" value="{{ button_login }}" class="btn btn-primary px-5" />
+								<a class="btn btn-link" href="{{ forgotten }}">{{ text_forgotten }}</a>
+								{% if redirect %}
+								<input type="hidden" name="redirect" value="{{ redirect }}" />
+								{% endif %}
+							</form>
+						</div>
+					</div>
+				</div>
+				<div class="col-12 col-md-6 mb-4">
+					<div class="card h-100">
+						<div class="card-header">
+							{{ text_new_affiliate }}
+						</div>
+						<div class="card-body">
+							<p>{{ text_register_account }}</p>
+							<a class="btn btn-primary px-4" href="{{ register }}">{{ button_continue }}</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-12">
+					{{ text_description }}
+				</div>
+			</div>
+    </div>
+  </div>
+	{{ content_bottom }}
+</div>
+{{ footer }}

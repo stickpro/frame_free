@@ -1,0 +1,41 @@
+<div class="custom-blocks row row-cols-{{ columns }} row-cols-sm-{{ columns_sm }} row-cols-md-{{ columns_md }} row-cols-lg-{{ columns_lg }} row-cols-xl-{{ columns_xl }} row-cols-xxl-{{ columns_xxl }} mb-2">
+	{% for block in blocks %}
+	<div class="col mb-3">
+		<div class="custom-block border bg-white rounded p-3 h-100">
+			{% if block.link %}
+			<div class="row">
+				<div class="col-auto">
+					<a href="{{ block.link }}">
+						{% if not block.html %}
+						<img src="{{ block.image }}" {% if block.image2x %}srcset="{{ block.image }} 1x, {{ block.image2x }} 2x, {{ block.image3x }} 3x, {{ block.image4x }} 4x"{% endif %} alt="{{ block.title }}" class="imf-fluid" />
+						{% else %}
+						{{ block.html }}
+						{% endif %}
+					</a>
+				</div>
+				<div class="col">
+					<div class="h6 mb-1 d-block title pb-1"><a href="{{ block.link }}" class="text-dark">{{ block.title }}</a></div>
+					<hr class="mt-0 mb-1 border-top border-current text-gray-200">
+					<div class="d-block description line-clamp-2">{{ block.description }}</div>
+				</div>
+			</div>
+			{% else %}
+			<div class="row">
+				<div class="col-auto">
+					{% if not block.html %}
+					<img src="{{ block.image }}" {% if block.image2x %}srcset="{{ block.image }} 1x, {{ block.image2x }} 2x, {{ block.image3x }} 3x, {{ block.image4x }} 4x"{% endif %} alt="{{ block.title }}" class="imf-fluid" />
+					{% else %}
+					{{ block.html }}
+					{% endif %}
+				</div>
+				<div class="col">
+					<div class="h6 mb-1 d-block title pb-1">{{ block.title }}</div>
+					<hr class="mt-0 mb-1 border-top border-current text-gray-200">
+					<div class="m-0 d-block description line-clamp-2">{{ block.description }}</div>
+				</div>
+			</div>
+			{% endif %}
+		</div>
+	</div>
+	{% endfor %}
+</div>

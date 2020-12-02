@@ -1,0 +1,39 @@
+<div id="banner-{{ module }}" class="overflow-hidden border rounded mb-3">
+  {% if banners|length > 1 %}
+  <div class="owl-carousel">
+  {% endif %}
+	{% for banner in banners %}
+    <div class="position-relative">
+			{% if banner.link %}
+			<a href="{{ banner.link }}">
+      {% endif %}
+			  <img src="{{ banner.image }}" alt="{{ banner.title }}" class="img-fluid w-100 d-block mx-auto" />
+      {% if banner.link %}
+			</a>
+			{% endif %}
+		</div>
+  {% endfor %}
+  {% if banners|length > 1 %}
+	</div>
+  {% endif %}
+</div>
+{% if banners|length > 1 %}
+<script>
+	$(function () {
+		var owl_banner_{{ module }} = $('#banner-{{ module }} .owl-carousel');
+		owl_banner_{{ module }}.owlCarousel({
+      mouseDrag: false,
+      touchDrag: false,
+      animateOut: 'fadeOut',
+      items: 1,
+      autoHeight: true,
+      nav: false,
+      dots: false,
+      loop: true,
+      autoplay: true,
+      autoplayTimeout: 4000,
+      autoplayHoverPause: false,
+		});
+	});
+</script>
+{% endif %}

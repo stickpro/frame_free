@@ -1,0 +1,2522 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+
+  <name>Frame free: Modification</name>
+	<code>framefree</code>
+  <version>1.0.0</version>
+  <author>stickpro</author>
+  <link>https://stick-design.ru/</link>
+
+  <!-- catalog -->
+  <file path="catalog/controller/event/theme.php">
+    <operation error="skip">
+      <search><![CDATA[
+    		$theme = $this->config->get('theme_default_directory');
+      ]]></search>
+      <add position="after"><![CDATA[
+    		} elseif ($this->config->get('config_theme') == 'framefree') {
+    			$theme = $this->config->get('theme_framefree_directory');
+      ]]></add>
+    </operation>
+    <operation error="skip">
+      <search><![CDATA[
+    		$directory = $this->config->get('theme_default_directory');
+      ]]></search>
+      <add position="after"><![CDATA[
+    		} elseif ($this->config->get('config_theme') == 'framefree') {
+    			$directory = $this->config->get('theme_framefree_directory');
+      ]]></add>
+    </operation>
+  </file>
+
+  <file path="catalog/controller/{common,product}/{home,product}.php">
+    <operation error="skip">
+      <search><![CDATA[
+				$data['content_bottom'] = $this->load->controller('common/content_bottom');
+      ]]></search>
+      <add position="after"><![CDATA[
+        $data['ff_additional_position1'] = $this->load->controller('extension/module/framefreetheme/ff_additional_position1');
+				$data['ff_additional_position2'] = $this->load->controller('extension/module/framefreetheme/ff_additional_position2');
+				$data['ff_additional_position3'] = $this->load->controller('extension/module/framefreetheme/ff_additional_position3');
+				$data['ff_additional_position4'] = $this->load->controller('extension/module/framefreetheme/ff_additional_position4');
+				$data['ff_additional_position5'] = $this->load->controller('extension/module/framefreetheme/ff_additional_position5');
+				$data['ff_additional_position6'] = $this->load->controller('extension/module/framefreetheme/ff_additional_position6');
+      ]]></add>
+    </operation>
+  </file>
+
+	<file path="catalog/controller/common/header.php">
+		<operation error="skip">
+      <search><![CDATA[
+				$this->load->language('common/header');
+      ]]></search>
+      <add position="after"><![CDATA[
+				$this->load->language('extension/module/framefreetheme/ff_global');
+				$data['g_text_compare'] = sprintf($this->language->get('g_text_compare'), (isset($this->session->data['compare']) ? count($this->session->data['compare']) : 0));
+				$data['link_compare'] = $this->url->link('product/compare', '', true);
+
+				$this->load->model('setting/setting');
+
+        $data['site_dir'] = substr(dirname($_SERVER['SCRIPT_NAME']),1);
+
+				$ff_settings = array();
+				$ff_settings = $this->model_setting_setting->getSetting('theme_framefree', $this->config->get('config_store_id'));
+
+        if (isset($ff_settings['t1_minify_request']) && !empty($ff_settings['t1_minify_request'])) {
+					$data['minify'] = $ff_settings['t1_minify_request'];
+				} else {
+					$data['minify'] = false;
+				}
+
+        if (isset($ff_settings['t1_version']) && !empty($ff_settings['t1_version']) && isset($ff_settings['t1_show_version']) && !empty($ff_settings['t1_show_version'])) {
+					$data['theme_version'] = '?v=' . $ff_settings['t1_version'];
+				} else {
+					$data['theme_version'] = '';
+				}
+
+        if (isset($ff_settings['t1_meta_theme_color']) && !empty($ff_settings['t1_meta_theme_color'])) {
+					$data['meta_theme_color'] = $ff_settings['t1_meta_theme_color'];
+				} else {
+					$data['meta_theme_color'] = false;
+				}
+
+        if (isset($ff_settings['t1_webfont_status']) && !empty($ff_settings['t1_webfont_status'])) {
+					$data['webfont'] = $ff_settings['t1_webfont_status'];
+				} else {
+					$data['webfont'] = false;
+				}
+
+        if (isset($ff_settings['t1_webfont_link']) && !empty($ff_settings['t1_webfont_link'])) {
+					$data['webfont_link'] = html_entity_decode($ff_settings['t1_webfont_link'], ENT_QUOTES, 'UTF-8');
+				} else {
+					$data['webfont_link'] = false;
+				}
+
+        if (isset($ff_settings['t1_webfont_style']) && !empty($ff_settings['t1_webfont_style'])) {
+					$data['webfont_style'] = html_entity_decode($ff_settings['t1_webfont_style'], ENT_QUOTES, 'UTF-8');
+				} else {
+					$data['webfont_style'] = false;
+				}
+
+				if (isset($ff_settings['t1_fontawesome_status']) && !empty($ff_settings['t1_fontawesome_status'])) {
+					$data['fontawesome'] = $ff_settings['t1_fontawesome_status'];
+				} else {
+					$data['fontawesome'] = false;
+				}
+
+        if (isset($ff_settings['t1_cust_code_top']) && !empty($ff_settings['t1_cust_code_top'])) {
+					$data['cust_code'] = html_entity_decode($ff_settings['t1_cust_code_top'], ENT_QUOTES, 'UTF-8');
+				} else {
+					$data['cust_code'] = '';
+				}
+
+				if (isset($ff_settings['t1_stikers']) && !empty($ff_settings['t1_stikers'])) {
+					$data['stikers'] = $ff_settings['t1_stikers'];
+				} else {
+					$data['stikers'] = array();
+				}
+
+				if (isset($ff_settings['t1_preloader_status']) && !empty($ff_settings['t1_preloader_status'])) {
+					$data['preloader_status'] = $ff_settings['t1_preloader_status'];
+				} else {
+					$data['preloader_status'] = false;
+				}
+
+				if (isset($ff_settings['t1_preloader_color']) && !empty($ff_settings['t1_preloader_color'])) {
+					$data['preloader_color'] = $ff_settings['t1_preloader_color'];
+				} else {
+					$data['preloader_color'] = '';
+				}
+
+				if (isset($ff_settings['t1_preload_ss']) && !empty($ff_settings['t1_preload_ss'])) {
+					$data['preload_ss'] = $ff_settings['t1_preload_ss'];
+				} else {
+					$data['preload_ss'] = false;
+				}
+
+				if (isset($ff_settings['t1_preloader_type']) && !empty($ff_settings['t1_preloader_type'])) {
+					$data['preloader_type'] = $ff_settings['t1_preloader_type'];
+				} else {
+					$data['preloader_type'] = '';
+				}
+
+				if (isset($ff_settings['t1_preloader_timeout']) && !empty($ff_settings['t1_preloader_timeout'])) {
+					$data['preloader_timeout'] = $ff_settings['t1_preloader_timeout'];
+				} else {
+					$data['preloader_timeout'] = 0;
+				}
+
+        if (is_file(DIR_APPLICATION . 'view/theme/' .  $this->config->get('theme_framefree_directory') . '/stylesheet/custom.css')) {
+          $data['cust_css'] = true;
+        } else {
+          $data['cust_css'] = false;
+        }
+
+        $detect = new Mobile_Detect;
+
+    		$data['isMobile'] = $detect->isMobile() or $detect->isTablet();
+
+      ]]></add>
+    </operation>
+		<operation error="skip">
+      <search><![CDATA[
+				$data['text_wishlist'] = sprintf($this->language->get('text_wishlist'), $this->model_account_wishlist->getTotalWishlist());
+      ]]></search>
+      <add position="after"><![CDATA[
+				$data['text_wishlist'] = sprintf($this->language->get('g_text_wishlist'), $this->model_account_wishlist->getTotalWishlist());
+      ]]></add>
+    </operation>
+		<operation error="skip">
+      <search><![CDATA[
+				$data['text_wishlist'] = sprintf($this->language->get('text_wishlist'), (isset($this->session->data['wishlist']) ? count($this->session->data['wishlist']) : 0));
+      ]]></search>
+      <add position="after"><![CDATA[
+				$data['text_wishlist'] = sprintf($this->language->get('g_text_wishlist'), (isset($this->session->data['wishlist']) ? count($this->session->data['wishlist']) : 0));
+      ]]></add>
+    </operation>
+		<operation error="skip">
+      <search><![CDATA[
+				$this->load->model('setting/extension');
+      ]]></search>
+      <add position="after"><![CDATA[
+				$data['theme_dir'] 	= $this->config->get('theme_framefree_directory');
+				$data['ff_logo']		= $this->load->controller('extension/module/framefreetheme/ff_logo');
+				$data['ff_menu']		= $this->load->controller('extension/module/framefreetheme/ff_menu');
+				$data['ff_cart']		= $this->load->controller('extension/module/framefreetheme/ff_cart');
+				$data['ff_hlinks'] 	= $this->load->controller('extension/module/framefreetheme/ff_hlinks');
+				$data['ff_links'] 	= $this->load->controller('extension/module/framefreetheme/ff_links');
+				$data['ff_search']	 = $this->load->controller('extension/module/framefreetheme/ff_search');
+				$data['ff_contacts'] = $this->load->controller('extension/module/framefreetheme/ff_contacts');
+      ]]></add>
+    </operation>
+  </file>
+
+	<file path="catalog/controller/common/home.php">
+		<operation error="skip">
+      <search><![CDATA[
+				$data['column_left'] = $this->load->controller('common/column_left');
+      ]]></search>
+      <add position="before"><![CDATA[
+
+				$this->load->model('setting/setting');
+
+				$ff_settings = array();
+				$ff_settings = $this->model_setting_setting->getSetting('theme_framefree', $this->config->get('config_store_id'));
+				$language_id = $this->config->get('config_language_id');
+
+				if (isset($this->request->get['route'])) {
+					$route = $this->request->get['route'];
+				} else {
+					$route = 'common/home';
+				}
+
+				if (isset($ff_settings['t1_category_shown_pages']) && !empty($ff_settings['t1_category_shown_pages'])) {
+					$shown_menu_routes = $ff_settings['t1_category_shown_pages'];
+				} else {
+					$shown_menu_routes = array('product/category', 'common/home');
+				}
+
+				$data['menu_open'] = false;
+
+				if (in_array($route, $shown_menu_routes)) {
+					$data['menu_open'] = true;
+				}
+
+      ]]></add>
+    </operation>
+  </file>
+
+	<file path="catalog/controller/common/footer.php">
+		<operation error="skip">
+      <search><![CDATA[
+				$data['scripts'] = $this->document->getScripts('footer');
+      ]]></search>
+      <add position="before"><![CDATA[
+				$this->load->model('setting/setting');
+
+				$ff_settings = array();
+				$ff_settings = $this->model_setting_setting->getSetting('theme_framefree', $this->config->get('config_store_id'));
+
+				if (isset($ff_settings['t1_cust_code_bottom']) && !empty($ff_settings['t1_cust_code_bottom'])) {
+					$data['cust_code'] = html_entity_decode($ff_settings['t1_cust_code_bottom'], ENT_QUOTES, 'UTF-8');
+				} else {
+					$data['cust_code'] = '';
+				}
+
+        if (isset($ff_settings['t1_version']) && !empty($ff_settings['t1_version']) && isset($ff_settings['t1_show_version']) && !empty($ff_settings['t1_show_version'])) {
+					$data['theme_version'] = '?v=' . $ff_settings['t1_version'];
+				} else {
+					$data['theme_version'] = false;
+				}
+
+        if (isset($ff_settings['t1_livesearch_toggle']) && $ff_settings['t1_livesearch_toggle']){
+          $data['livesearch'] = true;
+    		}
+
+        $data['theme_dir'] 	= $this->config->get('theme_framefree_directory');
+
+				$data['ff_fmap'] 	 = $this->load->controller('extension/module/framefreetheme/ff_fmap');
+				$data['ff_footer'] = $this->load->controller('extension/module/framefreetheme/ff_footer');
+				$data['ff_modal'] = $this->load->controller('extension/module/framefreetheme/ff_modal');
+      ]]></add>
+    </operation>
+  </file>
+
+	<file path="catalog/controller/extension/module/{special,latest,featured,bestseller}.php">
+		<operation error="skip">
+      <search><![CDATA[
+				$this->load->model('catalog/product');
+      ]]></search>
+      <add position="after"><![CDATA[
+				$this->load->language('extension/module/framefreetheme/ff_global');
+				$this->load->model('setting/setting');
+
+				$ff_settings = array();
+				$ff_settings = $this->model_setting_setting->getSetting('theme_framefree', $this->config->get('config_store_id'));
+				$language_id = $this->config->get('config_language_id');
+
+        if (isset($ff_settings['t1_high_definition_imgs']) && $ff_settings['t1_high_definition_imgs']){
+    			$hd_imgs = $ff_settings['t1_high_definition_imgs'];
+    		} else {
+    			$hd_imgs = false;
+    		}
+
+				if (isset($ff_settings['t1_qview_status']) && !empty($ff_settings['t1_qview_status'])) {
+					$data['qview_status'] = $ff_settings['t1_qview_status'];
+				} else {
+					$data['qview_status'] = false;
+				}
+
+				if (isset($ff_settings['t1_fastorder_status']) && !empty($ff_settings['t1_fastorder_status'])) {
+					$data['fastorder_status'] = $ff_settings['t1_fastorder_status'];
+				} else {
+					$data['fastorder_status'] = false;
+				}
+
+				if (isset($ff_settings['t1_buy_button_status']) && !empty($ff_settings['t1_buy_button_status'])) {
+					$data['disable_btn_status'] = $ff_settings['t1_buy_button_status'];
+				} else {
+					$data['disable_btn_status'] = false;
+				}
+
+				if (isset($ff_settings['t1_buy_button_disabled_text'][$language_id]) && !empty($ff_settings['t1_buy_button_disabled_text'][$language_id])) {
+					$data['disable_btn_text'] = $ff_settings['t1_buy_button_disabled_text'][$language_id];
+				} else {
+					$data['disable_btn_text'] = '';
+				}
+
+      ]]></add>
+    </operation>
+    <operation error="skip">
+      <search><![CDATA[
+        $data['products'][] = array(
+      ]]></search>
+      <add position="after"><![CDATA[
+        'thumb2x' => $hd_imgs && isset($image2x) ? $image2x : NULL,
+				'thumb3x' => $hd_imgs && isset($image3x) ? $image3x : NULL,
+				'thumb4x' => $hd_imgs && isset($image4x) ? $image4x : NULL,
+      ]]></add>
+    </operation>
+  </file>
+
+  <file path="catalog/controller/extension/module/{special,latest,bestseller}.php">
+    <operation error="skip">
+      <search><![CDATA[
+        $image = $this->model_tool_image->resize($result['image'], $setting['width'], $setting['height']);
+      ]]></search>
+      <add position="after"><![CDATA[
+        if ($hd_imgs) {
+          $image2x = $this->model_tool_image->resize($result['image'], $setting['width']*2, $setting['height']*2);
+          $image3x = $this->model_tool_image->resize($result['image'], $setting['width']*3, $setting['height']*3);
+          $image4x = $this->model_tool_image->resize($result['image'], $setting['width']*4, $setting['height']*4);
+        }
+      ]]></add>
+    </operation>
+    <operation error="skip">
+      <search><![CDATA[
+        $data['products'][] = array(
+      ]]></search>
+      <add position="after"><![CDATA[
+        'quantity'     => $result['quantity'],
+        'img_width'    => $setting['width'] . 'px',
+        'img_height'    => $setting['height'] . 'px',
+      ]]></add>
+    </operation>
+  </file>
+
+  <file path="catalog/controller/extension/module/featured.php">
+    <operation error="skip">
+      <search><![CDATA[
+        $image = $this->model_tool_image->resize($product_info['image'], $setting['width'], $setting['height']);
+      ]]></search>
+      <add position="after"><![CDATA[
+        if ($hd_imgs) {
+          $image2x = $this->model_tool_image->resize($product_info['image'], $setting['width']*2, $setting['height']*2);
+          $image3x = $this->model_tool_image->resize($product_info['image'], $setting['width']*3, $setting['height']*3);
+          $image4x = $this->model_tool_image->resize($product_info['image'], $setting['width']*4, $setting['height']*4);
+        }
+      ]]></add>
+    </operation>
+    <operation error="skip">
+      <search><![CDATA[
+        $data['products'][] = array(
+      ]]></search>
+      <add position="after"><![CDATA[
+        'quantity'     => $product_info['quantity'],
+        'img_width'    => $setting['width'] . 'px',
+        'img_height'    => $setting['height'] . 'px',
+      ]]></add>
+    </operation>
+  </file>
+
+  <file path="catalog/controller/extension/module/{carousel,slideshow,banner}.php">
+    <operation error="skip">
+      <search><![CDATA[
+        $this->document->addScript('catalog/view/javascript/jquery/swiper/js/swiper.jquery.js');
+      ]]></search>
+      <add position="replace"><![CDATA[
+        $this->document->addScript('catalog/view/theme/' . $this->config->get('theme_framefree_directory') . '/javascript/owl-carousel/owl.carousel.min.js');
+      ]]></add>
+    </operation>
+    <operation error="skip">
+      <search><![CDATA[
+        $this->document->addStyle('catalog/view/javascript/jquery/swiper/css/swiper.min.css');
+      ]]></search>
+      <add position="replace"><![CDATA[
+        $this->document->addStyle('catalog/view/theme/' . $this->config->get('theme_framefree_directory') . '/javascript/owl-carousel/owl.carousel.min.css');
+      ]]></add>
+    </operation>
+    <operation error="skip">
+      <search><![CDATA[
+        $this->document->addStyle('catalog/view/javascript/jquery/swiper/css/opencart.css');
+      ]]></search>
+      <add position="replace"><![CDATA[
+        // removed by frame theme
+      ]]></add>
+    </operation>
+    <operation error="skip">
+      <search><![CDATA[
+        $data['banners'][] = array(
+      ]]></search>
+      <add position="after"><![CDATA[
+        'thumb_holder'    => $this->model_tool_image->resize('catalog/framefreetheme/src_holder.png', $setting['width'], $setting['height']),
+        'img_width' => $setting['width'] . 'px',
+        'img_height' => $setting['height'] . 'px',
+      ]]></add>
+    </operation>
+  </file>
+
+	<file path="catalog/controller/product/{special,manufacturer,search,category}.php">
+		<operation error="skip">
+      <search><![CDATA[
+				$this->load->model('tool/image');
+      ]]></search>
+      <add position="before"><![CDATA[
+				$this->load->language('extension/module/framefreetheme/ff_global');
+
+				function ff_plural($number, $text_arr) {
+					$cases = array (2, 0, 1, 1, 1, 2);
+					$text = $number . ' ' . $text_arr[ ($number % 100 > 4 && $number % 100 < 20) ? 2 : $cases[min($number % 10, 5)] ];
+					return $text;
+				}
+
+				$data['review_status'] = $this->config->get('config_review_status');
+
+				$this->load->model('setting/setting');
+
+				$ff_settings = array();
+				$ff_settings = $this->model_setting_setting->getSetting('theme_framefree', $this->config->get('config_store_id'));
+				$language_id = $this->config->get('config_language_id');
+
+        if (isset($ff_settings['t1_high_definition_imgs']) && $ff_settings['t1_high_definition_imgs']){
+    			$hd_imgs = $ff_settings['t1_high_definition_imgs'];
+    		} else {
+    			$hd_imgs = false;
+    		}
+
+				if (isset($this->request->get['route'])) {
+					$route = $this->request->get['route'];
+				} else {
+					$route = 'common/home';
+				}
+
+				if (isset($ff_settings['t1_category_shown_pages']) && !empty($ff_settings['t1_category_shown_pages'])) {
+					$shown_menu_routes = $ff_settings['t1_category_shown_pages'];
+				} else {
+					$shown_menu_routes = array('product/category', 'common/home');
+				}
+
+				if (isset($ff_settings['t1_category_description_position']) && !empty($ff_settings['t1_category_description_position'])) {
+					$data['description_position'] = $ff_settings['t1_category_description_position'];
+				} else {
+					$data['description_position'] = false;
+				}
+
+        if (isset($ff_settings['t1_sub_cat_img_status']) && !empty($ff_settings['t1_sub_cat_img_status'])) {
+					$data['sub_cat_img_status'] = $ff_settings['t1_sub_cat_img_status'];
+				} else {
+					$data['sub_cat_img_status'] = false;
+				}
+
+        if (isset($ff_settings['t1_catalog_page_lazy']) && !empty($ff_settings['t1_catalog_page_lazy'])) {
+					$data['catalog_page_lazy'] = $ff_settings['t1_catalog_page_lazy'];
+				} else {
+					$data['catalog_page_lazy'] = false;
+				}
+
+				if (isset($ff_settings['t1_qview_status']) && !empty($ff_settings['t1_qview_status'])) {
+					$data['qview_status'] = $ff_settings['t1_qview_status'];
+				} else {
+					$data['qview_status'] = false;
+				}
+
+				if (isset($ff_settings['t1_fastorder_status']) && !empty($ff_settings['t1_fastorder_status'])) {
+					$data['fastorder_status'] = $ff_settings['t1_fastorder_status'];
+				} else {
+					$data['fastorder_status'] = false;
+				}
+
+				if (isset($ff_settings['t1_stikers']) && !empty($ff_settings['t1_stikers'])) {
+					$ff_stikers = $ff_settings['t1_stikers'];
+				} else {
+					$ff_stikers = array();
+				}
+
+				if (isset($ff_settings['t1_buy_button_status']) && !empty($ff_settings['t1_buy_button_status'])) {
+					$data['disable_btn_status'] = $ff_settings['t1_buy_button_status'];
+				} else {
+					$data['disable_btn_status'] = false;
+				}
+
+				if (isset($ff_settings['t1_buy_button_disabled_text'][$language_id]) && !empty($ff_settings['t1_buy_button_disabled_text'][$language_id])) {
+					$data['disable_btn_text'] = $ff_settings['t1_buy_button_disabled_text'][$language_id];
+				} else {
+					$data['disable_btn_text'] = '';
+				}
+
+        if (isset($ff_settings['t1_view_default']) && !empty($ff_settings['t1_view_default'])) {
+					$data['view_default'] = $ff_settings['t1_view_default'];
+				} else {
+					$data['view_default'] = 'grid';
+				}
+
+        if (isset($ff_settings['t1_catalog_stok_status']) && !empty($ff_settings['t1_catalog_stok_status'])) {
+					$data['catalog_stok_status'] = $ff_settings['t1_catalog_stok_status'];
+				} else {
+					$data['catalog_stok_status'] = false;
+				}
+
+				$data['menu_open'] = false;
+
+				if (in_array($route, $shown_menu_routes)) {
+					$data['menu_open'] = true;
+				}
+
+      ]]></add>
+    </operation>
+		<operation error="skip">
+      <search><![CDATA[
+				if ($result['image']) {
+      ]]></search>
+      <add position="before"><![CDATA[
+				if ($result['image']) {
+          if ($hd_imgs) {
+  					$image2x = $this->model_tool_image->resize($result['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_product_width')*2, $this->config->get('theme_' . $this->config->get('config_theme') . '_image_product_height')*2);
+  					$image3x = $this->model_tool_image->resize($result['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_product_width')*3, $this->config->get('theme_' . $this->config->get('config_theme') . '_image_product_height')*3);
+  					$image4x = $this->model_tool_image->resize($result['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_product_width')*4, $this->config->get('theme_' . $this->config->get('config_theme') . '_image_product_height')*4);
+          }
+				} else {
+          if ($hd_imgs) {
+  					$image2x = $this->model_tool_image->resize('placeholder.png', $this->config->get('theme_' . $this->config->get('config_theme') . '_image_product_width')*2, $this->config->get('theme_' . $this->config->get('config_theme') . '_image_product_height')*2);
+  					$image3x = $this->model_tool_image->resize('placeholder.png', $this->config->get('theme_' . $this->config->get('config_theme') . '_image_product_width')*3, $this->config->get('theme_' . $this->config->get('config_theme') . '_image_product_height')*3);
+  					$image4x = $this->model_tool_image->resize('placeholder.png', $this->config->get('theme_' . $this->config->get('config_theme') . '_image_product_width')*4, $this->config->get('theme_' . $this->config->get('config_theme') . '_image_product_height')*4);
+          }
+				}
+      ]]></add>
+    </operation>
+		<operation error="skip">
+      <search><![CDATA[
+				$data['products'][] = array(
+      ]]></search>
+      <add position="before"><![CDATA[
+
+				$stickers = array();
+
+				if ($result['price'] && $result['special'] && $ff_stikers['special']['status']) {
+					$stickers['special'] = array(
+						'text'  => round(100 - ($result['special'] / $result['price']) * 100) * (-1) . '%',
+						'class' => 'badge stiker-special'
+					);
+				}
+
+				if ($result['upc'] && $ff_stikers['upc']['status']) {
+					$stickers['upc'] = array(
+						'text'  => $result['upc'],
+						'class' => 'badge stiker-upc'
+					);
+				}
+
+				if ($result['ean'] && $ff_stikers['ean']['status']) {
+					$stickers['ean'] = array(
+						'text'  => $result['ean'],
+						'class' => 'badge stiker-ean'
+					);
+				}
+
+				if ($result['jan'] && $ff_stikers['jan']['status']) {
+					$stickers['jan'] = array(
+						'text'  => $result['jan'],
+						'class' => 'badge stiker-jan'
+					);
+				}
+
+				if ($result['isbn'] && $ff_stikers['isbn']['status']) {
+					$stickers['isbn'] = array(
+						'text'  => $result['isbn'],
+						'class' => 'badge stiker-isbn'
+					);
+				}
+
+				if ($result['mpn'] && $ff_stikers['mpn']['status']) {
+					$stickers['mpn'] = array(
+						'text'  => $result['mpn'],
+						'class' => 'badge stiker-mpn'
+					);
+				}
+
+				// temp
+
+				if (isset($this->request->get['path'])){
+					$p_path = 'path=' . $this->request->get['path'];
+				} else {
+					$p_path = '';
+				}
+
+				if ((int)$result['reviews'] > 0) {
+					$reviews = ff_plural((int)$result['reviews'],array($this->language->get('g_text_reviews_1'),$this->language->get('g_text_reviews_2'),$this->language->get('g_text_reviews_3')));
+					$reviews_href = $this->url->link('product/product', $p_path . '&product_id=' . $result['product_id'] . $url . '#reviews');
+				} else {
+					$reviews = $this->language->get('g_text_no_reviews');
+					$reviews_href = '';
+				}
+
+        if ($result['quantity'] <= 0) {
+  				$stock = $result['stock_status'];
+  			} else if ($this->config->get('config_stock_display')) {
+  				$stock = sprintf($this->language->get('g_stock_quantity'), (int)$result['quantity']);
+  			} else {
+  				$stock = $this->language->get('g_stock_status');
+  			}
+
+      ]]></add>
+    </operation>
+		<operation error="skip">
+      <search><![CDATA[
+				$data['products'][] = array(
+      ]]></search>
+      <add position="after"><![CDATA[
+        'img_width'       => $this->config->get('theme_' . $this->config->get('config_theme') . '_image_product_width') . 'px',
+        'img_height'      => $this->config->get('theme_' . $this->config->get('config_theme') . '_image_product_height') . 'px',
+				'reviews'         => $reviews,
+				'reviews_href'    => $reviews_href,
+				'thumb2x'         => $hd_imgs ? $image2x : NULL,
+				'thumb3x'         => $hd_imgs ? $image3x : NULL,
+				'thumb4x'         => $hd_imgs ? $image4x : NULL,
+				'stickers'  			=> $stickers,
+				'quantity'  			=> $result['quantity'],
+        'stock' => $stock,
+      ]]></add>
+    </operation>
+		<operation error="skip">
+      <search><![CDATA[
+				$pagination = new Pagination();
+      ]]></search>
+      <add position="after"><![CDATA[
+				$pagination = new Pagination_ft();
+				$pagination->num_links = 5;
+      ]]></add>
+    </operation>
+		<operation error="skip">
+      <search><![CDATA[
+				$data['results'] = sprintf($this->language->get('text_pagination'), ($product_total) ? (($page - 1) * $limit) + 1 : 0, ((($page - 1) * $limit) > ($product_total - $limit)) ? $product_total : ((($page - 1) * $limit) + $limit), $product_total, ceil($product_total / $limit));
+      ]]></search>
+      <add position="after"><![CDATA[
+				$data['results'] = sprintf($this->language->get('g_text_pagination'), ($product_total) ? (($page - 1) * $limit) + 1 : 0, ((($page - 1) * $limit) > ($product_total - $limit)) ? $product_total : ((($page - 1) * $limit) + $limit), $product_total, ceil($product_total / $limit));
+      ]]></add>
+    </operation>
+  </file>
+
+  <file path="catalog/controller/product/category.php">
+    <operation error="skip">
+      <search><![CDATA[
+				$data['categories'][] = array(
+      ]]></search>
+      <add position="before"><![CDATA[
+
+        if ($this->config->get('theme_' . $this->config->get('config_theme') . '_image_category_width')) {
+          $category_img_size_w = $this->config->get('theme_' . $this->config->get('config_theme') . '_image_category_width');
+        } else {
+          $category_img_size_w = 120;
+        }
+
+        if ($this->config->get('theme_' . $this->config->get('config_theme') . '_image_category_height')) {
+          $category_img_size_h = $this->config->get('theme_' . $this->config->get('config_theme') . '_image_category_height');
+        } else {
+          $category_img_size_h = 120;
+        }
+
+			  $image1x = $this->model_tool_image->resize($result['image'], $category_img_size_w, $category_img_size_h);
+
+        if ($hd_imgs) {
+          $image2x = $this->model_tool_image->resize($result['image'], $category_img_size_w*2, $category_img_size_h*2);
+          $image3x = $this->model_tool_image->resize($result['image'], $category_img_size_w*3, $category_img_size_h*3);
+          $image4x = $this->model_tool_image->resize($result['image'], $category_img_size_w*4, $category_img_size_h*4);
+        }
+      ]]></add>
+    </operation>
+		<operation error="skip">
+      <search><![CDATA[
+				$data['categories'][] = array(
+      ]]></search>
+      <add position="after"><![CDATA[
+        'img_width' => $category_img_size_w . 'px',
+        'img_height' => $category_img_size_h . 'px',
+				'image1x' => $image1x,
+        'image2x' => $hd_imgs ? $image2x : NULL,
+        'image3x' => $hd_imgs ? $image3x : NULL,
+        'image4x' => $hd_imgs ? $image4x : NULL,
+      ]]></add>
+    </operation>
+    <operation error="skip">
+      <search><![CDATA[
+				$data['description'] = html_entity_decode($category_info['description'], ENT_QUOTES, 'UTF-8');
+      ]]></search>
+      <add position="after"><![CDATA[
+
+        $delimiter = '<!--more-->';
+        $split_description = explode($delimiter, html_entity_decode($category_info['description'], ENT_QUOTES, 'UTF-8'), 2);
+
+        if (count($split_description) > 1) {
+          $data['splited_description_top'] = html_entity_decode($split_description[0], ENT_QUOTES, 'UTF-8');
+          $data['splited_description_bottom'] = html_entity_decode($split_description[1], ENT_QUOTES, 'UTF-8');
+        } else {
+          $data['splited_description_top'] = false;
+          $data['splited_description_bottom'] = false;
+        }
+
+      ]]></add>
+    </operation>
+  </file>
+
+  <file path="catalog/controller/product/manufacturer.php">
+    <operation error="skip">
+      <search><![CDATA[
+				$data['description'] = html_entity_decode($manufacturer_info['description'], ENT_QUOTES, 'UTF-8');
+      ]]></search>
+      <add position="after"><![CDATA[
+
+        $delimiter = '<!--more-->';
+        $split_description = explode($delimiter, html_entity_decode($manufacturer_info['description'], ENT_QUOTES, 'UTF-8'), 2);
+
+        if (count($split_description) > 1) {
+          $data['splited_description_top'] = html_entity_decode($split_description[0], ENT_QUOTES, 'UTF-8');
+          $data['splited_description_bottom'] = html_entity_decode($split_description[1], ENT_QUOTES, 'UTF-8');
+        } else {
+          $data['splited_description_top'] = false;
+          $data['splited_description_bottom'] = false;
+        }
+
+      ]]></add>
+    </operation>
+  </file>
+
+	<file path="catalog/controller/product/product.php">
+
+    <operation error="skip">
+      <search><![CDATA[
+				$this->document->addLink($this->url->link('product/product', 'product_id=' . $this->request->get['product_id']), 'canonical');
+      ]]></search>
+      <add position="before"><![CDATA[
+        if (!$this->config->get('config_review_status')) {
+      ]]></add>
+    </operation>
+
+    <operation error="skip">
+      <search><![CDATA[
+				$this->document->addLink($this->url->link('product/product', 'product_id=' . $this->request->get['product_id']), 'canonical');
+      ]]></search>
+      <add position="after"><![CDATA[
+        }
+      ]]></add>
+    </operation>
+
+    <operation error="skip">
+      <search><![CDATA[
+				$this->document->addLink($this->url->link('product/product', 'product_id=' . $this->request->get['product_id']), 'canonical');
+      ]]></search>
+      <add position="before"><![CDATA[
+        if (!$this->config->get('config_review_status')) {
+      ]]></add>
+    </operation>
+
+    <operation error="skip">
+      <search><![CDATA[
+				$this->document->addLink($this->url->link('product/product', 'product_id=' . $this->request->get['product_id']), 'canonical');
+      ]]></search>
+      <add position="after"><![CDATA[
+        }
+      ]]></add>
+    </operation>
+
+    <operation error="skip">
+      <search><![CDATA[
+				$data['breadcrumbs'] = array();
+      ]]></search>
+      <add position="before"><![CDATA[
+
+				if (isset($this->request->cookie['stk_viewed_products'])) {
+					$stk_viewed_products = json_decode($this->request->cookie['stk_viewed_products'], true);
+  				$stk_viewed_products[] = (int)$this->request->get['product_id'];
+  			} else {
+					$stk_viewed_products = array();
+					$stk_viewed_products[] = (int)$this->request->get['product_id'];
+  			}
+
+        setcookie("stk_viewed_products", json_encode($stk_viewed_products), 0, '/');
+
+				$this->load->model('setting/setting');
+				$this->load->language('extension/module/framefreetheme/ff_global');
+
+				$ff_settings = array();
+				$ff_settings = $this->model_setting_setting->getSetting('theme_framefree', $this->config->get('config_store_id'));
+				$language_id = $this->config->get('config_language_id');
+
+        if (isset($ff_settings['t1_high_definition_imgs']) && $ff_settings['t1_high_definition_imgs']){
+    			$hd_imgs = $ff_settings['t1_high_definition_imgs'];
+    		} else {
+    			$hd_imgs = false;
+    		}
+
+        if (isset($ff_settings['t1_catalog_page_lazy']) && !empty($ff_settings['t1_catalog_page_lazy'])) {
+					$data['catalog_page_lazy'] = $ff_settings['t1_catalog_page_lazy'];
+				} else {
+					$data['catalog_page_lazy'] = false;
+				}
+
+				if (isset($ff_settings['t1_product_short_description'])) {
+					$data['show_short_description'] = $ff_settings['t1_product_short_description'];
+				} else {
+					$data['show_short_description'] = false;
+				}
+
+				if (isset($ff_settings['t1_product_short_attributes'])) {
+					$data['show_short_attributes'] = $ff_settings['t1_product_short_attributes'];
+				} else {
+					$data['show_short_attributes'] = false;
+				}
+
+        if (isset($ff_settings['t1_product_short_attributes_limit'])) {
+					$data['short_attributes_limit'] = $ff_settings['t1_product_short_attributes_limit'];
+				} else {
+					$data['short_attributes_limit'] = 5;
+				}
+
+				if (isset($ff_settings['t1_product_social_likes'])) {
+					$data['show_social_likes'] = $ff_settings['t1_product_social_likes'];
+				} else {
+					$data['show_social_likes'] = false;
+				}
+
+        if (isset($ff_settings['t1_product_social_likes_code'])) {
+					$data['social_likes_code'] = html_entity_decode($ff_settings['t1_product_social_likes_code'], ENT_QUOTES, 'UTF-8');
+				} else {
+					$data['social_likes_code'] = false;
+				}
+
+				if (isset($ff_settings['t1_related_product_position'])) {
+					$data['related_product_position'] = $ff_settings['t1_related_product_position'];
+				} else {
+					$data['related_product_position'] = false;
+				}
+
+        if (isset($ff_settings['t1_related_product_buttons'])) {
+					$data['related_product_buttons'] = $ff_settings['t1_related_product_buttons'];
+				} else {
+					$data['related_product_buttons'] = false;
+				}
+
+				if (isset($ff_settings['t1_product_add_images_limit'])) {
+					$data['add_images_limit'] = $ff_settings['t1_product_add_images_limit'];
+				} else {
+					$data['add_images_limit'] = false;
+				}
+
+				if (isset($ff_settings['t1_stikers']) && !empty($ff_settings['t1_stikers'])) {
+					$ff_stikers = $ff_settings['t1_stikers'];
+				} else {
+					$ff_stikers = array();
+				}
+
+        if (isset($ff_settings['t1_product_additional_fields']) && !empty($ff_settings['t1_product_additional_fields'])) {
+					$additional_fields = $ff_settings['t1_product_additional_fields'];
+				} else {
+					$additional_fields = array('model');
+				}
+
+				if (isset($ff_settings['t1_buy_button_status']) && !empty($ff_settings['t1_buy_button_status'])) {
+					$data['disable_btn_status'] = $ff_settings['t1_buy_button_status'];
+				} else {
+					$data['disable_btn_status'] = false;
+				}
+
+        if (isset($ff_settings['t1_fastorder_status']) && !empty($ff_settings['t1_fastorder_status'])) {
+					$data['fastorder_status'] = $ff_settings['t1_fastorder_status'];
+				} else {
+					$data['fastorder_status'] = false;
+				}
+
+        if (isset($ff_settings['t1_qview_status']) && !empty($ff_settings['t1_qview_status'])) {
+					$data['qview_status'] = $ff_settings['t1_qview_status'];
+				} else {
+					$data['qview_status'] = false;
+				}
+
+				if (isset($ff_settings['t1_buy_button_disabled_text'][$language_id]) && !empty($ff_settings['t1_buy_button_disabled_text'][$language_id])) {
+					$data['disable_btn_text'] = $ff_settings['t1_buy_button_disabled_text'][$language_id];
+				} else {
+					$data['disable_btn_text'] = '';
+				}
+
+        if (isset($ff_settings['t1_extra_tab_status']) && !empty($ff_settings['t1_extra_tab_status'])) {
+					$data['extra_tab_status'] = $ff_settings['t1_extra_tab_status'];
+				} else {
+					$data['extra_tab_status'] = false;
+				}
+
+        if (isset($ff_settings['t1_extra_tab_heading'][$language_id]) && !empty($ff_settings['t1_extra_tab_heading'][$language_id])) {
+					$data['extra_tab_heading'] = $ff_settings['t1_extra_tab_heading'][$language_id];
+				} else {
+					$data['extra_tab_heading'] = '';
+				}
+
+        if (isset($ff_settings['t1_extra_tab_content'][$language_id]) && !empty($ff_settings['t1_extra_tab_content'][$language_id])) {
+					$data['extra_tab_content'] = html_entity_decode($ff_settings['t1_extra_tab_content'][$language_id], ENT_QUOTES, 'UTF-8');
+				} else {
+					$data['extra_tab_content'] = '';
+				}
+
+				$data['theme_dir'] = $this->config->get('theme_framefree_directory');
+
+
+        $data['reviews_array'] = $this->load->controller('extension/module/framefreetheme/ff_reviews_noajax', $this->request->get['product_id']);
+
+
+      ]]></add>
+    </operation>
+
+    <operation error="skip">
+      <search><![CDATA[
+        if ($product_info) {
+      ]]></search>
+      <add position="after"><![CDATA[
+
+        $data['microdata_price_valid_until'] = date("Y-m-d", mktime(0, 0, 0, date('m'), date('d') + 1, date('Y')));
+
+        if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
+  				$data['microdata_price'] = $this->currency->format($this->tax->calculate($product_info['price'], $product_info['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency'], '', false);
+  			} else {
+  				$data['microdata_price'] = false;
+  			}
+
+  			if ((float)$product_info['special']) {
+  				$data['microdata_special'] = $this->currency->format($this->tax->calculate($product_info['special'], $product_info['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency'], '', false);
+
+          $this->load->model('extension/theme/frame');
+
+          $special_end_date = $this->model_extension_theme_framefree->getSpecialEndDate($product_id);
+
+          if ($special_end_date) {
+            $data['microdata_price_valid_until'] = $special_end_date;
+          }
+
+  			} else {
+  				$data['microdata_special'] = false;
+  			}
+
+        $data['microdata_currency'] = $this->session->data['currency'];
+
+        $data['microdata_reviews_count'] = (int)$product_info['reviews'];
+
+        $data['microdata_canonical_url'] = $this->url->link('product/product', 'product_id=' . $this->request->get['product_id']);
+
+        $data['microdata_date_available'] = $product_info['date_available'];
+
+      ]]></add>
+    </operation>
+
+		<operation error="skip">
+      <search><![CDATA[
+				$data['description'] = html_entity_decode($product_info['description'], ENT_QUOTES, 'UTF-8');
+      ]]></search>
+      <add position="after"><![CDATA[
+
+        $delimiter = '<!--more-->';
+        $split_description = explode($delimiter, html_entity_decode($product_info['description'], ENT_QUOTES, 'UTF-8'), 2);
+
+        if (count($split_description) > 1) {
+          $data['short_description'] = html_entity_decode($split_description[0], ENT_QUOTES, 'UTF-8');
+          $data['description'] = html_entity_decode($split_description[1], ENT_QUOTES, 'UTF-8');
+        } else {
+          $data['short_description'] = utf8_substr(trim(strip_tags(html_entity_decode($product_info['description'], ENT_QUOTES, 'UTF-8'))), 0, 300) . '...';
+        }
+
+				$data['quantity'] = $product_info['quantity'];
+      ]]></add>
+    </operation>
+
+		<operation error="skip">
+      <search><![CDATA[
+				$data['images'] = array();
+      ]]></search>
+      <add position="before"><![CDATA[
+
+        $data['additional_fields'] = array();
+
+        if ($product_info['model'] && in_array('model', $additional_fields)) {
+					$data['additional_fields']['model'] = array(
+            'title' => $this->language->get('text_model'),
+						'text'  => $product_info['model']
+					);
+				}
+
+        if ($product_info['sku'] && in_array('sku', $additional_fields)) {
+					$data['additional_fields']['sku'] = array(
+            'title' => 'SKU:',
+						'text'  => $product_info['sku']
+					);
+				}
+
+
+        if ($product_info['upc'] && in_array('upc', $additional_fields) && !$ff_stikers['upc']['status']) {
+					$data['additional_fields']['upc'] = array(
+            'title' => 'UPC:',
+						'text'  => $product_info['upc']
+					);
+				}
+
+        if ($product_info['ean'] && in_array('ean', $additional_fields) && !$ff_stikers['ean']['status']) {
+					$data['additional_fields']['ean'] = array(
+            'title' => 'EAN:',
+						'text'  => $product_info['ean']
+					);
+				}
+
+        if ($product_info['jan'] && in_array('jan', $additional_fields) && !$ff_stikers['jan']['status']) {
+					$data['additional_fields']['jan'] = array(
+            'title' => 'JAN:',
+						'text'  => $product_info['jan']
+					);
+				}
+
+        if ($product_info['isbn'] && in_array('isbn', $additional_fields) && !$ff_stikers['isbn']['status']) {
+					$data['additional_fields']['isbn'] = array(
+            'title' => 'ISBN:',
+						'text'  => $product_info['isbn']
+					);
+				}
+
+        if ($product_info['mpn'] && in_array('mpn', $additional_fields) && !$ff_stikers['mpn']['status']) {
+					$data['additional_fields']['mpn'] = array(
+            'title' => 'MPN:',
+						'text'  => $product_info['mpn']
+					);
+				}
+
+				$data['stickers'] = array();
+
+				if ($product_info['price'] && $product_info['special'] && $ff_stikers['special']['status']) {
+					$data['stickers']['special'] = array(
+						'text'  => round(100 - ($product_info['special'] / $product_info['price']) * 100) * (-1) . '%',
+						'class' => 'badge stiker-special'
+					);
+				}
+
+				if ($product_info['upc'] && $ff_stikers['upc']['status']) {
+					$data['stickers']['upc'] = array(
+						'text'  => $product_info['upc'],
+						'class' => 'badge stiker-upc'
+					);
+				}
+
+				if ($product_info['ean'] && $ff_stikers['ean']['status']) {
+					$data['stickers']['ean'] = array(
+						'text'  => $product_info['ean'],
+						'class' => 'badge stiker-ean'
+					);
+				}
+
+				if ($product_info['jan'] && $ff_stikers['jan']['status']) {
+					$data['stickers']['jan'] = array(
+						'text'  => $product_info['jan'],
+						'class' => 'badge stiker-jan'
+					);
+				}
+
+				if ($product_info['isbn'] && $ff_stikers['isbn']['status']) {
+					$data['stickers']['isbn'] = array(
+						'text'  => $product_info['isbn'],
+						'class' => 'badge stiker-isbn'
+					);
+				}
+
+				if ($product_info['mpn'] && $ff_stikers['mpn']['status']) {
+					$data['stickers']['mpn'] = array(
+						'text'  => $product_info['mpn'],
+						'class' => 'badge stiker-mpn'
+					);
+				}
+
+				$data['bullets'] = array();
+
+				$data['thumb_width'] = $this->config->get('theme_' . $this->config->get('config_theme') . '_image_thumb_width');
+				$data['thumb_height'] = $this->config->get('theme_' . $this->config->get('config_theme') . '_image_thumb_height');
+
+				$data['thumb_holder'] = $this->model_tool_image->resize('catalog/framefreetheme/src_holder.png', $data['thumb_width'], $data['thumb_height']);
+
+				$data['popup_width'] = $this->config->get('theme_' . $this->config->get('config_theme') . '_image_popup_width');
+				$data['popup_height'] = $this->config->get('theme_' . $this->config->get('config_theme') . '_image_popup_height');
+
+				if ($product_info['image']) {
+					$data['popup'] = $this->model_tool_image->resize($product_info['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_popup_width'), $this->config->get('theme_' . $this->config->get('config_theme') . '_image_popup_height'));
+				} else {
+					$data['popup'] = '';
+				}
+
+				if ($product_info['image']) {
+
+					$data['bullets'][] = array(
+            'img_width' => $this->config->get('theme_' . $this->config->get('config_theme') . '_image_additional_width') . 'px',
+            'img_height' => $this->config->get('theme_' . $this->config->get('config_theme') . '_image_additional_height') . 'px',
+						'img1x' => $this->model_tool_image->resize($product_info['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_additional_width'), $this->config->get('theme_' . $this->config->get('config_theme') . '_image_additional_height')),
+						'img2x' => $hd_imgs ? $this->model_tool_image->resize($product_info['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_additional_width')*2, $this->config->get('theme_' . $this->config->get('config_theme') . '_image_additional_height')*2) : NULL,
+						'img3x' => $hd_imgs ? $this->model_tool_image->resize($product_info['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_additional_width')*3, $this->config->get('theme_' . $this->config->get('config_theme') . '_image_additional_height')*3) : NULL,
+						'img4x' => $hd_imgs ? $this->model_tool_image->resize($product_info['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_additional_width')*4, $this->config->get('theme_' . $this->config->get('config_theme') . '_image_additional_height')*4) : NULL
+					);
+
+					$data['thumb'] = $this->model_tool_image->resize($product_info['image'], $data['thumb_width'], $data['thumb_height']);
+
+          if ($hd_imgs) {
+            $data['thumb2x'] = $this->model_tool_image->resize($product_info['image'], $data['thumb_width']*2, $data['thumb_height']*2);
+            $data['thumb3x'] = $this->model_tool_image->resize($product_info['image'], $data['thumb_width']*3, $data['thumb_height']*3);
+            $data['thumb4x'] = $this->model_tool_image->resize($product_info['image'], $data['thumb_width']*4, $data['thumb_height']*4);
+          }
+
+				} else {
+					$data['thumb'] = '';
+				}
+
+      ]]></add>
+    </operation>
+
+    <operation error="skip">
+      <search><![CDATA[
+				'thumb' => $this->model_tool_image->resize($result['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_additional_width'), $this->config->get('theme_' . $this->config->get('config_theme') . '_image_additional_height'))
+      ]]></search>
+      <add position="replace"><![CDATA[
+				'thumb' => $this->model_tool_image->resize($result['image'], $data['thumb_width'], $data['thumb_height']),
+				'thumb2x' => $hd_imgs ? $this->model_tool_image->resize($result['image'], $data['thumb_width']*2, $data['thumb_height']*2) : NULL,
+				'thumb3x' => $hd_imgs ? $this->model_tool_image->resize($result['image'], $data['thumb_width']*3, $data['thumb_height']*3) : NULL,
+				'thumb4x' => $hd_imgs ? $this->model_tool_image->resize($result['image'], $data['thumb_width']*4, $data['thumb_height']*4) : NULL
+      ]]></add>
+    </operation>
+
+    <operation error="skip">
+      <search><![CDATA[
+				$data['images'][] = array(
+      ]]></search>
+      <add position="before"><![CDATA[
+				$data['bullets'][] = array(
+          'img_width' => $this->config->get('theme_' . $this->config->get('config_theme') . '_image_additional_width') . 'px',
+          'img_height' => $this->config->get('theme_' . $this->config->get('config_theme') . '_image_additional_height') . 'px',
+					'img1x' => $this->model_tool_image->resize($result['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_additional_width'), $this->config->get('theme_' . $this->config->get('config_theme') . '_image_additional_height')),
+					'img2x' => $hd_imgs ? $this->model_tool_image->resize($result['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_additional_width')*2, $this->config->get('theme_' . $this->config->get('config_theme') . '_image_additional_height')*2) : NULL,
+					'img3x' => $hd_imgs ? $this->model_tool_image->resize($result['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_additional_width')*3, $this->config->get('theme_' . $this->config->get('config_theme') . '_image_additional_height')*3) : NULL,
+					'img4x' => $hd_imgs ? $this->model_tool_image->resize($result['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_additional_width')*4, $this->config->get('theme_' . $this->config->get('config_theme') . '_image_additional_height')*4) : NULL
+				);
+
+      ]]></add>
+    </operation>
+
+    <operation error="skip">
+      <search><![CDATA[
+				$data['products'][] = array(
+      ]]></search>
+      <add position="before"><![CDATA[
+
+				if ($result['image']) {
+          if ($hd_imgs) {
+  					$image2x = $this->model_tool_image->resize($result['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_related_width')*2, $this->config->get('theme_' . $this->config->get('config_theme') . '_image_related_height')*2);
+  					$image3x = $this->model_tool_image->resize($result['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_related_width')*3, $this->config->get('theme_' . $this->config->get('config_theme') . '_image_related_height')*3);
+  					$image4x = $this->model_tool_image->resize($result['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_related_width')*4, $this->config->get('theme_' . $this->config->get('config_theme') . '_image_related_height')*4);
+          }
+				} else {
+          if ($hd_imgs) {
+  					$image2x = $this->model_tool_image->resize('placeholder.png', $this->config->get('theme_' . $this->config->get('config_theme') . '_image_related_width')*2, $this->config->get('theme_' . $this->config->get('config_theme') . '_image_related_height')*2);
+  					$image3x = $this->model_tool_image->resize('placeholder.png', $this->config->get('theme_' . $this->config->get('config_theme') . '_image_related_width')*3, $this->config->get('theme_' . $this->config->get('config_theme') . '_image_related_height')*3);
+  					$image4x = $this->model_tool_image->resize('placeholder.png', $this->config->get('theme_' . $this->config->get('config_theme') . '_image_related_width')*4, $this->config->get('theme_' . $this->config->get('config_theme') . '_image_related_height')*4);
+          }
+				}
+
+				$stickers = array();
+
+				if ($result['price'] && $result['special'] && $ff_stikers['special']['status']) {
+					$stickers['special'] = array(
+						'text'  => round(100 - ($result['special'] / $result['price']) * 100) * (-1) . '%',
+						'class' => 'badge stiker-special'
+					);
+				}
+
+				if ($result['upc'] && $ff_stikers['upc']['status']) {
+					$stickers['upc'] = array(
+						'text'  => $result['upc'],
+						'class' => 'badge stiker-upc'
+					);
+				}
+
+				if ($result['ean'] && $ff_stikers['ean']['status']) {
+					$stickers['ean'] = array(
+						'text'  => $result['ean'],
+						'class' => 'badge stiker-ean'
+					);
+				}
+
+				if ($result['jan'] && $ff_stikers['jan']['status']) {
+					$stickers['jan'] = array(
+						'text'  => $result['jan'],
+						'class' => 'badge stiker-jan'
+					);
+				}
+
+				if ($result['isbn'] && $ff_stikers['isbn']['status']) {
+					$stickers['isbn'] = array(
+						'text'  => $result['isbn'],
+						'class' => 'badge stiker-isbn'
+					);
+				}
+
+				if ($result['mpn'] && $ff_stikers['mpn']['status']) {
+					$stickers['mpn'] = array(
+						'text'  => $result['mpn'],
+						'class' => 'badge stiker-mpn'
+					);
+				}
+      ]]></add>
+    </operation>
+
+    <operation error="skip">
+      <search><![CDATA[
+				$data['products'][] = array(
+      ]]></search>
+      <add position="after"><![CDATA[
+        'img_width'    => $this->config->get('theme_' . $this->config->get('config_theme') . '_image_related_width') . 'px',
+        'img_height'   => $this->config->get('theme_' . $this->config->get('config_theme') . '_image_related_height') . 'px',
+        'thumb_holder'    => $this->model_tool_image->resize('catalog/framefreetheme/src_holder.png', $this->config->get('theme_' . $this->config->get('config_theme') . '_image_related_width'), $this->config->get('theme_' . $this->config->get('config_theme') . '_image_related_height')),
+				'thumb2x'         => $hd_imgs ? $image2x : NULL,
+				'thumb3x'         => $hd_imgs ? $image3x : NULL,
+				'thumb4x'         => $hd_imgs ? $image4x : NULL,
+				'stickers'  			=> $stickers,
+        'quantity'        => $result['quantity'],
+      ]]></add>
+    </operation>
+
+    <operation error="skip">
+      <search><![CDATA[
+				$product_option_value_data[] = array(
+      ]]></search>
+      <add position="after"><![CDATA[
+				'image2x'          => $hd_imgs ? $this->model_tool_image->resize($option_value['image'], 50*2, 50*2) : NULL,
+				'image3x'          => $hd_imgs ? $this->model_tool_image->resize($option_value['image'], 50*3, 50*3) : NULL,
+				'image4x'          => $hd_imgs ? $this->model_tool_image->resize($option_value['image'], 50*4, 50*4) : NULL,
+      ]]></add>
+    </operation>
+
+		<operation error="skip">
+      <search><![CDATA[
+				$this->document->addScript('catalog/view/javascript/jquery/magnific/jquery.magnific-popup.min.js');
+      ]]></search>
+      <add position="replace"><![CDATA[
+    		$this->document->addScript('catalog/view/theme/' . $this->config->get('theme_framefree_directory') . '/javascript/owl-carousel/owl.carousel.min.js');
+      ]]></add>
+    </operation>
+
+    <operation error="skip">
+      <search><![CDATA[
+				$this->document->addStyle('catalog/view/javascript/jquery/magnific/magnific-popup.css');
+      ]]></search>
+      <add position="replace"><![CDATA[
+				$this->document->addStyle('catalog/view/theme/' . $this->config->get('theme_framefree_directory') . '/javascript/owl-carousel/owl.carousel.min.css');
+      ]]></add>
+    </operation>
+
+    <operation error="skip">
+      <search><![CDATA[
+				$this->document->addScript('catalog/view/javascript/jquery/datetimepicker/moment/moment.min.js');
+      ]]></search>
+      <add position="replace"><![CDATA[
+				// removed by frame theme
+      ]]></add>
+    </operation>
+
+    <operation error="skip">
+      <search><![CDATA[
+				$this->document->addScript('catalog/view/javascript/jquery/datetimepicker/moment/moment-with-locales.min.js');
+      ]]></search>
+      <add position="replace"><![CDATA[
+				// removed by frame theme
+      ]]></add>
+    </operation>
+
+    <operation error="skip">
+      <search><![CDATA[
+				$this->document->addScript('catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.js');
+      ]]></search>
+      <add position="replace"><![CDATA[
+				// removed by frame theme
+      ]]></add>
+    </operation>
+
+    <operation error="skip">
+      <search><![CDATA[
+				$this->document->addStyle('catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css');
+      ]]></search>
+      <add position="replace"><![CDATA[
+				// removed by frame theme
+      ]]></add>
+    </operation>
+
+    <operation error="skip">
+      <search><![CDATA[
+				$pagination = new Pagination();
+      ]]></search>
+      <add position="after"><![CDATA[
+				$pagination = new Pagination_ft(5);
+      ]]></add>
+    </operation>
+
+  </file>
+
+	<file path="catalog/controller/account/return.php">
+		<operation error="skip">
+      <search><![CDATA[
+				$this->load->language('account/return');
+      ]]></search>
+      <add position="after"><![CDATA[
+				$data['theme_dir'] 	= $this->config->get('theme_framefree_directory');
+      ]]></add>
+    </operation>
+		<operation error="skip">
+      <search><![CDATA[
+				$this->document->addScript('catalog/view/javascript/jquery/datetimepicker/moment/moment.min.js');
+      ]]></search>
+      <add position="replace"><![CDATA[
+				// removed by frame theme
+      ]]></add>
+    </operation>
+		<operation error="skip">
+      <search><![CDATA[
+				$this->document->addScript('catalog/view/javascript/jquery/datetimepicker/moment/moment-with-locales.min.js');
+      ]]></search>
+      <add position="replace"><![CDATA[
+				// removed by frame theme
+      ]]></add>
+    </operation>
+		<operation error="skip">
+      <search><![CDATA[
+				$this->document->addScript('catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.js');
+      ]]></search>
+      <add position="replace"><![CDATA[
+				// removed by frame theme
+      ]]></add>
+    </operation>
+		<operation error="skip">
+      <search><![CDATA[
+				$this->document->addStyle('catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css');
+      ]]></search>
+      <add position="replace"><![CDATA[
+				// removed by frame theme
+      ]]></add>
+    </operation>
+  </file>
+
+	<file path="catalog/controller/account/wishlist.php">
+
+    <operation error="skip">
+      <search><![CDATA[
+				$this->load->model('tool/image');
+      ]]></search>
+      <add position="after"><![CDATA[
+        $this->load->model('setting/setting');
+
+    		$ff_settings = array();
+    		$ff_settings = $this->model_setting_setting->getSetting('theme_framefree', $this->config->get('config_store_id'));
+
+        if (isset($ff_settings['t1_high_definition_imgs']) && $ff_settings['t1_high_definition_imgs']){
+    			$hd_imgs = $ff_settings['t1_high_definition_imgs'];
+    		} else {
+    			$hd_imgs = false;
+    		}
+      ]]></add>
+    </operation>
+
+    <operation error="skip">
+      <search><![CDATA[
+				$image = $this->model_tool_image->resize($product_info['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_wishlist_width'), $this->config->get('theme_' . $this->config->get('config_theme') . '_image_wishlist_height'));
+      ]]></search>
+      <add position="after"><![CDATA[
+        if ($hd_imgs) {
+          $image2x = $this->model_tool_image->resize($product_info['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_wishlist_width')*2, $this->config->get('theme_' . $this->config->get('config_theme') . '_image_wishlist_height')*2);
+          $image3x = $this->model_tool_image->resize($product_info['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_wishlist_width')*3, $this->config->get('theme_' . $this->config->get('config_theme') . '_image_wishlist_height')*3);
+          $image4x = $this->model_tool_image->resize($product_info['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_wishlist_width')*4, $this->config->get('theme_' . $this->config->get('config_theme') . '_image_wishlist_height')*4);
+        }
+      ]]></add>
+    </operation>
+
+    <operation error="skip">
+      <search><![CDATA[
+				$data['products'][] = array(
+      ]]></search>
+      <add position="after"><![CDATA[
+        'thumb2x' 		 => $hd_imgs ? $image2x : NULL,
+				'thumb3x'      => $hd_imgs ? $image3x : NULL,
+				'thumb4x'      => $hd_imgs ? $image4x : NULL,
+      ]]></add>
+    </operation>
+
+    <operation error="skip">
+      <search><![CDATA[
+				$json = array();
+      ]]></search>
+      <add position="after"><![CDATA[
+				$this->load->language('extension/module/framefreetheme/ff_global');
+      ]]></add>
+    </operation>
+		<operation error="skip">
+      <search><![CDATA[
+				$json['total'] = sprintf($this->language->get('text_wishlist'), $this->model_account_wishlist->getTotalWishlist());
+      ]]></search>
+      <add position="after"><![CDATA[
+				$json['total'] = sprintf($this->language->get('g_text_wishlist'), $this->model_account_wishlist->getTotalWishlist());
+      ]]></add>
+    </operation>
+		<operation error="skip">
+      <search><![CDATA[
+				$json['total'] = sprintf($this->language->get('text_wishlist'), (isset($this->session->data['wishlist']) ? count($this->session->data['wishlist']) : 0));
+      ]]></search>
+      <add position="after"><![CDATA[
+				$json['total'] = sprintf($this->language->get('g_text_wishlist'), (isset($this->session->data['wishlist']) ? count($this->session->data['wishlist']) : 0));
+      ]]></add>
+    </operation>
+  </file>
+
+  <file path="catalog/controller/account/download.php">
+    <operation error="skip">
+      <search><![CDATA[
+        $pagination = new Pagination();
+      ]]></search>
+      <add position="after"><![CDATA[
+        $pagination = new Pagination_ft();
+        $pagination->num_links = 5;
+      ]]></add>
+    </operation>
+  </file>
+
+	<file path="catalog/controller/product/compare.php">
+
+    <operation error="skip">
+      <search><![CDATA[
+				$this->load->model('tool/image');
+      ]]></search>
+      <add position="after"><![CDATA[
+        $this->load->model('setting/setting');
+
+    		$ff_settings = array();
+    		$ff_settings = $this->model_setting_setting->getSetting('theme_framefree', $this->config->get('config_store_id'));
+
+        if (isset($ff_settings['t1_high_definition_imgs']) && $ff_settings['t1_high_definition_imgs']){
+    			$hd_imgs = $ff_settings['t1_high_definition_imgs'];
+    		} else {
+    			$hd_imgs = false;
+    		}
+      ]]></add>
+    </operation>
+
+    <operation error="skip">
+      <search><![CDATA[
+				$image = $this->model_tool_image->resize($product_info['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_compare_width'), $this->config->get('theme_' . $this->config->get('config_theme') . '_image_compare_height'));
+      ]]></search>
+      <add position="after"><![CDATA[
+        if ($hd_imgs) {
+          $image2x = $this->model_tool_image->resize($product_info['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_compare_width')*2, $this->config->get('theme_' . $this->config->get('config_theme') . '_image_compare_height')*2);
+          $image3x = $this->model_tool_image->resize($product_info['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_compare_width')*3, $this->config->get('theme_' . $this->config->get('config_theme') . '_image_compare_height')*3);
+          $image4x = $this->model_tool_image->resize($product_info['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_compare_width')*4, $this->config->get('theme_' . $this->config->get('config_theme') . '_image_compare_height')*4);
+        }
+      ]]></add>
+    </operation>
+
+    <operation error="skip">
+      <search><![CDATA[
+				$data['products'][$product_id] = array(
+      ]]></search>
+      <add position="after"><![CDATA[
+        'thumb2x' 		 => $hd_imgs ? $image2x : NULL,
+				'thumb3x'      => $hd_imgs ? $image3x : NULL,
+				'thumb4x'      => $hd_imgs ? $image4x : NULL,
+      ]]></add>
+    </operation>
+
+    <operation error="skip">
+      <search><![CDATA[
+				$json = array();
+      ]]></search>
+      <add position="after"><![CDATA[
+				$this->load->language('extension/module/framefreetheme/ff_global');
+      ]]></add>
+    </operation>
+		<operation error="skip">
+      <search><![CDATA[
+				$json['total'] = sprintf($this->language->get('text_compare'), (isset($this->session->data['compare']) ? count($this->session->data['compare']) : 0));
+      ]]></search>
+      <add position="after"><![CDATA[
+				$json['total'] = sprintf($this->language->get('g_text_compare'), (isset($this->session->data['compare']) ? count($this->session->data['compare']) : 0));
+      ]]></add>
+    </operation>
+  </file>
+
+  <!-- blog -->
+  <file path="catalog/controller/blog/{latest,category}.php">
+    <operation error="skip">
+      <search><![CDATA[
+				$this->load->model('tool/image');
+      ]]></search>
+      <add position="after"><![CDATA[
+
+        $this->load->language('extension/module/framefreetheme/ff_global');
+
+        $this->load->model('setting/setting');
+
+    		$ff_settings = array();
+    		$ff_settings = $this->model_setting_setting->getSetting('theme_framefree', $this->config->get('config_store_id'));
+
+        if (isset($ff_settings['t1_high_definition_imgs']) && $ff_settings['t1_high_definition_imgs']){
+    			$hd_imgs = $ff_settings['t1_high_definition_imgs'];
+    		} else {
+    			$hd_imgs = false;
+    		}
+
+        if (isset($ff_settings['t1_catalog_page_lazy']) && !empty($ff_settings['t1_catalog_page_lazy'])) {
+					$data['catalog_page_lazy'] = $ff_settings['t1_catalog_page_lazy'];
+				} else {
+					$data['catalog_page_lazy'] = false;
+				}
+
+        if (isset($ff_settings['t1_blog_sub_cat_img_status']) && !empty($ff_settings['t1_blog_sub_cat_img_status'])) {
+					$data['blog_sub_cat_img_status'] = $ff_settings['t1_blog_sub_cat_img_status'];
+				} else {
+					$data['blog_sub_cat_img_status'] = false;
+				}
+
+				$data['review_status'] = $this->config->get('configblog_review_status');
+
+        $this->load->model('blog/category');
+
+    		$data['categories'] = array();
+
+    		$categories = $this->model_blog_category->getCategories(isset($blog_category_id) ? $blog_category_id : 0);
+
+    		foreach ($categories as $category) {
+
+    				$filter_data = array(
+    						'filter_blog_category_id'  => $category['blog_category_id']
+    					);
+
+    				$data['categories'][] = array(
+              'image1x'  => $this->model_tool_image->resize($category['image'], 120, 120),
+              'image2x'  => $hd_imgs ? $this->model_tool_image->resize($category['image'], 120*2, 120*2) : NULL,
+              'image3x'  => $hd_imgs ? $this->model_tool_image->resize($category['image'], 120*3, 120*3) : NULL,
+              'image4x'  => $hd_imgs ? $this->model_tool_image->resize($category['image'], 120*4, 120*4) : NULL,
+    					'name'     => $category['name'] . ($this->config->get('configblog_article_count') ? ' (' . $this->model_blog_article->getTotalArticles($filter_data) . ')' : ''),
+    					'href'     => $this->url->link('blog/category', 'blog_category_id=' . $category['blog_category_id'])
+    				);
+
+    		}
+
+      ]]></add>
+    </operation>
+    <operation error="skip">
+      <search><![CDATA[
+				$pagination = new Pagination();
+      ]]></search>
+      <add position="after"><![CDATA[
+				$pagination = new Pagination_ft();
+				$pagination->num_links = 5;
+      ]]></add>
+    </operation>
+    <operation error="skip">
+      <search><![CDATA[
+				$image = $this->model_tool_image->resize($result['image'], $this->config->get('configblog_image_article_width'), $this->config->get('configblog_image_article_height'));
+      ]]></search>
+      <add position="after"><![CDATA[
+        if ($hd_imgs) {
+  				$image2x = $this->model_tool_image->resize($result['image'], $this->config->get('configblog_image_article_width')*2, $this->config->get('configblog_image_article_height')*2);
+          $image3x = $this->model_tool_image->resize($result['image'], $this->config->get('configblog_image_article_width')*3, $this->config->get('configblog_image_article_height')*3);
+          $image4x = $this->model_tool_image->resize($result['image'], $this->config->get('configblog_image_article_width')*4, $this->config->get('configblog_image_article_height')*4);
+        }
+      ]]></add>
+    </operation>
+    <operation error="skip">
+      <search><![CDATA[
+				$image = false;
+      ]]></search>
+      <add position="after" ><![CDATA[
+        if ($hd_imgs) {
+  				$image2x = false;
+          $image3x = false;
+          $image4x = false;
+        }
+      ]]></add>
+    </operation>
+    <operation error="skip">
+      <search><![CDATA[
+				'thumb'       => $image,
+      ]]></search>
+      <add position="after"><![CDATA[
+        'img_width'     => $this->config->get('configblog_image_article_width') . 'px',
+        'img_height'    => $this->config->get('configblog_image_article_height') . 'px',
+				'thumb2x'       => $hd_imgs ? $image2x : NULL,
+        'thumb3x'       => $hd_imgs ? $image3x : NULL,
+        'thumb4x'       => $hd_imgs ? $image4x : NULL,
+      ]]></add>
+    </operation>
+  </file>
+
+  <file path="catalog/controller/extension/module/{blog_latest,featured_article}.php">
+    <operation error="skip">
+      <search><![CDATA[
+        $this->load->model('tool/image');
+      ]]></search>
+      <add position="after"><![CDATA[
+        $this->load->model('setting/setting');
+
+    		$ff_settings = array();
+    		$ff_settings = $this->model_setting_setting->getSetting('theme_framefree', $this->config->get('config_store_id'));
+
+        if (isset($ff_settings['t1_high_definition_imgs']) && $ff_settings['t1_high_definition_imgs']){
+    			$hd_imgs = $ff_settings['t1_high_definition_imgs'];
+    		} else {
+    			$hd_imgs = false;
+    		}
+
+        $data['review_status'] = $this->config->get('configblog_review_status');
+      ]]></add>
+    </operation>
+    <operation error="skip">
+      <search><![CDATA[
+        $image = $this->model_tool_image->resize($result['image'], $setting['width'], $setting['height']);
+      ]]></search>
+      <add position="after"><![CDATA[
+        if ($hd_imgs) {
+          $image2x = $this->model_tool_image->resize($result['image'], $setting['width']*2, $setting['height']*2);
+          $image3x = $this->model_tool_image->resize($result['image'], $setting['width']*3, $setting['height']*3);
+          $image4x = $this->model_tool_image->resize($result['image'], $setting['width']*4, $setting['height']*4);
+        }
+      ]]></add>
+    </operation>
+    <operation error="skip">
+      <search><![CDATA[
+        $image = $this->model_tool_image->resize('placeholder.png', $setting['width'], $setting['height']);
+      ]]></search>
+      <add position="after"><![CDATA[
+        if ($hd_imgs) {
+          $image2x = $this->model_tool_image->resize('placeholder.png', $setting['width']*2, $setting['height']*2);
+          $image3x = $this->model_tool_image->resize('placeholder.png', $setting['width']*3, $setting['height']*3);
+          $image4x = $this->model_tool_image->resize('placeholder.png', $setting['width']*4, $setting['height']*4);
+        }
+      ]]></add>
+    </operation>
+    <operation error="skip">
+      <search><![CDATA[
+        'thumb'       => $image,
+      ]]></search>
+      <add position="after"><![CDATA[
+        'img_width'    => $setting['width'] . 'px',
+        'img_height'    => $setting['height'] . 'px',
+        'thumb2x'       => $hd_imgs ? $image2x : NULL,
+        'thumb3x'       => $hd_imgs ? $image3x : NULL,
+        'thumb4x'       => $hd_imgs ? $image4x : NULL,
+      ]]></add>
+    </operation>
+  </file>
+
+  <file path="catalog/controller/extension/module/blog_featured.php">
+    <operation error="skip">
+      <search><![CDATA[
+        $this->load->model('tool/image');
+      ]]></search>
+      <add position="after"><![CDATA[
+        $this->load->model('setting/setting');
+
+    		$ff_settings = array();
+    		$ff_settings = $this->model_setting_setting->getSetting('theme_framefree', $this->config->get('config_store_id'));
+
+        if (isset($ff_settings['t1_high_definition_imgs']) && $ff_settings['t1_high_definition_imgs']){
+    			$hd_imgs = $ff_settings['t1_high_definition_imgs'];
+    		} else {
+    			$hd_imgs = false;
+    		}
+
+        $data['review_status'] = $this->config->get('configblog_review_status');
+      ]]></add>
+    </operation>
+    <operation error="skip">
+      <search><![CDATA[
+        $image = $this->model_tool_image->resize($article_info['image'], $setting['width'], $setting['height']);
+      ]]></search>
+      <add position="after"><![CDATA[
+        if ($hd_imgs) {
+          $image2x = $this->model_tool_image->resize($article_info['image'], $setting['width']*2, $setting['height']*2);
+          $image3x = $this->model_tool_image->resize($article_info['image'], $setting['width']*3, $setting['height']*3);
+          $image4x = $this->model_tool_image->resize($article_info['image'], $setting['width']*4, $setting['height']*4);
+        }
+      ]]></add>
+    </operation>
+    <operation error="skip">
+      <search><![CDATA[
+        $image = $this->model_tool_image->resize('placeholder.png', $setting['width'], $setting['height']);
+      ]]></search>
+      <add position="after"><![CDATA[
+        if ($hd_imgs) {
+          $image2x = $this->model_tool_image->resize('placeholder.png', $setting['width']*2, $setting['height']*2);
+          $image3x = $this->model_tool_image->resize('placeholder.png', $setting['width']*3, $setting['height']*3);
+          $image4x = $this->model_tool_image->resize('placeholder.png', $setting['width']*4, $setting['height']*4);
+        }
+      ]]></add>
+    </operation>
+    <operation error="skip">
+      <search><![CDATA[
+        'thumb'       => $image,
+      ]]></search>
+      <add position="after"><![CDATA[
+        'img_width'    => $setting['width'] . 'px',
+        'img_height'    => $setting['height'] . 'px',
+        'thumb2x'       => $hd_imgs ? $image2x : NULL,
+        'thumb3x'       => $hd_imgs ? $image3x : NULL,
+        'thumb4x'       => $hd_imgs ? $image4x : NULL,
+      ]]></add>
+    </operation>
+  </file>
+
+  <file path="catalog/controller/extension/module/featured_product.php">
+    <operation error="skip">
+      <search><![CDATA[
+        $this->load->model('tool/image');
+      ]]></search>
+      <add position="after"><![CDATA[
+        $this->load->model('setting/setting');
+
+    		$ff_settings = array();
+    		$ff_settings = $this->model_setting_setting->getSetting('theme_framefree', $this->config->get('config_store_id'));
+        $language_id = $this->config->get('config_language_id');
+
+        if (isset($ff_settings['t1_high_definition_imgs']) && $ff_settings['t1_high_definition_imgs']){
+    			$hd_imgs = $ff_settings['t1_high_definition_imgs'];
+    		} else {
+    			$hd_imgs = false;
+    		}
+
+        if (isset($ff_settings['t1_qview_status']) && !empty($ff_settings['t1_qview_status'])) {
+					$data['qview_status'] = $ff_settings['t1_qview_status'];
+				} else {
+					$data['qview_status'] = false;
+				}
+
+				if (isset($ff_settings['t1_fastorder_status']) && !empty($ff_settings['t1_fastorder_status'])) {
+					$data['fastorder_status'] = $ff_settings['t1_fastorder_status'];
+				} else {
+					$data['fastorder_status'] = false;
+				}
+
+				if (isset($ff_settings['t1_buy_button_status']) && !empty($ff_settings['t1_buy_button_status'])) {
+					$data['disable_btn_status'] = $ff_settings['t1_buy_button_status'];
+				} else {
+					$data['disable_btn_status'] = false;
+				}
+
+				if (isset($ff_settings['t1_buy_button_disabled_text'][$language_id]) && !empty($ff_settings['t1_buy_button_disabled_text'][$language_id])) {
+					$data['disable_btn_text'] = $ff_settings['t1_buy_button_disabled_text'][$language_id];
+				} else {
+					$data['disable_btn_text'] = '';
+				}
+
+      ]]></add>
+    </operation>
+    <operation error="skip">
+      <search><![CDATA[
+        $image = $this->model_tool_image->resize($product['image'], $setting['width'], $setting['height']);
+      ]]></search>
+      <add position="after"><![CDATA[
+        if ($hd_imgs) {
+          $image2x = $this->model_tool_image->resize($product['image'], $setting['width']*2, $setting['height']*2);
+          $image3x = $this->model_tool_image->resize($product['image'], $setting['width']*3, $setting['height']*3);
+          $image4x = $this->model_tool_image->resize($product['image'], $setting['width']*4, $setting['height']*4);
+        }
+      ]]></add>
+    </operation>
+    <operation error="skip">
+      <search><![CDATA[
+        $image = $this->model_tool_image->resize('placeholder.png', $setting['width'], $setting['height']);
+      ]]></search>
+      <add position="after"><![CDATA[
+        if ($hd_imgs) {
+          $image2x = $this->model_tool_image->resize('placeholder.png', $setting['width']*2, $setting['height']*2);
+          $image3x = $this->model_tool_image->resize('placeholder.png', $setting['width']*3, $setting['height']*3);
+          $image4x = $this->model_tool_image->resize('placeholder.png', $setting['width']*4, $setting['height']*4);
+        }
+      ]]></add>
+    </operation>
+    <operation error="skip">
+      <search><![CDATA[
+        'thumb'       => $image,
+      ]]></search>
+      <add position="after"><![CDATA[
+        'quantity'      => $product['quantity'],
+        'img_width'    => $setting['width'] . 'px',
+        'img_height'    => $setting['height'] . 'px',
+        'thumb2x'       => $hd_imgs ? $image2x : NULL,
+        'thumb3x'       => $hd_imgs ? $image3x : NULL,
+        'thumb4x'       => $hd_imgs ? $image4x : NULL,
+      ]]></add>
+    </operation>
+  </file>
+
+  <file path="catalog/controller/blog/article.php">
+    <operation error="skip">
+      <search><![CDATA[
+        $this->load->model('tool/image');
+      ]]></search>
+      <add position="after"><![CDATA[
+        $data['author'] = $this->config->get('config_owner');
+        $data['publisher'] = $this->config->get('config_name');
+        $data['address'] = $this->config->get('config_address');
+        $data['telephone'] = $this->config->get('config_telephone');
+        $data['image'] = $this->model_tool_image->resize($this->config->get('config_logo'), 100, 50);
+        $data['date_added'] = date('Y-m-d', strtotime($article_info['date_added']));
+        $data['date_added_text'] = date('d.m.Y', strtotime($article_info['date_added']));
+        $data['date_modified'] = date('Y-m-d', strtotime($article_info['date_modified']));
+        $data['mainEntityOfPage'] = $this->url->link('blog/article', 'article_id=' . $this->request->get['article_id']);
+        $data['microdata_reviews_count'] = (int)$article_info['reviews'];
+        $data['viewed'] = $article_info['viewed'];
+      ]]></add>
+    </operation>
+
+    <operation error="skip">
+      <search><![CDATA[
+        $this->document->setDescription($article_info['meta_description']);
+      ]]></search>
+      <add position="after"><![CDATA[
+
+        $this->document->addScript('catalog/view/theme/' . $this->config->get('theme_framefree_directory') . '/javascript/owl-carousel/owl.carousel.min.js');
+        $this->document->addStyle('catalog/view/theme/' . $this->config->get('theme_framefree_directory') . '/javascript/owl-carousel/owl.carousel.min.css');
+
+        $this->load->model('setting/setting');
+
+    		$ff_settings = array();
+    		$ff_settings = $this->model_setting_setting->getSetting('theme_framefree', $this->config->get('config_store_id'));
+        $language_id = $this->config->get('config_language_id');
+
+        if (isset($ff_settings['t1_high_definition_imgs']) && $ff_settings['t1_high_definition_imgs']){
+    			$hd_imgs = $ff_settings['t1_high_definition_imgs'];
+    		} else {
+    			$hd_imgs = false;
+    		}
+
+        if (isset($ff_settings['t1_catalog_page_lazy']) && !empty($ff_settings['t1_catalog_page_lazy'])) {
+					$data['catalog_page_lazy'] = $ff_settings['t1_catalog_page_lazy'];
+				} else {
+					$data['catalog_page_lazy'] = false;
+				}
+
+        if (isset($ff_settings['t1_product_social_likes'])) {
+					$data['share'] = $ff_settings['t1_product_social_likes'];
+				} else {
+					$data['share'] = false;
+				}
+
+        if (isset($ff_settings['t1_product_social_likes_code'])) {
+					$data['share_code'] = html_entity_decode($ff_settings['t1_product_social_likes_code'], ENT_QUOTES, 'UTF-8');
+				} else {
+					$data['share_code'] = false;
+				}
+
+        if (isset($ff_settings['t1_related_product_buttons'])) {
+					$data['related_product_buttons'] = $ff_settings['t1_related_product_buttons'];
+				} else {
+					$data['related_product_buttons'] = false;
+				}
+
+        if (isset($ff_settings['t1_qview_status']) && !empty($ff_settings['t1_qview_status'])) {
+					$data['qview_status'] = $ff_settings['t1_qview_status'];
+				} else {
+					$data['qview_status'] = false;
+				}
+
+				if (isset($ff_settings['t1_fastorder_status']) && !empty($ff_settings['t1_fastorder_status'])) {
+					$data['fastorder_status'] = $ff_settings['t1_fastorder_status'];
+				} else {
+					$data['fastorder_status'] = false;
+				}
+
+				if (isset($ff_settings['t1_buy_button_status']) && !empty($ff_settings['t1_buy_button_status'])) {
+					$data['disable_btn_status'] = $ff_settings['t1_buy_button_status'];
+				} else {
+					$data['disable_btn_status'] = false;
+				}
+
+				if (isset($ff_settings['t1_buy_button_disabled_text'][$language_id]) && !empty($ff_settings['t1_buy_button_disabled_text'][$language_id])) {
+					$data['disable_btn_text'] = $ff_settings['t1_buy_button_disabled_text'][$language_id];
+				} else {
+					$data['disable_btn_text'] = '';
+				}
+
+        if (isset($ff_settings['t1_stikers']) && !empty($ff_settings['t1_stikers'])) {
+    			$ff_stikers = $ff_settings['t1_stikers'];
+    		} else {
+    			$ff_stikers = array();
+    		}
+
+      ]]></add>
+    </operation>
+
+    <operation error="skip">
+      <search index="1"><![CDATA[
+        $image = $this->model_tool_image->resize($result['image'], $this->config->get('configblog_image_related_width'), $this->config->get('configblog_image_related_height'));
+      ]]></search>
+      <add position="replace"><![CDATA[
+        $image = $this->model_tool_image->resize($result['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_related_width'), $this->config->get('theme_' . $this->config->get('config_theme') . '_image_related_height'));
+        if ($hd_imgs) {
+          $image2x = $this->model_tool_image->resize($result['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_related_width')*2, $this->config->get('theme_' . $this->config->get('config_theme') . '_image_related_height')*2);
+          $image3x = $this->model_tool_image->resize($result['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_related_width')*3, $this->config->get('theme_' . $this->config->get('config_theme') . '_image_related_height')*3);
+          $image4x = $this->model_tool_image->resize($result['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_related_width')*4, $this->config->get('theme_' . $this->config->get('config_theme') . '_image_related_height')*4);
+        }
+      ]]></add>
+    </operation>
+
+    <operation error="skip">
+      <search><![CDATA[
+        $data['products'][] = array(
+      ]]></search>
+      <add position="before"><![CDATA[
+        $stickers = array();
+
+				if ($result['price'] && $result['special'] && $ff_stikers['special']['status']) {
+					$stickers['special'] = array(
+						'text'  => round(100 - ($result['special'] / $result['price']) * 100) * (-1) . '%',
+						'class' => 'badge stiker-special'
+					);
+				}
+
+				if ($result['upc'] && $ff_stikers['upc']['status']) {
+					$stickers['upc'] = array(
+						'text'  => $result['upc'],
+						'class' => 'badge stiker-upc'
+					);
+				}
+
+				if ($result['ean'] && $ff_stikers['ean']['status']) {
+					$stickers['ean'] = array(
+						'text'  => $result['ean'],
+						'class' => 'badge stiker-ean'
+					);
+				}
+
+				if ($result['jan'] && $ff_stikers['jan']['status']) {
+					$stickers['jan'] = array(
+						'text'  => $result['jan'],
+						'class' => 'badge stiker-jan'
+					);
+				}
+
+				if ($result['isbn'] && $ff_stikers['isbn']['status']) {
+					$stickers['isbn'] = array(
+						'text'  => $result['isbn'],
+						'class' => 'badge stiker-isbn'
+					);
+				}
+
+				if ($result['mpn'] && $ff_stikers['mpn']['status']) {
+					$stickers['mpn'] = array(
+						'text'  => $result['mpn'],
+						'class' => 'badge stiker-mpn'
+					);
+				}
+      ]]></add>
+    </operation>
+
+    <operation error="skip">
+      <search><![CDATA[
+        $data['products'][] = array(
+      ]]></search>
+      <add position="after"><![CDATA[
+        'quantity'     => $result['quantity'],
+        'stickers'  			=> $stickers,
+        'img_width'    => $this->config->get('theme_' . $this->config->get('config_theme') . '_image_related_width') . 'px',
+        'img_height'   => $this->config->get('theme_' . $this->config->get('config_theme') . '_image_related_height') . 'px',
+        'thumb_holder'    => $this->model_tool_image->resize('catalog/framefreetheme/src_holder.png', $this->config->get('theme_' . $this->config->get('config_theme') . '_image_related_width'), $this->config->get('theme_' . $this->config->get('config_theme') . '_image_related_height')),
+        'thumb2x'   	 => $hd_imgs ? $image2x : NULL,
+        'thumb3x'   	 => $hd_imgs ? $image3x : NULL,
+        'thumb4x'   	 => $hd_imgs ? $image4x : NULL,
+      ]]></add>
+    </operation>
+
+    <operation error="skip">
+      <search index="0" trim="true"><![CDATA[
+        $image = $this->model_tool_image->resize($result['image'], $this->config->get('configblog_image_related_width'), $this->config->get('configblog_image_related_height'));
+      ]]></search>
+      <add position="after"><![CDATA[
+        if ($hd_imgs) {
+          $image2x = $this->model_tool_image->resize($result['image'], $this->config->get('configblog_image_related_width')*2, $this->config->get('configblog_image_related_height')*2);
+          $image3x = $this->model_tool_image->resize($result['image'], $this->config->get('configblog_image_related_width')*3, $this->config->get('configblog_image_related_height')*3);
+          $image4x = $this->model_tool_image->resize($result['image'], $this->config->get('configblog_image_related_width')*4, $this->config->get('configblog_image_related_height')*4);
+        }
+      ]]></add>
+    </operation>
+
+    <operation error="skip">
+      <search><![CDATA[
+        $data['articles'][] = array(
+      ]]></search>
+      <add position="after"><![CDATA[
+        'img_width'    => $this->config->get('configblog_image_related_width') . 'px',
+        'img_height'   => $this->config->get('configblog_image_related_height') . 'px',
+        'thumb_holder' => $this->model_tool_image->resize('catalog/framefreetheme/src_holder.png', $this->config->get('configblog_image_related_width'), $this->config->get('configblog_image_related_height')),
+        'thumb2x'   	 => $hd_imgs ? $image2x : NULL,
+        'thumb3x'   	 => $hd_imgs ? $image3x : NULL,
+        'thumb4x'   	 => $hd_imgs ? $image4x : NULL,
+      ]]></add>
+    </operation>
+
+    <operation error="skip">
+      <search><![CDATA[
+        $this->document->addScript('catalog/view/javascript/jquery/datetimepicker/moment.js');
+      ]]></search>
+      <add position="replace"><![CDATA[
+        // removed by frame themes
+      ]]></add>
+    </operation>
+
+    <operation error="skip">
+      <search><![CDATA[
+        $this->document->addScript('catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.js');
+      ]]></search>
+      <add position="replace"><![CDATA[
+        // removed by frame theme
+      ]]></add>
+    </operation>
+
+    <operation error="skip">
+      <search><![CDATA[
+        $this->document->addStyle('catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css');
+      ]]></search>
+      <add position="replace"><![CDATA[
+        // removed by frame theme
+      ]]></add>
+    </operation>
+  </file>
+
+  <!-- admin -->
+	<file path="admin/view/template/design/layout_form.twig">
+		<operation error="skip">
+      <search><![CDATA[
+				</form>
+      ]]></search>
+      <add position="before"><![CDATA[
+				<!-- additional positions on layout -->
+						<style>
+							.plus-minus .collapsed .fa-plus, .plus-minus .fa-minus{display:inline-block}
+							.plus-minus .collapsed .fa-minus, .plus-minus .fa-plus{display:none}
+						</style>
+						<hr>
+						<p class="plus-minus text-center">
+							<a class="collapsed" data-toggle="collapse" href="#additional-positions">
+								<i class="fa fa-plus fa-2x fa-fw"></i>
+								<i class="fa fa-minus fa-2x fa-fw"></i>
+							</a>
+						</p>
+						<div class="collapse" id="additional-positions">
+							<div class="row">
+								<div class="col-xs-4">
+									<div class="table-responsive">
+										<table id="module-add-pos1" class="table table-striped table-bordered table-hover">
+											<thead>
+												<tr>
+													<td class="text-center">1</td>
+												</tr>
+											</thead>
+											<tbody>
+												{% for layout_module in layout_modules %}
+												{% if layout_module.position == 'add_pos1' %}
+												<tr id="module-row{{ module_row }}">
+													<td class="text-left"><div class="input-group">
+															<select name="layout_module[{{ module_row }}][code]" class="form-control input-sm">
+																{% for extension in extensions %}
+																<optgroup label="{{ extension.name }}">
+																{% if not extension.module %}
+																{% if extension.code == layout_module.code %}
+																<option value="{{ extension.code }}" selected="selected">{{ extension.name }}</option>
+																{% else %}
+																<option value="{{ extension.code }}">{{ extension.name }}</option>
+																{% endif %}
+																{% else %}
+																{% for module in extension.module %}
+																{% if module.code == layout_module.code %}
+																<option value="{{ module.code }}" selected="selected">{{ module.name }}</option>
+																{% else %}
+																<option value="{{ module.code }}">{{ module.name }}</option>
+																{% endif %}
+																{% endfor %}
+																{% endif %}
+																</optgroup>
+																{% endfor %}
+															</select>
+															<input type="hidden" name="layout_module[{{ module_row }}][position]" value="{{ layout_module.position }}" />
+															<input type="hidden" name="layout_module[{{ module_row }}][sort_order]" value="{{ layout_module.sort_order }}" />
+															<div class="input-group-btn"><a href="{{ layout_module.edit }}" type="button" data-toggle="tooltip" title="{{ button_edit }}" target="_blank" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i></a>
+																<button type="button" onclick="$('#module-row{{ module_row }}').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger btn-sm"><i class="fa fa fa-minus-circle"></i></button>
+															</div>
+														</div></td>
+												</tr>
+												{% set module_row = module_row + 1 %}
+												{% endif %}
+												{% endfor %}
+											</tbody>
+											<tfoot>
+												<tr>
+													<td class="text-left"><div class="input-group">
+															<select class="form-control input-sm">
+																<option value=""></option>
+																{% for extension in extensions %}
+																<optgroup label="{{ extension.name }}">
+																{% if not extension.module %}
+																<option value="{{ extension.code }}">{{ extension.name }}</option>
+																{% else %}
+																{% for module in extension.module %}
+																<option value="{{ module.code }}">{{ module.name }}</option>
+																{% endfor %}
+																{% endif %}
+																</optgroup>
+																{% endfor %}
+															</select>
+															<div class="input-group-btn">
+																<button type="button" onclick="addModule('add-pos1');" data-toggle="tooltip" title="{{ button_module_add }}" class="btn btn-primary btn-sm"><i class="fa fa-plus-circle"></i></button>
+															</div>
+														</div></td>
+												</tr>
+											</tfoot>
+										</table>
+									</div>
+								</div>
+								<div class="col-xs-4">
+									<div class="table-responsive">
+										<table id="module-add-pos2" class="table table-striped table-bordered table-hover">
+											<thead>
+												<tr>
+													<td class="text-center">2</td>
+												</tr>
+											</thead>
+											<tbody>
+												{% for layout_module in layout_modules %}
+												{% if layout_module.position == 'add_pos2' %}
+												<tr id="module-row{{ module_row }}">
+													<td class="text-left"><div class="input-group">
+															<select name="layout_module[{{ module_row }}][code]" class="form-control input-sm">
+																{% for extension in extensions %}
+																<optgroup label="{{ extension.name }}">
+																{% if not extension.module %}
+																{% if extension.code == layout_module.code %}
+																<option value="{{ extension.code }}" selected="selected">{{ extension.name }}</option>
+																{% else %}
+																<option value="{{ extension.code }}">{{ extension.name }}</option>
+																{% endif %}
+																{% else %}
+																{% for module in extension.module %}
+																{% if module.code == layout_module.code %}
+																<option value="{{ module.code }}" selected="selected">{{ module.name }}</option>
+																{% else %}
+																<option value="{{ module.code }}">{{ module.name }}</option>
+																{% endif %}
+																{% endfor %}
+																{% endif %}
+																</optgroup>
+																{% endfor %}
+															</select>
+															<input type="hidden" name="layout_module[{{ module_row }}][position]" value="{{ layout_module.position }}" />
+															<input type="hidden" name="layout_module[{{ module_row }}][sort_order]" value="{{ layout_module.sort_order }}" />
+															<div class="input-group-btn"><a href="{{ layout_module.edit }}" type="button" data-toggle="tooltip" title="{{ button_edit }}" target="_blank" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i></a>
+																<button type="button" onclick="$('#module-row{{ module_row }}').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger btn-sm"><i class="fa fa fa-minus-circle"></i></button>
+															</div>
+														</div></td>
+												</tr>
+												{% set module_row = module_row + 1 %}
+												{% endif %}
+												{% endfor %}
+											</tbody>
+											<tfoot>
+												<tr>
+													<td class="text-left"><div class="input-group">
+															<select class="form-control input-sm">
+																<option value=""></option>
+																{% for extension in extensions %}
+																<optgroup label="{{ extension.name }}">
+																{% if not extension.module %}
+																<option value="{{ extension.code }}">{{ extension.name }}</option>
+																{% else %}
+																{% for module in extension.module %}
+																<option value="{{ module.code }}">{{ module.name }}</option>
+																{% endfor %}
+																{% endif %}
+																</optgroup>
+																{% endfor %}
+															</select>
+															<div class="input-group-btn">
+																<button type="button" onclick="addModule('add-pos2');" data-toggle="tooltip" title="{{ button_module_add }}" class="btn btn-primary btn-sm"><i class="fa fa-plus-circle"></i></button>
+															</div>
+														</div></td>
+												</tr>
+											</tfoot>
+										</table>
+									</div>
+								</div>
+								<div class="col-xs-4">
+									<div class="table-responsive">
+										<table id="module-add-pos3" class="table table-striped table-bordered table-hover">
+											<thead>
+												<tr>
+													<td class="text-center">3</td>
+												</tr>
+											</thead>
+											<tbody>
+												{% for layout_module in layout_modules %}
+												{% if layout_module.position == 'add_pos3' %}
+												<tr id="module-row{{ module_row }}">
+													<td class="text-left"><div class="input-group">
+															<select name="layout_module[{{ module_row }}][code]" class="form-control input-sm">
+																{% for extension in extensions %}
+																<optgroup label="{{ extension.name }}">
+																{% if not extension.module %}
+																{% if extension.code == layout_module.code %}
+																<option value="{{ extension.code }}" selected="selected">{{ extension.name }}</option>
+																{% else %}
+																<option value="{{ extension.code }}">{{ extension.name }}</option>
+																{% endif %}
+																{% else %}
+																{% for module in extension.module %}
+																{% if module.code == layout_module.code %}
+																<option value="{{ module.code }}" selected="selected">{{ module.name }}</option>
+																{% else %}
+																<option value="{{ module.code }}">{{ module.name }}</option>
+																{% endif %}
+																{% endfor %}
+																{% endif %}
+																</optgroup>
+																{% endfor %}
+															</select>
+															<input type="hidden" name="layout_module[{{ module_row }}][position]" value="{{ layout_module.position }}" />
+															<input type="hidden" name="layout_module[{{ module_row }}][sort_order]" value="{{ layout_module.sort_order }}" />
+															<div class="input-group-btn"><a href="{{ layout_module.edit }}" type="button" data-toggle="tooltip" title="{{ button_edit }}" target="_blank" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i></a>
+																<button type="button" onclick="$('#module-row{{ module_row }}').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger btn-sm"><i class="fa fa fa-minus-circle"></i></button>
+															</div>
+														</div></td>
+												</tr>
+												{% set module_row = module_row + 1 %}
+												{% endif %}
+												{% endfor %}
+											</tbody>
+											<tfoot>
+												<tr>
+													<td class="text-left"><div class="input-group">
+															<select class="form-control input-sm">
+																<option value=""></option>
+																{% for extension in extensions %}
+																<optgroup label="{{ extension.name }}">
+																{% if not extension.module %}
+																<option value="{{ extension.code }}">{{ extension.name }}</option>
+																{% else %}
+																{% for module in extension.module %}
+																<option value="{{ module.code }}">{{ module.name }}</option>
+																{% endfor %}
+																{% endif %}
+																</optgroup>
+																{% endfor %}
+															</select>
+															<div class="input-group-btn">
+																<button type="button" onclick="addModule('add-pos3');" data-toggle="tooltip" title="{{ button_module_add }}" class="btn btn-primary btn-sm"><i class="fa fa-plus-circle"></i></button>
+															</div>
+														</div></td>
+												</tr>
+											</tfoot>
+										</table>
+									</div>
+								</div>
+								<div class="clearfix"></div>
+								<div class="col-xs-4">
+									<div class="table-responsive">
+										<table id="module-add-pos4" class="table table-striped table-bordered table-hover">
+											<thead>
+												<tr>
+													<td class="text-center">4</td>
+												</tr>
+											</thead>
+											<tbody>
+												{% for layout_module in layout_modules %}
+												{% if layout_module.position == 'add_pos4' %}
+												<tr id="module-row{{ module_row }}">
+													<td class="text-left"><div class="input-group">
+															<select name="layout_module[{{ module_row }}][code]" class="form-control input-sm">
+																{% for extension in extensions %}
+																<optgroup label="{{ extension.name }}">
+																{% if not extension.module %}
+																{% if extension.code == layout_module.code %}
+																<option value="{{ extension.code }}" selected="selected">{{ extension.name }}</option>
+																{% else %}
+																<option value="{{ extension.code }}">{{ extension.name }}</option>
+																{% endif %}
+																{% else %}
+																{% for module in extension.module %}
+																{% if module.code == layout_module.code %}
+																<option value="{{ module.code }}" selected="selected">{{ module.name }}</option>
+																{% else %}
+																<option value="{{ module.code }}">{{ module.name }}</option>
+																{% endif %}
+																{% endfor %}
+																{% endif %}
+																</optgroup>
+																{% endfor %}
+															</select>
+															<input type="hidden" name="layout_module[{{ module_row }}][position]" value="{{ layout_module.position }}" />
+															<input type="hidden" name="layout_module[{{ module_row }}][sort_order]" value="{{ layout_module.sort_order }}" />
+															<div class="input-group-btn"><a href="{{ layout_module.edit }}" type="button" data-toggle="tooltip" title="{{ button_edit }}" target="_blank" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i></a>
+																<button type="button" onclick="$('#module-row{{ module_row }}').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger btn-sm"><i class="fa fa fa-minus-circle"></i></button>
+															</div>
+														</div></td>
+												</tr>
+												{% set module_row = module_row + 1 %}
+												{% endif %}
+												{% endfor %}
+											</tbody>
+											<tfoot>
+												<tr>
+													<td class="text-left"><div class="input-group">
+															<select class="form-control input-sm">
+																<option value=""></option>
+																{% for extension in extensions %}
+																<optgroup label="{{ extension.name }}">
+																{% if not extension.module %}
+																<option value="{{ extension.code }}">{{ extension.name }}</option>
+																{% else %}
+																{% for module in extension.module %}
+																<option value="{{ module.code }}">{{ module.name }}</option>
+																{% endfor %}
+																{% endif %}
+																</optgroup>
+																{% endfor %}
+															</select>
+															<div class="input-group-btn">
+																<button type="button" onclick="addModule('add-pos4');" data-toggle="tooltip" title="{{ button_module_add }}" class="btn btn-primary btn-sm"><i class="fa fa-plus-circle"></i></button>
+															</div>
+														</div></td>
+												</tr>
+											</tfoot>
+										</table>
+									</div>
+								</div>
+								<div class="col-xs-4">
+									<div class="table-responsive">
+										<table id="module-add-pos5" class="table table-striped table-bordered table-hover">
+											<thead>
+												<tr>
+													<td class="text-center">5</td>
+												</tr>
+											</thead>
+											<tbody>
+												{% for layout_module in layout_modules %}
+												{% if layout_module.position == 'add_pos5' %}
+												<tr id="module-row{{ module_row }}">
+													<td class="text-left"><div class="input-group">
+															<select name="layout_module[{{ module_row }}][code]" class="form-control input-sm">
+																{% for extension in extensions %}
+																<optgroup label="{{ extension.name }}">
+																{% if not extension.module %}
+																{% if extension.code == layout_module.code %}
+																<option value="{{ extension.code }}" selected="selected">{{ extension.name }}</option>
+																{% else %}
+																<option value="{{ extension.code }}">{{ extension.name }}</option>
+																{% endif %}
+																{% else %}
+																{% for module in extension.module %}
+																{% if module.code == layout_module.code %}
+																<option value="{{ module.code }}" selected="selected">{{ module.name }}</option>
+																{% else %}
+																<option value="{{ module.code }}">{{ module.name }}</option>
+																{% endif %}
+																{% endfor %}
+																{% endif %}
+																</optgroup>
+																{% endfor %}
+															</select>
+															<input type="hidden" name="layout_module[{{ module_row }}][position]" value="{{ layout_module.position }}" />
+															<input type="hidden" name="layout_module[{{ module_row }}][sort_order]" value="{{ layout_module.sort_order }}" />
+															<div class="input-group-btn"><a href="{{ layout_module.edit }}" type="button" data-toggle="tooltip" title="{{ button_edit }}" target="_blank" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i></a>
+																<button type="button" onclick="$('#module-row{{ module_row }}').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger btn-sm"><i class="fa fa fa-minus-circle"></i></button>
+															</div>
+														</div></td>
+												</tr>
+												{% set module_row = module_row + 1 %}
+												{% endif %}
+												{% endfor %}
+											</tbody>
+											<tfoot>
+												<tr>
+													<td class="text-left"><div class="input-group">
+															<select class="form-control input-sm">
+																<option value=""></option>
+																{% for extension in extensions %}
+																<optgroup label="{{ extension.name }}">
+																{% if not extension.module %}
+																<option value="{{ extension.code }}">{{ extension.name }}</option>
+																{% else %}
+																{% for module in extension.module %}
+																<option value="{{ module.code }}">{{ module.name }}</option>
+																{% endfor %}
+																{% endif %}
+																</optgroup>
+																{% endfor %}
+															</select>
+															<div class="input-group-btn">
+																<button type="button" onclick="addModule('add-pos5');" data-toggle="tooltip" title="{{ button_module_add }}" class="btn btn-primary btn-sm"><i class="fa fa-plus-circle"></i></button>
+															</div>
+														</div></td>
+												</tr>
+											</tfoot>
+										</table>
+									</div>
+								</div>
+								<div class="col-xs-4">
+									<div class="table-responsive">
+										<table id="module-add-pos6" class="table table-striped table-bordered table-hover">
+											<thead>
+												<tr>
+													<td class="text-center">6</td>
+												</tr>
+											</thead>
+											<tbody>
+												{% for layout_module in layout_modules %}
+												{% if layout_module.position == 'add_pos6' %}
+												<tr id="module-row{{ module_row }}">
+													<td class="text-left"><div class="input-group">
+															<select name="layout_module[{{ module_row }}][code]" class="form-control input-sm">
+																{% for extension in extensions %}
+																<optgroup label="{{ extension.name }}">
+																{% if not extension.module %}
+																{% if extension.code == layout_module.code %}
+																<option value="{{ extension.code }}" selected="selected">{{ extension.name }}</option>
+																{% else %}
+																<option value="{{ extension.code }}">{{ extension.name }}</option>
+																{% endif %}
+																{% else %}
+																{% for module in extension.module %}
+																{% if module.code == layout_module.code %}
+																<option value="{{ module.code }}" selected="selected">{{ module.name }}</option>
+																{% else %}
+																<option value="{{ module.code }}">{{ module.name }}</option>
+																{% endif %}
+																{% endfor %}
+																{% endif %}
+																</optgroup>
+																{% endfor %}
+															</select>
+															<input type="hidden" name="layout_module[{{ module_row }}][position]" value="{{ layout_module.position }}" />
+															<input type="hidden" name="layout_module[{{ module_row }}][sort_order]" value="{{ layout_module.sort_order }}" />
+															<div class="input-group-btn"><a href="{{ layout_module.edit }}" type="button" data-toggle="tooltip" title="{{ button_edit }}" target="_blank" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i></a>
+																<button type="button" onclick="$('#module-row{{ module_row }}').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger btn-sm"><i class="fa fa fa-minus-circle"></i></button>
+															</div>
+														</div></td>
+												</tr>
+												{% set module_row = module_row + 1 %}
+												{% endif %}
+												{% endfor %}
+											</tbody>
+											<tfoot>
+												<tr>
+													<td class="text-left"><div class="input-group">
+															<select class="form-control input-sm">
+																<option value=""></option>
+																{% for extension in extensions %}
+																<optgroup label="{{ extension.name }}">
+																{% if not extension.module %}
+																<option value="{{ extension.code }}">{{ extension.name }}</option>
+																{% else %}
+																{% for module in extension.module %}
+																<option value="{{ module.code }}">{{ module.name }}</option>
+																{% endfor %}
+																{% endif %}
+																</optgroup>
+																{% endfor %}
+															</select>
+															<div class="input-group-btn">
+																<button type="button" onclick="addModule('add-pos6');" data-toggle="tooltip" title="{{ button_module_add }}" class="btn btn-primary btn-sm"><i class="fa fa-plus-circle"></i></button>
+															</div>
+														</div></td>
+												</tr>
+											</tfoot>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- end aaditional positions -->
+      ]]></add>
+    </operation>
+	</file>
+
+  <!-- ocFilter 4.7.5 -->
+  <file path="catalog/controller/extension/module/ocfilter.php">
+    <operation error="skip">
+      <search><![CDATA[
+        $this->document->addStyle('catalog/view/theme/default/stylesheet/ocfilter/ocfilter.css');
+      ]]></search>
+      <add position="replace"><![CDATA[
+        $this->document->addStyle('catalog/view/theme/ff_frame/stylesheet/ocfilter/ocfilter.css');
+      ]]></add>
+    </operation>
+    <operation error="skip">
+      <search><![CDATA[
+        $this->document->addScript('catalog/view/javascript/ocfilter/ocfilter.js');
+      ]]></search>
+      <add position="replace"><![CDATA[
+        $this->document->addScript('catalog/view/theme/ff_frame/javascript/ocfilter/ocfilter.js');
+      ]]></add>
+    </operation>
+  </file>
+
+  <!-- simple 4.10.4 -->
+  <file path="catalog/controller/checkout/simplecheckout_cart.php">
+    <operation error="skip">
+      <search><![CDATA[
+        $this->language->load('checkout/simplecheckout');
+      ]]></search>
+      <add position="after"><![CDATA[
+        $this->language->load('extension/module/framefreetheme/ff_global');
+      ]]></add>
+    </operation>
+  </file>
+
+</modification>

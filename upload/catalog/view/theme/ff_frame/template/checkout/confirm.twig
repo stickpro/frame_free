@@ -1,0 +1,57 @@
+{% if not redirect %}
+<div class="p-sm-3">
+<div class="table-responsive">
+  <table class="table table-bordered table-hover">
+    <thead>
+      <tr class="bg-light">
+        <th class="text-left">{{ column_name }}</th>
+        <th class="text-left">{{ column_model }}</th>
+        <th class="text-right">{{ column_quantity }}</th>
+        <th class="text-right">{{ column_price }}</th>
+        <th class="text-right">{{ column_total }}</th>
+      </tr>
+    </thead>
+    <tbody>
+    
+    {% for product in products %}
+    <tr>
+      <td class="text-left"><a href="{{ product.href }}"><strong>{{ product.name }}</strong></a> {% for option in product.option %} <br />
+        &nbsp;<small> - {{ option.name }}: {{ option.value }}</small> {% endfor %}
+        {% if product.recurring %} <br />
+        <span class="label label-info">{{ text_recurring_item }}</span> <small>{{ product.recurring }}</small> {% endif %}</td>
+      <td class="text-left">{{ product.model }}</td>
+      <td class="text-right">{{ product.quantity }}</td>
+      <td class="text-right">{{ product.price }}</td>
+      <td class="text-right">{{ product.total }}</td>
+    </tr>
+    {% endfor %}
+    {% for voucher in vouchers %}
+    <tr>
+      <td class="text-left">{{ voucher.description }}</td>
+      <td class="text-left"></td>
+      <td class="text-right">1</td>
+      <td class="text-right">{{ voucher.amount }}</td>
+      <td class="text-right">{{ voucher.amount }}</td>
+    </tr>
+    {% endfor %}
+      </tbody>
+    
+    <tfoot>
+    
+    {% for total in totals %}
+    <tr>
+      <td colspan="4" class="text-right"><strong>{{ total.title }}:</strong></td>
+      <td class="text-right">{{ total.text }}</td>
+    </tr>
+    {% endfor %}
+      </tfoot>
+    
+  </table>
+</div>
+{{ payment }}
+</div>
+{% else %} 
+<script>
+location = '{{ redirect }}';
+</script> 
+{% endif %} 

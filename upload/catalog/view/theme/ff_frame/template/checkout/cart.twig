@@ -1,0 +1,196 @@
+{{ header }}
+<div id="checkout-cart" class="container">
+  {% if attention %}
+  <div class="alert alert-info"><i class="fa fa-info-circle"></i> {{ attention }}
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+  </div>
+  {% endif %}
+  {% if success %}
+  <div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> {{ success }}
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+  </div>
+  {% endif %}
+  {% if error_warning %}
+  <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+  </div>
+  {% endif %}
+  <div class="row">
+
+		{% if column_left %}
+		<div class="col-12 col-sm col-lg-3 order-lg-1 col-aside">
+			{{ column_left }}
+		</div>
+		{% endif %}
+
+		{% if column_right %}
+		<div class="col-12 col-sm col-lg-3 order-lg-3 col-aside">
+			{{ column_right }}
+		</div>
+		{% endif %}
+
+
+    <div id="content" class="col-12 col-lg order-lg-2 mb-3">
+			{{ content_top }}
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb p-0 mb-3 bg-transparent" itemscope itemtype="http://schema.org/BreadcrumbList">
+          {% for breadcrumb in breadcrumbs %}
+          {% if loop.index == 1 %}
+          <li class="breadcrumb-item p-0" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a class="text-dark" href="{{ breadcrumb.href }}"  itemprop="item">
+              <meta itemprop="name" content="{{ g_text_home }}" />
+            	<svg class="ft-icon-18 d-block" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            		<path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+            	</svg>
+            </a>
+            <meta itemprop="position" content="{{ loop.index }}" />
+          </li>
+          {% elseif breadcrumbs|length != loop.index %}
+          <li class="breadcrumb-item p-0" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a class="text-dark" href="{{ breadcrumb.href }}" itemprop="item">
+              <span itemprop="name">{{ breadcrumb.text }}</span>
+            </a>
+            <meta itemprop="position" content="{{ loop.index }}" />
+          </li>
+          {% else %}
+          <li class="breadcrumb-item p-0 active">
+            <span>{{ breadcrumb.text }}</span>
+          </li>
+          {% endif %}
+          {% endfor %}
+        </ol>
+      </nav>
+      <h1 class="h2 mb-4">{{ heading_title }}
+        {% if weight %}
+        &nbsp;({{ weight }})
+        {% endif %} </h1>
+			<div class="row">
+				<div class="col-12 col-xl-8">
+
+					<form action="{{ action }}" method="post" enctype="multipart/form-data">
+						<div class="table-responsive">
+							<table class="table table-bordered">
+								<thead>
+									<tr class="bg-light">
+										<th class="text-center text-nowrap">{{ column_image }}</th>
+										<th class="text-left text-nowrap">{{ column_name }}</th>
+										<th class="text-left text-nowrap">{{ column_model }}</th>
+										<th class="text-left text-nowrap">{{ column_quantity }}</th>
+										<th class="text-right text-nowrap">{{ column_price }}</th>
+										<th class="text-right text-nowrap">{{ column_total }}</th>
+									</tr>
+								</thead>
+								<tbody>
+
+								{% for product in products %}
+								<tr>
+									<td class="text-center">{% if product.thumb %} <a href="{{ product.href }}"><img src="{{ product.thumb }}" alt="{{ product.name }}" title="{{ product.name }}" class="img-fluid" /></a> {% endif %}</td>
+									<td class="text-left"><a class="text-dark" href="{{ product.href }}"><strong>{{ product.name }}</strong></a> {% if not product.stock %} <span class="text-danger">***</span> {% endif %}
+										{% if product.option %}
+										{% for option in product.option %} <br />
+										<small>{{ option.name }}: {{ option.value }}</small> {% endfor %}
+										{% endif %}
+										{% if product.reward %} <br />
+										<small>{{ product.reward }}</small> {% endif %}
+										{% if product.recurring %} <br />
+										<span class="label label-info">{{ text_recurring_item }}</span> <small>{{ product.recurring }}</small> {% endif %}</td>
+									<td class="text-left text-nowrap">{{ product.model }}</td>
+									<td class="text-left">
+											<div class="d-inline-block">
+											<div class="input-group flex-nowrap">
+												<input type="text" name="quantity[{{ product.cart_id }}]" value="{{ product.quantity }}" size="1" class="form-control" style="width:50px" />
+												<div class="input-group-append">
+													<button type="submit" data-toggle="tooltip" title="{{ button_update }}" class="btn btn-primary px-2">
+
+															<svg class="d-block ft-icon-18 m-0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+																<path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+															</svg>
+
+													</button>
+													<button type="button" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger px-2" onclick="cart.remove('{{ product.cart_id }}');">
+
+															<svg class="d-block ft-icon-18 m-0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+																<path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+															</svg>
+
+													</button>
+												</div>
+											</div>
+											</div>
+											</td>
+									<td class="text-right text-nowrap">{{ product.price }}</td>
+									<td class="text-right text-nowrap">{{ product.total }}</td>
+								</tr>
+								{% endfor %}
+								{% for voucher in vouchers %}
+								<tr>
+									<td></td>
+									<td class="text-left">{{ voucher.description }}</td>
+									<td class="text-left"></td>
+									<td class="text-left"><div class="input-group btn-block" style="max-width: 200px;">
+											<input type="text" name="" value="1" size="1" disabled="disabled" class="form-control" />
+											<span class="input-group-btn">
+											<button type="button" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger" onclick="voucher.remove('{{ voucher.key }}');"><i class="fa fa-times-circle"></i></button>
+											</span></div></td>
+									<td class="text-right">{{ voucher.amount }}</td>
+									<td class="text-right">{{ voucher.amount }}</td>
+								</tr>
+								{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</form>
+				</div>
+				<div class="col">
+					<div class="card">
+
+						<div class="card-header">
+							<h5 class="card-title m-0">{{ text_next }}</h6>
+						</div>
+
+						<div class="card-body">
+
+							{% if modules %}
+
+							<p class="d-none">{{ text_next_choice }}</p>
+							<div id="accordion">
+
+								{% for module in modules %}
+								{{ module }}
+								{% endfor %}
+
+							</div>
+							<hr>
+							{% endif %}
+
+							<div class="row">
+								<div class="col">
+									<table class="table table-bordered">
+										{% for total in totals %}
+										<tr>
+											<td class="text-right bg-light">{{ total.title }}:</td>
+											<td class="text-right text-nowrap"><strong>{{ total.text }}</strong></td>
+										</tr>
+										{% endfor %}
+									</table>
+								</div>
+							</div>
+							<div class="form-row">
+
+								<div class="col-12 col-sm-auto ml-sm-auto col-xl-6 order-sm-2 mb-2 mb-sm-0"><a href="{{ checkout }}" class="btn btn-block btn-primary text-truncate">{{ button_checkout }}</a></div>
+								<div class="col-12 col-sm-auto col-xl-6 order-sm-1"><a href="{{ continue }}" class="btn btn-block btn-light text-truncate">{{ button_shopping }}</a></div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+
+
+    </div>
+  </div>
+	{{ content_bottom }}
+</div>
+{{ footer }}

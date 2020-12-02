@@ -1,0 +1,63 @@
+{% if reviews %}
+{% for review in reviews %}
+<div class="card mb-3">
+	<div class="card-header py-2 px-3 ">
+		<div class="row form-row align-items-center">
+			<div class="col-auto">
+				{% if review.rating == 1 %}
+				<svg class="d-block ft-icon-24 m-0  text-danger" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+					<path d="M11.99 2C6.47 2 2 6.47 2 12s4.47 10 9.99 10S22 17.53 22 12 17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm4.18-12.24l-1.06 1.06-1.06-1.06L13 8.82l1.06 1.06L13 10.94 14.06 12l1.06-1.06L16.18 12l1.06-1.06-1.06-1.06 1.06-1.06zM7.82 12l1.06-1.06L9.94 12 11 10.94 9.94 9.88 11 8.82 9.94 7.76 8.88 8.82 7.82 7.76 6.76 8.82l1.06 1.06-1.06 1.06zM12 14c-2.33 0-4.31 1.46-5.11 3.5h10.22c-.8-2.04-2.78-3.5-5.11-3.5z"/>
+				</svg>
+				{% elseif review.rating == 2 %}
+				<svg class="d-block ft-icon-24 m-0 text-warning" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+					<circle cx="15.5" cy="9.5" r="1.5"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm0-6c-2.33 0-4.32 1.45-5.12 3.5h1.67c.69-1.19 1.97-2 3.45-2s2.75.81 3.45 2h1.67c-.8-2.05-2.79-3.5-5.12-3.5z"/>
+				</svg>
+				{% elseif review.rating == 3 %}
+				<svg class="d-block ft-icon-24 m-0 1 text-secondary" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+					<path d="M9 14h6v1.5H9z"/><circle cx="15.5" cy="9.5" r="1.5"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/>
+				</svg>
+				{% elseif review.rating == 4 %}
+				<svg class="d-block ft-icon-24 m-0 1 text-primary" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+					<circle cx="15.5" cy="9.5" r="1.5"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm0-4c-1.48 0-2.75-.81-3.45-2H6.88c.8 2.05 2.79 3.5 5.12 3.5s4.32-1.45 5.12-3.5h-1.67c-.7 1.19-1.97 2-3.45 2z"/>
+				</svg>
+				{% else %}
+				<svg class="d-block ft-icon-24 m-0 1 text-success" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+					<path d="M11.99 2C6.47 2 2 6.47 2 12s4.47 10 9.99 10S22 17.53 22 12 17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm1-10.06L14.06 11l1.06-1.06L16.18 11l1.06-1.06-2.12-2.12zm-4.12 0L9.94 11 11 9.94 8.88 7.82 6.76 9.94 7.82 11zM12 17.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/>
+				</svg>
+				{% endif %}
+			</div>
+			<div class="col">
+				<b class="mr-2">{{ review.author }}</b><small class="d-inline-block text-secondary">{{ review.date_added }}</small>
+			</div>
+			<div class="col-auto">
+				<div class="d-flex justify-content-centers">
+					{% for i in 1..5 %}
+					{% if review.rating < i %}
+					<svg class="d-block ft-icon-18 text-gray-400 m-0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+						<path d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"/>
+					</svg>
+					{% else %}
+					<svg class="d-block ft-icon-18 text-warning m-0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+						<path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+					</svg>
+					{% endif %}
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="card-body">
+		{{ review.text }}
+	</div>
+</div>
+{% endfor %}
+<div class="row pr-container">
+	<div class="col-12 col-md-auto order-md-1 text-center text-md-left">
+		<nav>
+			{{ pagination }}
+		</nav>
+	</div>
+</div>
+{% else %}
+<p class="text-muted">{{ text_no_reviews }}</p>
+{% endif %}

@@ -1,0 +1,310 @@
+{% if categories %}
+<nav id="ftMenu" class="dropdown {% if menu_show %}d-show{% endif %}">
+	<button type="button" class="btn btn-block btn-danger shadow-none py-2 pl-3 pr-2 d-none d-lg-block" data-toggle="dropdown">
+		<span class="row no-gutters align-items-center my-1">
+			<span class="col-auto">
+				<svg class="d-block ft-icon-24" viewBox="0 0 24 24"  xmlns="http://www.w3.org/2000/svg">
+					<path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+				</svg>
+			</span>
+			<span class="col">
+				<strong>{{ text_category }}</strong>
+			</span>
+			<span class="col-auto">
+				<svg class="d-block ft-icon-24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+					<path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+				</svg>
+			</span>
+		</span>
+	</button>
+	<div id="d_category_menu_list" class="dropdown-menu category-menu-list shadow border border-top-0 rounded-bottom p-0 m-0 w-100 {% if menu_show %}d-lg-block{% endif %}">
+		{% if add_cat_links_status %}
+		{% for item in add_category_menu %}
+		{% if not item.position %}
+		<span class="category-menu-item item-level-1 p-0 border-top d-block">
+			<a href="{{ item.link }}" class="link-level-1 d-block text-dark text-decoration-none py-2 pl-3">
+				<span class="row no-gutters py-1">
+					{% if item.html %}
+					<span class="col-auto">
+						{{ item.html }}
+					</span>
+					{% elseif item.image_peace %}
+					<span class="col-auto">
+						<span class="menu-icon-holder d-block mr-3">
+							{% if item.image_peace %}
+							<img class="icon peace-icon {% if item.image_hover %}has-hover{% endif %}" src="{{ item.image_peace }}" alt="image_peace" />
+							{% endif %}
+							{% if item.image_peace and item.image_hover %}
+							<img class="icon hover-icon" src="{{ item.image_hover }}" alt="image_hover" />
+							{% endif %}
+						</span>
+					</span>
+					{% endif %}
+					<span class="col">
+					{{ item.title }}
+					</span>
+				</span>
+			</a>
+		</span>
+		{% endif %}
+		{% endfor %}
+		{% endif %}
+		{% for category in categories %}
+		{% if category.children %}
+		<span class="category-menu-item item-level-1 p-0 border-top d-block {% if category.active %}active{% endif %} {% if alt_view_submenu %}position-relative{% endif %}">
+			<span class="row no-gutters align-items-center">
+				<span class="col">
+					<a href="{{ category.href }}" class="link-level-1 d-block position-relative text-dark text-decoration-none has-child py-2 pl-3 pr-2">
+						<span class="row no-gutters py-1">
+							<span class="col-auto">
+								{% if category.html_icon %}
+								{{ category.html_icon }}
+								{% elseif category.icon_peace %}
+								<span class="menu-icon-holder d-block mr-3">
+									{% if category.icon_peace %}
+									<img class="icon peace-icon {% if category.icon_hover %}has-hover{% endif %}" src="{{ category.icon_peace }}" alt="icon_peace" />
+									{% endif %}
+									{% if category.icon_peace and category.icon_hover %}
+									<img class="icon hover-icon" src="{{ category.icon_hover }}" alt="icon_hover" />
+									{% endif %}
+								</span>
+								{% endif %}
+							</span>
+							<span class="col">
+							{{ category.name }}
+							</span>
+							<span class="col-auto d-none d-lg-block">
+								<svg class="ft-icon-24 d-block text-gray-400" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+									<path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+								</svg>
+							</span>
+						</span>
+					</a>
+				</span>
+				<span class="col-auto border-left d-lg-none">
+					<a href="#parent-{{ category.category_id }}" class="child-list-toggle collapsed d-block d-lg-none p-2" data-toggle="collapse">
+						<svg class="toggle-hidden ft-icon-24 m-0 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+							<path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+						</svg>
+						<svg class="toggle-shown ft-icon-24 m-0 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+							<path d="M19 13H5v-2h14v2z"/>
+						</svg>
+					</a>
+				</span>
+			</span>
+			<span class="mobile-link-holder d-none d-lg-block position-relative w-lg-100"></span>
+			<span id="parent-{{ category.category_id }}" class="list-level-2 bg-white border rounded shadow overflow-hidden collapse py-lg-1 px-lg-4 mt-lg-n1 ml-lg-n1 cols-{{ category.column }} ">
+				<span class="row row-cols-1 row-cols-lg-{{ category.column }}">
+					{% for child in category.children %}
+					<span class="col">
+						<span class="category-menu-item item-level-2 d-block border-top p-0 {% if child.active %}active{% endif %}">
+							<span class="row no-gutters align-items-center">
+								<span class="col">
+									<a href="{{ child.href }}" class="link-level-2 d-block text-dark text-decoration-none py-2 pl-4 pr-lg-0 pl-lg-0 {% if child.children2 and third_level_status %} has-child {% endif %}" >
+										<span class="row no-gutters py-1">
+											{% if child.html_icon %}
+											<span class="col-auto d-none d-lg-block">
+											{{ child.html_icon }}
+											</span>
+											{% elseif child.icon_peace %}
+											<span class="col-auto d-none d-lg-block">
+												<span class="menu-icon-holder d-block mr-3">
+													{% if child.icon_peace %}
+													<img class="icon peace-icon {% if child.icon_hover %}has-hover{% endif %}" src="{{ child.icon_peace }}" alt="icon_peace" />
+													{% endif %}
+													{% if child.icon_peace and child.icon_hover %}
+													<img class="icon hover-icon" src="{{ child.icon_hover }}" alt="icon_hover" />
+													{% endif %}
+												</span>
+											</span>
+											{% endif %}
+											<span class="col">
+												<span class="level-arrow px-2 ft-icon text-gray-400 darker-on-hover d-inline-block d-lg-none text-center">&#8627;</span>
+												{{ child.name }}
+											</span>
+										</span>
+									</a>
+								</span>
+								{% if child.children2 and third_level_status %}
+								<span class="col-auto border-left d-lg-none">
+									<a href="#parent-{{ child.category_id }}" class="child-list-toggle collapsed d-block d-lg-none p-2" data-toggle="collapse">
+										<svg class="toggle-hidden ft-icon-24 m-0 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+											<path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+										</svg>
+										<svg class="toggle-shown ft-icon-24 m-0 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+											<path d="M19 13H5v-2h14v2z"/>
+										</svg>
+									</a>
+								</span>
+								{% endif %}
+							</span>
+							{% if child.children2 and third_level_status %}
+							<span id="parent-{{ child.category_id }}" class="list-level-3 collapse">
+								{% set count = 0 %}
+								{% for child2 in child.children2 if count < third_level_limit %}
+								<span class="category-menu-item item-level-3 p-0 border-top d-block third-level {% if child2.active %}active{% endif %}">
+									<a href="{{ child2.href }}" class="link-level-3 d-block text-dark text-decoration-none pl-5 py-2 p-lg-0">
+										<span class="d-block py-1 py-lg-0">
+											<span class="level-arrow px-2 ft-icon text-gray-400 darker-on-hover d-inline-block text-center">&#8627;</span>
+											{{ child2.name }}
+										</span>
+									</a>
+								</span>
+								{% set count = count + 1 %}
+								{% endfor %}
+								<span class="category-menu-item p-0 border-top d-none d-lg-block third-level">
+									<a href="{{ child.href }}" class="d-block text-dark text-decoration-none p-lg-0">...</a>
+								</span>
+							</span>
+							{% endif %}
+						</span>
+					</span>
+					{% endfor %}
+				</span>
+				<a href="{{ category.href }}" class="link-all d-none text-center bg-light border-top text-dark dark-on-hover text-decoration-none mx-n4 mb-n1 mt-auto py-1">{{ text_all }}</a>
+			</span>
+		</span>
+		{% else %}
+		<span class="category-menu-item item-level-1 p-0 border-top d-block {% if category.active %}active{% endif %}">
+			<a href="{{ category.href }}" class="link-level-1 d-block text-dark text-decoration-none py-2 px-3">
+				<span class="row no-gutters py-1">
+					<span class="col-auto">
+						{% if category.html_icon %}
+						{{ category.html_icon }}
+						{% elseif category.icon_peace %}
+						<span class="menu-icon-holder d-block mr-3">
+							{% if category.icon_peace %}
+							<img class="icon peace-icon {% if category.icon_hover %}has-hover{% endif %}" src="{{ category.icon_peace }}" alt="{{ category.name }} 0" />
+							{% endif %}
+							{% if category.icon_peace and category.icon_hover %}
+							<img class="icon hover-icon" src="{{ category.icon_hover }}" alt="{{ category.name }} 1" />
+							{% endif %}
+						</span>
+						{% endif %}
+					</span>
+					<span class="col">
+					{{ category.name }}
+					</span>
+				</span>
+			</a>
+		</span>
+		{% endif %}
+		{% endfor %}
+		{% if add_cat_links_status %}
+		{% for item in add_category_menu %}
+		{% if item.position %}
+		<span class="category-menu-item item-level-1 p-0 border-top d-block">
+			<a href="{{ item.link }}" class="link-level-1 d-block text-dark text-decoration-none py-2 pl-3">
+				<span class="row no-gutters py-1">
+					{% if item.html %}
+					<span class="col-auto">
+						{{ item.html }}
+					</span>
+					{% elseif item.image_peace %}
+					<span class="col-auto">
+						<span class="menu-icon-holder d-block mr-3">
+							{% if item.image_peace %}
+							<img class="icon peace-icon {% if item.image_hover %}has-hover{% endif %}" src="{{ item.image_peace }}" alt="image_peace" />
+							{% endif %}
+							{% if item.image_peace and item.image_hover %}
+							<img class="icon hover-icon" src="{{ item.image_hover }}" alt="image_hover" />
+							{% endif %}
+						</span>
+					</span>
+					{% endif %}
+					<span class="col">
+					{{ item.title }}
+					</span>
+				</span>
+			</a>
+		</span>
+		{% endif %}
+		{% endfor %}
+		{% endif %}
+	</div>
+
+  <div class="modal fade left" id="ftModalMenu" tabindex="-1">
+    <div class="modal-dialog modal-dialog-scrollable mh-100 vh-100 m-0 mr-auto">
+      <div class="modal-content border-0 rounded-0 mh-100 h-100">
+        <div class="modal-header no-gutters">
+          <div class="col-auto">
+            <a href="#" class="d-block mr-3" data-dismiss="modal">
+        			<svg class="d-block ft-icon-24 m-0 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        				<path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+        			</svg>
+        		</a>
+        	</div>
+        	<div class="col">
+        		<div class="h5 modal-title">{{ text_category }}</div>
+        	</div>
+        </div>
+        <div class="modal-body p-0">
+          <div id="m_category_menu_list" class="category-menu-list"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+{% if mask_status %}
+<div class="menu-backdrop ft-backdrop bg-black d-none d-lg-block position-fixed t-0 l-0"></div>
+{% endif %}
+<script>
+
+  var d_category_menu_list = document.querySelector('#d_category_menu_list');
+  var m_category_menu_list = document.querySelector('#m_category_menu_list');
+  var category_menu_items = document.querySelectorAll('#d_category_menu_list > *');
+
+  var recombinateMenu = () => {
+
+    if (window.innerWidth < 992 ) {
+      m_category_menu_list.innerHtml = '';
+      category_menu_items.forEach(function(item, i) {
+        m_category_menu_list.append(item);
+      });
+    } else {
+      d_category_menu_list.innerHTML = '';
+      category_menu_items.forEach(function(item, i) {
+        d_category_menu_list.append(item);
+      });
+      $('#ftModalMenu').modal('hide');
+    }
+
+  }
+
+  var recombinateMenuDebounce = debounce(recombinateMenu, 200);
+
+  if (typeof recombinateMenuDebounce == 'function')  recombinateMenuDebounce();
+
+  // ---------------------------------------------------------------------------------
+
+	!function(e){function t(t){var n=e(this),i=null,o=[],u=null,r=null,c=e.extend({rowSelector:"> li",submenuSelector:"*",submenuDirection:"right",tolerance:75,enter:e.noop,exit:e.noop,activate:e.noop,deactivate:e.noop,exitMenu:e.noop},t),l=2,f=100,a=function(e){o.push({x:e.pageX,y:e.pageY}),o.length>l&&o.shift()},s=function(){r&&clearTimeout(r),c.exitMenu(this)&&(i&&c.deactivate(i),i=null)},h=function(){r&&clearTimeout(r),c.enter(this),v(this)},m=function(){c.exit(this)},x=function(){y(this)},y=function(e){e!=i&&(i&&c.deactivate(i),c.activate(e),i=e)},v=function(e){var t=p();t?r=setTimeout(function(){v(e)},t):y(e)},p=function(){function t(e,t){return(t.y-e.y)/(t.x-e.x)}if(!i||!e(i).is(c.submenuSelector))return 0;var r=n.offset(),l={x:r.left,y:r.top-c.tolerance},a={x:r.left+n.outerWidth(),y:l.y},s={x:r.left,y:r.top+n.outerHeight()+c.tolerance},h={x:r.left+n.outerWidth(),y:s.y},m=o[o.length-1],x=o[0];if(!m)return 0;if(x||(x=m),x.x<r.left||x.x>h.x||x.y<r.top||x.y>h.y)return 0;if(u&&m.x==u.x&&m.y==u.y)return 0;var y=a,v=h;"left"==c.submenuDirection?(y=s,v=l):"below"==c.submenuDirection?(y=h,v=s):"above"==c.submenuDirection&&(y=l,v=a);var p=t(m,y),b=t(m,v),d=t(x,y),g=t(x,v);return d>p&&b>g?(u=m,f):(u=null,0)};n.mouseleave(s).find(c.rowSelector).mouseenter(h).mouseleave(m).click(x),e(document).mousemove(a)}e.fn.menuAim=function(e){return this.each(function(){t.call(this,e)}),this}}(jQuery);
+
+	$(function() {
+
+		$('#d_category_menu_list').menuAim({
+			rowSelector: "> .category-menu-item",
+			submenuSelector: "*",
+			activate: function(row) { row.classList.add('hover') },
+			deactivate: function(row) { row.classList.remove('hover') },
+			exitMenu: function(row) { return true }
+		});
+
+	});
+
+
+
+	$('#ftMenu [data-toggle=collapse]').click(function(e) {
+		var collapse = document.querySelector($(this).attr('href'));
+		e.stopPropagation();
+		$(collapse).collapse('toggle');
+		return false;
+	});
+
+	$('#ftMenu .category-menu-list a').click(function(e) { e.stopPropagation() });
+
+	{% if mask_status %}
+	$('.category-menu-list').hover( function (e) { $('body').addClass('category-menu-open') }, function (e) { $('body').removeClass('category-menu-open') } );
+	{% endif %}
+
+</script>
+{% endif %}

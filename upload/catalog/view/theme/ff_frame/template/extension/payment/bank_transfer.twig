@@ -1,0 +1,33 @@
+<div class="p-3 bg-light border rounded mb-4">
+  <h5 class="mb-3">{{ text_instruction }}</h5>
+	<p>{{ text_description }}</p>
+	<p>{{ bank }}</p>
+	<p class="mb-0 text-muted">{{ text_payment }}</p>
+</div>
+<div class="row">
+	<div class="col-12 col-md-auto ml-md-auto">
+		<input type="button" value="{{ button_confirm }}" id="button-confirm" class="btn btn-block btn-lg btn-primary px-4" data-loading-text="{{ text_loading }}" />
+  </div>
+</div>
+<script type="text/javascript"><!--
+$('#button-confirm').on('click', function() {
+	$.ajax({
+		url: 'index.php?route=extension/payment/bank_transfer/confirm',
+		dataType: 'json',
+		beforeSend: function() {
+			$('#button-confirm').button('loading');
+		},
+		complete: function() {
+			$('#button-confirm').button('reset');
+		},
+		success: function(json) {
+			if (json['redirect']) {
+				location = json['redirect'];
+			}
+		},
+		error: function(xhr, ajaxOptions, thrownError) {
+			alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+		}
+	});
+});
+//--></script>

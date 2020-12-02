@@ -1,0 +1,805 @@
+{% if product_isset %}
+<div class="modal-header no-gutters">
+	<div class="col-auto">
+		<svg class="d-block ft-icon-24 my-0 mr-3 text-gray-500" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+			<path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+		</svg>
+	</div>
+	<div class="col">
+		<div class="h5 modal-title">
+			<a class="text-dark line-clamp-1" href="{{ product_href }}">{{ heading_title }}</a>
+		</div>
+	</div>
+	<div class="col-auto">
+		<a href="#" class="d-block ml-2" data-dismiss="modal">
+			<svg class="d-block ft-icon-24 m-0 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+				<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+			</svg>
+		</a>
+	</div>
+</div>
+<div class="modal-body p-0">
+	<div class="qview-content">
+		<div class="row no-gutters">
+			<div class="col-12 col-lg-6">
+				<div class="position-relative pt-3 pb-3">
+					{% if thumb or images %}
+					{% if images %}
+					<div id="qv-gallery" class="position-relative">
+						<div class="carousel-placeholder p-5">
+ 							<svg class="d-block img-fluid mx-auto" width="300px" height="300px" xmlns="http://www.w3.org/2000/svg"></svg>
+						</div>
+						<div class="owl-carousel">
+							{% if thumb %}
+							<div class="d-flex justify-content-center p-5">
+								<div class="position-relative">
+									<svg class="d-block img-fluid" width="300px" height="300px" xmlns="http://www.w3.org/2000/svg"></svg>
+									<img src="{{ thumb }}" {% if thumb2x %}srcset="{{ thumb }} 1x, {{ thumb2x }} 2x, {{ thumb3x }} 3x, {{ thumb4x }} 4x" title="{{ heading_title }}" alt="{{ heading_title }}-0"{% endif %} class="position-absolute t-0 l-0 img-fluid d-block w-100" />
+								</div>
+							</div>
+							{% endif %}
+							{% set i = 1 %}
+							{% for image in images %}
+							<div class="d-flex justify-content-center p-5">
+								<div class="position-relative">
+									<svg class="d-block img-fluid" width="300px" height="300px" xmlns="http://www.w3.org/2000/svg"></svg>
+									<img src="{{ image.thumb }}" {% if image.thumb2x %}srcset="{{ image.thumb }} 1x, {{ image.thumb2x }} 2x, {{ image.thumb3x }} 3x, {{ image.thumb4x }} 4x"{% endif %} title="{{ heading_title }}" alt="{{ heading_title }}" title="{{ heading_title }}" alt="{{ heading_title }}-{{ i }}" class="position-absolute t-0 l-0 img-fluid d-block w-100" />
+								</div>
+							</div>
+							{% set i = i + 1 %}
+							{% endfor %}
+						</div>
+						<div class="owl-pagination text-center px-2 py-2">
+					    <button class="btn btn-dot bg-dark shadow-none rounded-pill border-0 bg-secondary p-0 mr-0 active"><span></span></button>
+					  </div>
+						<button class="btn btn-next position-absolute t-50p r-0 p-0 rounded-pill z-index-2 mt-n3 mr-3">
+				  		<svg class="d-block ft-icon-24 m-0 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+				  			<path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"></path>
+				  		</svg>
+				  	</button>
+				    <button class="btn btn-prev position-absolute t-50p l-0 p-0 rounded-pill z-index-2 mt-n3 ml-3">
+				  		<svg class="d-block ft-icon-24 m-0 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+				  			<path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"></path>
+				  		</svg>
+				  	</button>
+						<div class="psw-locker position-absolute d-none t-0 b-0 l-0 r-0 w-100 h-100 z-index-2">
+							<div class="d-flex justify-content-center align-items-center position-absolute t-0 b-0 l-0 r-0 w-100 h-100">
+								<div class="spinner-border text-gray-300"></div>
+							</div>
+						</div>
+					</div>
+					{% else %}
+					<div class="d-flex justify-content-center p-5">
+						<div class="position-relative">
+							<svg class="d-block img-fluid" width="300px" height="300px" xmlns="http://www.w3.org/2000/svg"></svg>
+							<img src="{{ thumb }}" {% if thumb2x %}srcset="{{ thumb }} 1x, {{ thumb2x }} 2x, {{ thumb3x }} 3x, {{ thumb4x }} 4x" title="{{ heading_title }}" alt="{{ heading_title }}-0"{% endif %} class="position-absolute t-0 l-0 img-fluid d-block w-100" />
+						</div>
+					</div>
+					{% endif %}
+					{% endif %}
+
+					{% if stickers %}
+					<div class="position-absolute t-0 l-0 pl-4 pt-3 z-index-2">
+						{% for sticker in stickers %}
+						<div class="text-left"><span class="{{ sticker.class }}">{{ sticker.text }}</span></div>
+						{% endfor %}
+					</div>
+					{% endif %}
+				</div>
+			</div>
+			<div class="col-auto d-none d-lg-block border-right"></div>
+			<div class="col-12 col-lg qview-description">
+				<hr class="d-lg-none mt-0">
+				<div class="px-4 px-sm-5 px-lg-3 pb-3 pt-lg-3">
+					<div class="row">
+						<div class="col">
+							<ul class="list-unstyled m-0">
+								{% if manufacturer %}
+								<li>{{ text_brand }} <strong><a href="{{ manufacturers }}" class="text-dark">{{ manufacturer }}</a></strong></li>
+								{% endif %}
+								<li>{{ text_model }} <strong>{{ model }}</strong></li>
+								{% if reward %}
+								<li class="d-none">{{ text_reward }} {{ reward }}</li>
+								{% endif %}
+								<li class="d-none">{{ text_stock }} {{ stock }}</li>
+							</ul>
+						</div>
+						<div class="col-auto ml-auto">
+							<div class="btn-group btn-group-sm ml-1 ml-sm-2">
+								<button type="button" class="btn btn-light" title="{{ button_compare }}" onclick="compare.add('{{ product_id }}');">
+									<svg class="d-block ft-icon-24 m-0 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" >
+										<path d="M 12 4 A 2 2 0 0 0 10.269531 5 L 5 5 L 2 5 L 2 7 L 4 7 L 0 15 C 0 17.761 2.239 20 5 20 C 7.761 20 10 17.761 10 15 L 6 7 L 10.271484 7 A 2 2 0 0 0 12 8 A 2 2 0 0 0 13.730469 7 L 18 7 L 14 15 C 14 17.761 16.239 20 19 20 C 21.761 20 24 17.761 24 15 L 20 7 L 22 7 L 22 5 L 13.728516 5 A 2 2 0 0 0 12 4 z M 5 9.0214844 L 7.9882812 15 L 2.0117188 15 L 5 9.0214844 z M 19 9.0214844 L 21.988281 15 L 16.011719 15 L 19 9.0214844 z"/>
+									</svg>
+								</button>
+								<button type="button" class="btn btn-light" title="{{ button_wishlist }}" onclick="wishlist.add('{{ product_id }}');">
+									<svg class="d-block ft-icon-24 m-0 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+										<path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/>
+									</svg>
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				{% if price %}
+				<div class="px-4 py-3 px-sm-5 px-lg-3 border-top">
+					<div class="row">
+						<div class="col">
+							{% if not special %}
+							<div class="h2 m-0">{{ price }}</div>
+							{% else %}
+							<strike class="text-danger">{{ price }}</strike>
+							<div class="h2 m-0">{{ special }}</div>
+							{% endif %}
+							{% if tax %}
+							<div class="text-muted font-weight-light mt-1">{{ text_tax }} {{ tax }}</div>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+				{% if discounts %}
+				<div class="px-4 py-3 px-sm-5 px-lg-3 border-top">
+					{% for discount in discounts %}
+					<div>
+						{{ discount.quantity }}
+						<span class="text-muted">{{ text_discount }}</span>
+						<strong>{{ discount.price }}</strong>
+					</div>
+					{% endfor %}
+				</div>
+				{% endif %}
+				{% if points %}
+				<div class="px-4 py-3 px-sm-5 px-lg-3 border-top">
+					{{ text_points }} <strong>{{ points }}</strong>
+				</div>
+				{% endif %}
+				{% endif %}
+				{% if minimum > 1 %}
+				<div class="px-4 py-3 px-sm-5 px-lg-3 border-top">{{ text_minimum }}</div>
+				{% endif %}
+				{% if review_status %}
+				<div class="px-4 py-3 px-sm-5 px-lg-3 border-top">
+					<div class="row no-gutters align-items-center">
+						<div class="col-auto">
+							<div class="d-flex">
+								{% for i in 1..5 %}
+								{% if rating < i %}
+								<svg class="d-block ft-icon-24 m-0 text-gray-400" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+									<path d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"/>
+								</svg>
+								{% else %}
+								<svg class="d-block ft-icon-24 text-warning m-0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+									<path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+								</svg>
+								{% endif %}
+								{% endfor %}
+							</div>
+						</div>
+						<div class="col">
+							<div class="mx-3">
+								{% if reviews_link %}
+								<a href="{{ product_href }}#reviews" class="text-dark">{{ reviews }}</a>
+								{% else %}
+								<span class="text-muted font-weight-light">{{ reviews }}</span>
+								{% endif %}
+							</div>
+						</div>
+					</div>
+				</div>
+				{% endif %}
+				<div class="px-4 py-3 px-sm-5 px-lg-3 border-top">
+					{% if attribute_groups and  description%}
+					<ul class="nav nav-pills nav-pills-light mb-3">
+						<li class="nav-item"><a class="nav-link text-dark px-3 py-1 active" href="#tab-description-qv" data-toggle="tab">{{ tab_description }}</a></li>
+						<li class="nav-item"><a class="nav-link text-dark px-3 py-1" href="#tab-specification-qv" data-toggle="tab">{{ tab_attribute }}</a></li>
+					</ul>
+					{% endif %}
+					<div class="tab-content">
+						<div class="tab-pane active" id="tab-description-qv">
+							<div>
+								{{ description }}
+								<a href="{{ product_href }}#description">&#8594;</a>
+							</div>
+						</div>
+						{% if attribute_groups %}
+						<div class="tab-pane" id="tab-specification-qv">
+							<table class="table table-sm table-bordered">
+								<tbody>
+									{% for attribute_group in attribute_groups %}
+									<tr>
+										<td colspan="2"><strong>{{ attribute_group.name }}</strong></td>
+									</tr>
+										{% for attribute in attribute_group.attribute %}
+										<tr>
+											<td>{{ attribute.name }}</td>
+											<td>{{ attribute.text }}</td>
+										</tr>
+										{% endfor %}
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+						{% endif %}
+					</div>
+				</div>
+				<div class="qview-options position-relative">
+					{% if options %}
+					<div class="h6 d-none">{{ text_option }}</div>
+					{% for option in options %}
+					{% if option.type == 'select' %}
+					<div class="px-4 py-3 px-sm-5 px-lg-3 border-top">
+						<div class="form-group{% if option.required %} required {% endif %} m-0">
+							<label class="control-label" for="qv-input-option{{ option.product_option_id }}"><strong>{{ option.name }}</strong></label>
+							<select name="option[{{ option.product_option_id }}]" id="qv-input-option{{ option.product_option_id }}" class="custom-select form-control">
+								<option value="">{{ text_select }}</option>
+								{% for option_value in option.product_option_value %}
+								<option value="{{ option_value.product_option_value_id }}">{{ option_value.name }}
+								{% if option_value.price %}
+								({{ option_value.price_prefix }}{{ option_value.price }})
+								{% endif %} </option>
+								{% endfor %}
+							</select>
+						</div>
+					</div>
+					{% endif %}
+					{% if option.type == 'radio' %}
+					<div class="px-4 py-3 px-sm-5 px-lg-3 border-top">
+						<div class="form-group{% if option.required %} required {% endif %} m-0">
+							<label class="control-label"><strong>{{ option.name }}</strong></label>
+							<div id="qv-input-option{{ option.product_option_id }}" class="mx-n1">
+								<div class="d-flex flex-wrap">
+									{% for option_value in option.product_option_value %}
+									{% if option_value.image %}
+									<div class="mb-2 mx-1">
+										<input
+											type="radio"
+											class="option-image d-none"
+											id="qv-option-{{ option.product_option_id }}-{{ option_value.product_option_value_id }}"
+											name="option[{{ option.product_option_id }}]"
+											value="{{ option_value.product_option_value_id }}"
+											>
+										<label class="border overflow-hidden rounded cursor-pointer d-block m-0 p-0" for="qv-option-{{ option.product_option_id }}-{{ option_value.product_option_value_id }}">
+											<span class="d-block position-relative">
+												<svg class="d-block img-fluid" width="50px" height="50px" xmlns="http://www.w3.org/2000/svg"></svg>
+												<img class="d-block img-fluid position-absolute t-0 l-0 img-fluid d-block w-100" src="{{ option_value.image }}" {% if option_value.image2x %}srcset="{{ option_value.image }} 1x, {{ option_value.image2x }} 2x, {{ option_value.image3x }} 3x, {{ option_value.image4x }} 4x"{% endif %} alt="{{ option_value.name }} {% if option_value.price %} {{ option_value.price_prefix }} {{ option_value.price }} {% endif %}" data-toggle="tooltip" data-offset="0, 8" title="{{ option_value.name }}{% if option_value.price %} ({{ option_value.price_prefix }}{{ option_value.price }}){% endif %}" />
+											</span>
+										</label>
+									</div>
+									{% else %}
+									<div class="custom-control custom-radio w-100 mb-1">
+										<input
+											type="radio"
+											class="custom-control-input"
+											id="qv-option-{{ option.product_option_id }}-{{ option_value.product_option_value_id }}"
+											name="option[{{ option.product_option_id }}]"
+											value="{{ option_value.product_option_value_id }}"
+											>
+										<label class="custom-control-label cursor-pointer ml-1" for="qv-option-{{ option.product_option_id }}-{{ option_value.product_option_value_id }}">
+											{{ option_value.name }} <span class="text-secondary">{% if option_value.price %} ({{ option_value.price_prefix }}{{ option_value.price }}){% endif %}</span>
+										</label>
+									</div>
+									{% endif %}
+									{% endfor %}
+								</div>
+							</div>
+						</div>
+					</div>
+					{% endif %}
+					{% if option.type == 'checkbox' %}
+					<div class="px-4 py-3 px-sm-5 px-lg-3 border-top">
+						<div class="form-group{% if option.required %} required {% endif %} m-0">
+							<label class="control-label"><strong>{{ option.name }}</strong></label>
+							<div id="qv-input-option{{ option.product_option_id }}" class="mx-n1">
+								<div class="d-flex flex-wrap">
+									{% for option_value in option.product_option_value %}
+									{% if option_value.image %}
+									<div class="mb-2 mx-1">
+										<input
+											type="checkbox"
+											class="option-image d-none"
+											id="qv-option-{{ option.product_option_id }}-{{ option_value.product_option_value_id }}"
+											name="option[{{ option.product_option_id }}][]"
+											value="{{ option_value.product_option_value_id }}"
+											>
+										<label class="border overflow-hidden rounded cursor-pointer d-block m-0 p-0" for="qv-option-{{ option.product_option_id }}-{{ option_value.product_option_value_id }}">
+											<span class="d-block position-relative">
+												<svg class="d-block img-fluid" width="50px" height="50px" xmlns="http://www.w3.org/2000/svg"></svg>
+												<img class="d-block img-fluid position-absolute t-0 l-0 img-fluid d-block w-100" src="{{ option_value.image }}" {% if option_value.image2x %}srcset="{{ option_value.image }} 1x, {{ option_value.image2x }} 2x, {{ option_value.image3x }} 3x, {{ option_value.image4x }} 4x"{% endif %} alt="{{ option_value.name }} {% if option_value.price %} {{ option_value.price_prefix }} {{ option_value.price }} {% endif %}" data-toggle="tooltip" data-offset="0, 8" title="{{ option_value.name }}{% if option_value.price %} ({{ option_value.price_prefix }}{{ option_value.price }}){% endif %}" />
+											</span>
+										</label>
+									</div>
+									{% else %}
+									<div class="custom-control custom-checkbox w-100 mb-1">
+										<input
+											type="checkbox"
+											class="custom-control-input"
+											id="qv-option-{{ option.product_option_id }}-{{ option_value.product_option_value_id }}"
+											name="option[{{ option.product_option_id }}][]"
+											value="{{ option_value.product_option_value_id }}"
+											>
+										<label class="custom-control-label cursor-pointer ml-1" for="qv-option-{{ option.product_option_id }}-{{ option_value.product_option_value_id }}">
+											{{ option_value.name }} <span class="text-secondary">{% if option_value.price %} ({{ option_value.price_prefix }}{{ option_value.price }}){% endif %}</span>
+										</label>
+									</div>
+									{% endif %}
+									{% endfor %}
+								</div>
+							</div>
+						</div>
+					</div>
+					{% endif %}
+					{% if option.type == 'text' %}
+					<div class="px-4 py-3 px-sm-5 px-lg-3 border-top">
+						<div class="form-group{% if option.required %} required {% endif %} m-0">
+							<label class="control-label" for="qv-input-option{{ option.product_option_id }}"><strong>{{ option.name }}</strong></label>
+							<input type="text" name="option[{{ option.product_option_id }}]" value="{{ option.value }}" placeholder="{{ option.name }}" id="qv-input-option{{ option.product_option_id }}" class="form-control" {% if option.required %} required {% endif %} />
+						</div>
+					</div>
+					{% endif %}
+					{% if option.type == 'textarea' %}
+					<div class="px-4 py-3 px-sm-5 px-lg-3 border-top">
+						<div class="form-group{% if option.required %} required {% endif %} m-0">
+							<label class="control-label" for="qv-input-option{{ option.product_option_id }}"><strong>{{ option.name }}</strong></label>
+							<textarea name="option[{{ option.product_option_id }}]" rows="2" placeholder="{{ option.name }}" id="qv-input-option{{ option.product_option_id }}" class="form-control">{{ option.value }}</textarea>
+						</div>
+					</div>
+					{% endif %}
+					{% if option.type == 'file' %}
+					<div class="px-4 py-3 px-sm-5 px-lg-3 border-top">
+						<div class="form-group{% if option.required %} required {% endif %} m-0">
+							<label class="control-label"><strong>{{ option.name }}</strong></label>
+							<br>
+							<button type="button" id="button-upload{{ option.product_option_id }}" data-loading-text="{{ text_loading }}" class="btn btn-light mw-100 text-truncate">
+								<span class="row no-gutters">
+									<span class="col-auto">
+										<span class="loading-icon">
+											<span class="spinner-border ft-icon-18 text-gray-500 d-block"></span>
+										</span>
+										<span class="static-icon">
+											<svg class="d-block ft-icon-18 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+												<path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/>
+											</svg>
+										</span>
+									</span>
+									<span class="col-auto">
+										<span class="button-text ml-2">{{ button_upload }}</span>
+									</span>
+								</span>
+							</button>
+							<input type="hidden" name="option[{{ option.product_option_id }}]" value="" id="input-option{{ option.product_option_id }}" />
+						</div>
+					</div>
+					{% endif %}
+					{% if option.type == 'date' %}
+					<div class="px-4 py-3 px-sm-5 px-lg-3 border-top">
+						<div class="form-group{% if option.required %} required {% endif %} m-0">
+							<label class="control-label" for="qv-input-option{{ option.product_option_id }}"><strong>{{ option.name }}</strong></label>
+							<div class="input-group date need-dtp">
+								<input type="text" name="option[{{ option.product_option_id }}]" value="{{ option.value }}" data-date-format="YYYY-MM-DD" id="qv-input-option{{ option.product_option_id }}" class="form-control" />
+								<div class="input-group-append">
+									<button class="btn btn-light border px-2" type="button">
+										<svg class="d-block ft-icon-18 text-gray-500 darker-on-hover" viewBox="0 0 24 24"  xmlns="http://www.w3.org/2000/svg">
+											<path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/>
+										</svg>
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					{% endif %}
+					{% if option.type == 'datetime' %}
+					<div class="px-4 py-3 px-sm-5 px-lg-3 border-top">
+						<div class="form-group{% if option.required %} required {% endif %} m-0">
+							<label class="control-label" for="qv-input-option{{ option.product_option_id }}"><strong>{{ option.name }}</strong></label>
+							<div class="input-group datetime need-dtp">
+								<input type="text" name="option[{{ option.product_option_id }}]" value="{{ option.value }}" data-date-format="YYYY-MM-DD HH:mm" id="qv-input-option{{ option.product_option_id }}" class="form-control" />
+								<div class="input-group-append">
+									<button class="btn btn-light border px-2" type="button">
+										<svg class="d-block ft-icon-18 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+											<path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/>
+										</svg>
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					{% endif %}
+					{% if option.type == 'time' %}
+					<div class="px-4 py-3 px-sm-5 px-lg-3 border-top">
+						<div class="form-group{% if option.required %} required {% endif %} m-0">
+							<label class="control-label" for="qv-input-option{{ option.product_option_id }}"><strong>{{ option.name }}</strong></label>
+							<div class="input-group time need-dtp">
+								<input type="text" name="option[{{ option.product_option_id }}]" value="{{ option.value }}" data-date-format="HH:mm" id="qv-input-option{{ option.product_option_id }}" class="form-control" />
+								<div class="input-group-append">
+									<button class="btn btn-light border px-2" type="button">
+										<svg class="d-block ft-icon-18 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+											<path d="M22 5.72l-4.6-3.86-1.29 1.53 4.6 3.86L22 5.72zM7.88 3.39L6.6 1.86 2 5.71l1.29 1.53 4.59-3.85zM12.5 8H11v6l4.75 2.85.75-1.23-4-2.37V8zM12 4c-4.97 0-9 4.03-9 9s4.02 9 9 9c4.97 0 9-4.03 9-9s-4.03-9-9-9zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/>
+										</svg>
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					{% endif %}
+					{% endfor %}
+					{% endif %}
+					{% if recurrings %}
+					<div class="px-4 py-3 px-sm-5 px-lg-3 border-top">
+						<div class="form-group required m-0">
+							<label><strong>{{ text_payment_recurring }}</strong></label>
+							<select name="recurring_id" class="form-control custom-select">
+								<option value="">{{ text_select }}</option>
+								{% for recurring in recurrings %}
+								<option value="{{ recurring.recurring_id }}">{{ recurring.name }}</option>
+								{% endfor %}
+							</select>
+							<div class="help-block" id="recurring-description"></div>
+						</div>
+					</div>
+					{% endif %}
+					<input type="hidden" name="product_id" value="{{ product_id }}" />
+				</div>
+			</div>
+    </div>
+	</div>
+</div>
+<div class="modal-footer d-block px-0">
+	<div class="m-0 px-4 px-sm-5 px-lg-3">
+		<div class="row">
+			<div class="col-5 col-lg-2 order-lg-3">
+				<div class="input-group mb-3 mb-lg-0">
+					<div class="input-group-prepend">
+						<button class="btn btn-light border px-1" type="button" onclick="ff_countupd('-1', '{{ minimum }}', '#qv-quantity')">
+							<svg class="d-block ft-icon-18 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+								<path d="M19 13H5v-2h14v2z"/>
+							</svg>
+						</button>
+					</div>
+					<input type="text" name="quantity" value="{{ minimum }}" id="qv-quantity" class="form-control border text-center" />
+					<div class="input-group-append">
+						<button class="btn btn-light border px-1" type="button" onclick="ff_countupd('1', '{{ minimum }}', '#qv-quantity')">
+							<svg class="d-block ft-icon-18 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+								<path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+							</svg>
+						</button>
+					</div>
+				</div>
+			</div>
+			<div class="col-7 col-lg-4 order-lg-4">
+				<div class="row no-gutters">
+					<div class="col">
+						<button type="button" id="qv-button-cart-{{ product_id}}" data-loading="{{ text_loading }}" class="btn btn-primary btn-block text-truncate mb-3 mb-lg-0" {% if quantity <=0 and disable_btn_status %}disabled{% endif %}>
+							<span class="row no-gutters alig-items-center">
+								<span class="col-auto">
+									<span class="loading-icon mr-3">
+										<span class="spinner-border ft-icon-18 d-block text-white  mr-n3"></span>
+									</span>
+								</span>
+								<span class="col">
+									<span class="loading-wrapper">{% if quantity <=0 and disable_btn_status %}{{ disable_btn_text }}{% else %}{{ button_cart }}{% endif %}</span>
+								</span>
+							</span>
+						</button>
+					</div>
+					{% if fastorder_status %}
+					<div class="col-auto">
+						<button type="button" class="btn btn-primary px-2 ml-2" title="{{ g_text_fastorder }}" onclick="ff_fastorder('{{ product_id}}')" {% if quantity <=0 and disable_btn_status %}disabled{% endif %}>
+							<svg class="d-block ft-icon-18 text-wight" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+								<path d="M15 1H9v2h6V1zm-4 13h2V8h-2v6zm8.03-6.61l1.42-1.42c-.43-.51-.9-.99-1.41-1.41l-1.42 1.42C16.07 4.74 14.12 4 12 4c-4.97 0-9 4.03-9 9s4.02 9 9 9 9-4.03 9-9c0-2.12-.74-4.07-1.97-5.61zM12 20c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"></path>
+							</svg>
+						</button>
+					</div>
+					{% endif %}
+				</div>
+			</div>
+			<div class="col-5 col-lg order-lg-1">
+				<button type="button" class="btn btn-light btn-block text-truncate" data-dismiss="modal">{{ text_back }}</button>
+			</div>
+			<div class="col-7 col-lg order-lg-2">
+				<a href="{{ product_href }}" class="btn btn-light btn-block text-truncate">{{ text_more }}</a>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+
+	{% if images %}
+	function startOwl() {
+
+		var owl_qv_gallery = $('#qv-gallery .owl-carousel');
+
+		owl_qv_gallery.owlCarousel({
+
+			items: 1,
+			loop: false,
+			rewind: true,
+			mouseDrag: false,
+      touchDrag: true,
+			nav: false,
+			dots: true,
+			dotsContainer: '#qv-gallery .owl-pagination',
+			dotClass: 'btn btn-dot bg-dark shadow-none rounded-pill border-0 bg-secondary p-0',
+			autoplay: false,
+
+      onLoadedLazy: function(e) {e.element.parent().parent().find('.lazy-spinner').remove() },
+			onInitialized: function(e) {$(e.target).parent().find('.carousel-placeholder').remove() }
+		});
+
+		$('#qv-gallery .btn-prev').click(function() { owl_qv_gallery.trigger('prev.owl.carousel'); });
+		$('#qv-gallery .btn-next').click(function() { owl_qv_gallery.trigger('next.owl.carousel'); });
+
+	};
+
+	if (typeof jQuery().owlCarousel != 'function'  ) {
+
+		$('head').append('<link rel="stylesheet" type="text/css" href="catalog/view/theme/{{ theme_dir }}/javascript/owl-carousel/owl.carousel.min.css">');
+
+		$.getScript("catalog/view/theme/{{ theme_dir }}/javascript/owl-carousel/owl.carousel.min.js", function( data, textStatus, jqxhr ) {
+			startOwl();
+		});
+
+	} else {
+
+		startOwl();
+
+	}
+	{% endif %}
+
+
+	$('select[name=\'recurring_id\'], input[name="quantity"]').change(function(){
+		$.ajax({
+			url: 'index.php?route=product/product/getRecurringDescription',
+			type: 'post',
+			data: $('input[name=\'product_id\'], input[name=\'quantity\'], select[name=\'recurring_id\']'),
+			dataType: 'json',
+			beforeSend: function() {
+				$('#recurring-description').html('');
+			},
+			success: function(json) {
+				$('select[name=\'recurring_id\']').parent().find('.text-danger').remove();
+
+				if (json['success']) {
+					$('#recurring-description').html('<small class="d-block mt-2 ">'+json['success']+'</small>');
+				}
+			}
+		});
+	});
+
+	$('#qv-button-cart-{{ product_id }}').on('click', function() {
+		$.ajax({
+			url: 'index.php?route=extension/module/framefreetheme/ff_cart/add',
+			type: 'post',
+			data: $('#qview-product-{{ product_id }} input[type=\'text\'], #qview-product-{{ product_id }} input[type=\'hidden\'], #qview-product-{{ product_id }} input[type=\'radio\']:checked, #qview-product-{{ product_id }} input[type=\'checkbox\']:checked, #qview-product-{{ product_id }} select, #qview-product-{{ product_id }} textarea'),
+			dataType: 'json',
+			beforeSend: function() {
+				loading_text = $('#qv-button-cart-{{ product_id }}').attr('data-loading');
+				$('#qv-button-cart-{{ product_id }}').addClass('loading');
+				$('#qv-button-cart-{{ product_id }} .loading-wrapper').html(loading_text);
+				$('#qv-button-cart-{{ product_id }}').attr('disabled', 'disabled');
+				$('.alert-dismissible, .qview-options .text-danger').remove();
+				$('.qview-options').removeClass('has-error');
+				$('.qview-options > div').removeClass('option-error');
+				$('.qview-options .form-control, .qview-options .btn').removeClass('border-danger');
+			},
+			complete: function() {
+				$('#qv-button-cart-{{ product_id }}').removeClass('loading');
+				$('#qv-button-cart-{{ product_id }} .loading-wrapper').html('{{ button_cart }}');
+				$('#qv-button-cart-{{ product_id }}').removeAttr('disabled');
+			},
+			success: function(json) {
+
+				if (json['error']) {
+					if (json['error']['option']) {
+						for (i in json['error']['option']) {
+							var element = $('#ff_modal_qview #qv-input-option' + i.replace('_', '-'));
+
+							if (element.parent().hasClass('input-group')) {
+								element.addClass('border-danger');
+								element.parent().find('button').addClass('border-danger');
+								element.parent().after('<div class="text-danger"><small>' + json['error']['option'][i] + '</small></div>');
+								element.parent().parent().parent().addClass('option-error');
+							} else {
+								element.addClass('border-danger');
+								element.after('<div class="text-danger"><small>' + json['error']['option'][i] + '</small></div>');
+								element.parent().parent().addClass('option-error');
+							}
+						}
+					}
+
+					if (json['error']['recurring']) {
+						$('select[name=\'recurring_id\']').addClass('border-danger');
+						$('select[name=\'recurring_id\']').after('<div class="text-danger"><small>' + json['error']['recurring'] + '</small></div>');
+						$('select[name=\'recurring_id\']').parent().parent().addClass('option-error');
+					}
+
+					$('#ff_modal_qview .qview-options').addClass('has-error');
+
+					var p1 = parseInt($('#ff_modal_qview .modal-dialog').css('margin-top'), 10) + 2,
+							p2 = $('#ff_modal_qview .modal-header').outerHeight(),
+							p3 = $('#ff_modal_qview .qview-description').position().top,
+							p4 = $('#ff_modal_qview .qview-options').position().top,
+							p5 = $('#ff_modal_qview .option-error').first().position().top;
+
+					$('#ff_modal_qview').animate({
+						scrollTop: p1 + p2 + p3 + p4 + p5
+					}, 250);
+				}
+
+				if (json['success']) {
+
+					$('#ff_modal_qview').modal('hide');
+
+					$('#ff_modal_qview').on('hidden.bs.modal', function (e) {
+            $('#ff_popup_cart .alert').remove();
+						$('#ff_popup_cart').modal('show');
+					});
+
+					setTimeout(function () {
+						$.ajax({
+							url: 'index.php?route=extension/module/framefreetheme/ff_cart/info',
+							type: 'post',
+							dataType: 'html',
+							beforeSend: function() {
+								loading_text = $('#ff_cart > button').attr('data-loading');
+								$('#ff_cart').addClass('loading');
+								$('#ff_cart > button').attr('disabled', 'disabled');
+								$('#ff_cart > button #ff_cart_total').html('<span class="loading-wrapper">' + loading_text + '</span>');
+							},
+							complete: function() {
+								$('#ff_cart').removeClass('loading');
+								$('#ff_cart > button').removeAttr('disabled');
+							},
+							success: function(data){
+								var data_alert 	= '<div class="alert alert-light mt-n3 mx-n3 px-3 border-bottom">';
+										data_alert += 	'<div class="row no-gutters">';
+										data_alert += 		'<div class="col-auto">';
+										data_alert += 			'<i class="fa fa-fw fa-check mr-2"></i>';
+										data_alert += 		'</div>';
+										data_alert += 		'<div class="col">';
+										data_alert += 			json['success'];
+										data_alert += 		'</div>';
+										data_alert += 		'<div class="col-auto">';
+										data_alert += 			'<button type="button" class="close mr-1" data-dismiss="alert">&times;</button>';
+										data_alert += 		'</div>';
+										data_alert += 	'</div>';
+										data_alert += '</div>';
+
+								$('#ff_cart .cart-list').before(data_alert);
+								$('#ff_cart > button #ff_cart_total').html(json['total']);
+                $('#ff_m_cart_total').html($('#ff_cart > button #ff_cart_total .products > b').text());
+								$('#ff_cart .cart-list').html($(data).find('.cart-list').html());
+							},
+							error: function(xhr, ajaxOptions, thrownError) {
+								alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+							}
+						});
+					}, 100);
+				}
+			},
+			error: function(xhr, ajaxOptions, thrownError) {
+				alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+			}
+		});
+	});
+
+	$('button[id^=\'button-upload\']').on('click', function() {
+		var node = this;
+
+		$('#form-upload').remove();
+		$('body').prepend('<form enctype="multipart/form-data" id="form-upload" class="d-none"><input type="file" name="file" /></form>');
+		$('#form-upload input[name=\'file\']').trigger('click');
+
+		if (typeof timer != 'undefined') {
+				clearInterval(timer);
+		}
+		timer = setInterval(function() {
+			if ($('#form-upload input[name=\'file\']').val() != '') {
+
+				var f_path = $('#form-upload input[name=\'file\']').val().split('\\'),
+						f_name = f_path[f_path.length - 1];
+
+				$(node).find('.button-text').html(f_name);
+
+				$(node).find('.static-icon').html('<svg class="d-block ft-icon-18 text-gray-500" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M2 12.5C2 9.46 4.46 7 7.5 7H18c2.21 0 4 1.79 4 4s-1.79 4-4 4H9.5C8.12 15 7 13.88 7 12.5S8.12 10 9.5 10H17v2H9.41c-.55 0-.55 1 0 1H18c1.1 0 2-.9 2-2s-.9-2-2-2H7.5C5.57 9 4 10.57 4 12.5S5.57 16 7.5 16H17v2H7.5C4.46 18 2 15.54 2 12.5z"/></svg>');
+
+				clearInterval(timer);
+
+				$.ajax({
+					url: 'index.php?route=tool/upload',
+					type: 'post',
+					dataType: 'json',
+					data: new FormData($('#form-upload')[0]),
+					cache: false,
+					contentType: false,
+					processData: false,
+					beforeSend: function() {
+						$(node).addClass('loading');
+					},
+					complete: function() {
+						$(node).removeClass('loading');
+					},
+					success: function(json) {
+						$('.text-danger').remove();
+						if (json['error']) {
+							$(node).parent().find('input').after('<div class="text-danger"><small>' + json['error'] + '</small></div>');
+							$(node).find('.button-text').html('{{ button_upload }}');
+							$(node).find('.static-icon').html('<svg class="d-block ft-icon-18 text-gray-500" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/></svg>');
+						}
+						if (json['success']) {
+							console.log(json['success']);
+							$(node).parent().find('input').val(json['code']);
+						}
+					},
+					error: function(xhr, ajaxOptions, thrownError) {
+						alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+					}
+				});
+			}
+		}, 500);
+	});
+
+	function start_datetimepicker() {
+		$('.date').datetimepicker({
+			locale: '{{ datepicker }}',
+			pickTime: false
+		});
+
+		$('.datetime').datetimepicker({
+			locale: '{{ datepicker }}',
+			pickDate: true,
+			pickTime: true
+		});
+
+		$('.time').datetimepicker({
+			locale: '{{ datepicker }}',
+			pickDate: false
+		});
+	}
+
+	if ($('.need-dtp').length > 0){
+		if (typeof jQuery().datetimepicker != 'function'  ) {
+
+			$('head').append('<link rel="stylesheet" href="catalog/view/theme/{{ theme_dir }}/javascript/plugins/dtpicker-b4j3fix/bootstrap-datetimepicker.min.css">');
+
+			$.getScript("catalog/view/theme/{{ theme_dir }}/javascript/plugins/dtpicker-b4j3fix/moment/moment.min.js", function( data, textStatus, jqxhr ) {
+				$.getScript("catalog/view/theme/{{ theme_dir }}/javascript/plugins/dtpicker-b4j3fix/moment/moment-with-locales.min.js", function( data, textStatus, jqxhr ) {
+					$.getScript("catalog/view/theme/{{ theme_dir }}/javascript/plugins/dtpicker-b4j3fix/bootstrap-datetimepicker.min.js", function( data, textStatus, jqxhr ) {
+						start_datetimepicker();
+					});
+				});
+			});
+
+		} else {
+			start_datetimepicker();
+		}
+	}
+
+</script>
+{% else %}
+<div class="modal-header no-gutters">
+	<div class="col-auto">
+		<div class="h5 modal-title mr-3">
+			<svg class="d-block ft-icon-24 m-0 text-gray-500" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+				<path d="M11 15h2v2h-2zm0-8h2v6h-2zm.99-5C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/>
+			</svg>
+		</div>
+	</div>
+	<div class="col">
+		<div class="h5 modal-title">
+			{{ text_not_found }}
+		</div>
+	</div>
+	<div class="col-auto">
+		<a href="#" class="d-block h5 modal-title ml-2" data-dismiss="modal">
+			<svg class="d-block ft-icon-24 m-0 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+				<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+			</svg>
+		</a>
+	</div>
+</div>
+<div class="modal-body">
+	<div class="p-5 text-center">{{ text_error }}</div>
+</div>
+<div class="modal-footer d-block px-3 text-right">
+	<button type="button" class="btn btn-light" data-dismiss="modal">{{ text_back }}</button>
+</div>
+{% endif %}

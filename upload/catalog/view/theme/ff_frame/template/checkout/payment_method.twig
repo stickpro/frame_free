@@ -1,0 +1,77 @@
+{% if error_warning %}
+<div class="alert alert-warning alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}</div>
+{% endif %}
+
+<div class="row">
+	<div class="col">
+		<div class="p-sm-3">
+			{% if payment_methods %}
+			<h5 class="mb-4">{{ text_payment_method }}</h5>
+			{% for payment_method in payment_methods %}
+			<div class="form-check mb-1">
+				<label class="form-check-label">
+					{% if payment_method.code == code or not code %}
+					{% set code = payment_method.code %}
+					<input type="radio" class="form-check-input" name="payment_method" value="{{ payment_method.code }}" checked="checked" />
+					{% else %}
+					<input type="radio" class="form-check-input" name="payment_method" value="{{ payment_method.code }}" />
+					{% endif %}
+					{{ payment_method.title }}
+					{% if payment_method.terms %}
+					({{ payment_method.terms }})
+					{% endif %}
+				</label>
+			</div>
+			{% endfor %}
+			{% endif %}
+		</div>
+		<hr class="d-lg-none">
+	</div>
+	<div class="col-auto border border-top-0 border-bottom-0 border-left-0 p-0 d-none d-lg-block"></div>
+	<div class="col-12 col-lg-6">
+		<div class="p-sm-3">
+			<h5 class="mb-4">{{ text_comments }}</h5>
+			<textarea name="comment" rows="4" class="form-control">{{ comment }}</textarea>
+		</div>
+	</div>
+</div>
+<hr>
+
+<div class="row">
+	{% if text_agree %}
+	<div class="col-12 col-md text-md-right mb-3 mb-md-0">
+		<div class="d-table w-100 h-100">
+			<div class="d-table-cell w-100 h-100 align-middle">
+				<div class="checkbox"> 
+					<label class="m-0">
+						<span class="row no-gutters">
+							<span class="col-auto order-md-2">
+								{% if agree %}
+								<input type="checkbox" class="align-middle mr-2 mr-md-0 ml-md-2" name="agree" value="1" checked="checked" />
+								{% else %}
+								<input type="checkbox" class="align-middle mr-2 mr-md-0 ml-md-2" name="agree" value="1" />
+								{% endif %}
+							</span>
+							<span class="col order-md-1">
+								{{ text_agree }}
+							</span>
+						</span>
+					</label>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-12 col-md-auto">
+		<input type="button" value="{{ button_continue }}" id="button-payment-method" data-loading-text="{{ text_loading }}" class="btn btn-block btn-primary" />
+	</div>
+	{% else %}
+	<div class="col-12 col-md-auto ml-md-auto">
+		<input type="button" value="{{ button_continue }}" id="button-payment-method" data-loading-text="{{ text_loading }}" class="btn btn-block btn-primary px-4" />
+	</div>
+	{% endif %} 
+</div>
+
+
+
+	
+	

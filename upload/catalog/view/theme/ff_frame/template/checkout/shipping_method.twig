@@ -1,0 +1,47 @@
+{% if error_warning %}
+<div class="alert alert-warning alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}</div>
+{% endif %}
+<div class="row">
+	<div class="col">
+		<div class="p-sm-3">
+			{% if shipping_methods %}
+			<h5 class="mb-4">{{ text_shipping_method }}</h5>
+			{% for shipping_method in shipping_methods %}
+			<h6>{{ shipping_method.title }}</h6>
+			{% if not shipping_method.error %}
+			{% for quote in shipping_method.quote %}
+			<div class="form-check mb-1">
+				<label class="form-check-label"> 
+					{% if quote.code == code or not code %}
+					{% set code = quote.code %}
+					<input type="radio" class="form-check-input" name="shipping_method" value="{{ quote.code }}" checked="checked" />
+					{% else %}
+					<input type="radio" class="form-check-input" name="shipping_method" value="{{ quote.code }}" />
+					{% endif %}
+					{{ quote.title }} - {{ quote.text }}
+				</label>
+			</div>
+			{% endfor %}
+			{% else %}
+			<div class="alert alert-danger alert-dismissible">{{ shipping_method.error }}</div>
+			{% endif %}
+			{% endfor %}
+			{% endif %}
+		</div>
+		<hr class="d-lg-none">
+	</div>
+	<div class="col-auto border border-top-0 border-bottom-0 border-left-0 p-0 d-none d-lg-block"></div>
+	<div class="col-12 col-lg-6">
+		<div class="p-sm-3">
+			<h5 class="mb-4">{{ text_comments }}</h5>
+			<textarea name="comment" rows="4" class="form-control">{{ comment }}</textarea>
+		</div>
+	</div>
+</div>
+<hr>
+<div class="row">
+	<div class="col-12 col-md-auto ml-md-auto">
+		<input type="button" value="{{ button_continue }}" id="button-shipping-method" data-loading-text="{{ text_loading }}" class="btn btn-block btn-primary px-4" />
+	</div>
+</div>
+

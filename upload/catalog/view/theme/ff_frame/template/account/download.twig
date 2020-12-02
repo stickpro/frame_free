@@ -1,0 +1,102 @@
+{{ header }}
+<div id="account-download" class="container">
+  <div class="row">
+		{% if column_left %}
+		<div class="col-12 col-sm col-lg-3 order-lg-1 col-aside">
+			{{ column_left }}
+		</div>
+		{% endif %}
+		{% if column_right %}
+		<div class="col-12 col-sm col-lg-3 order-lg-3 col-aside">
+			{{ column_right }}
+		</div>
+		{% endif %}
+    <div id="content" class="col-12 col-lg order-lg-2 mb-3">
+			{{ content_top }}
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb p-0 mb-3 bg-transparent" itemscope itemtype="http://schema.org/BreadcrumbList">
+          {% for breadcrumb in breadcrumbs %}
+          {% if loop.index == 1 %}
+          <li class="breadcrumb-item p-0" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a class="text-dark" href="{{ breadcrumb.href }}"  itemprop="item">
+              <meta itemprop="name" content="{{ g_text_home }}" />
+            	<svg class="ft-icon-18 d-block" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            		<path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+            	</svg>
+            </a>
+            <meta itemprop="position" content="{{ loop.index }}" />
+          </li>
+          {% elseif breadcrumbs|length != loop.index %}
+          <li class="breadcrumb-item p-0" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a class="text-dark" href="{{ breadcrumb.href }}" itemprop="item">
+              <span itemprop="name">{{ breadcrumb.text }}</span>
+            </a>
+            <meta itemprop="position" content="{{ loop.index }}" />
+          </li>
+          {% else %}
+          <li class="breadcrumb-item p-0 active">
+            <span>{{ breadcrumb.text }}</span>
+          </li>
+          {% endif %}
+          {% endfor %}
+        </ol>
+      </nav>
+      <h1 class="h2 mb-4">{{ heading_title }}</h1>
+      {% if downloads %}
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <td class="text-right">{{ column_order_id }}</td>
+              <td class="text-left">{{ column_name }}</td>
+              <td class="text-left">{{ column_size }}</td>
+              <td class="text-left">{{ column_date_added }}</td>
+              <td></td>
+            </tr>
+          </thead>
+          <tbody>
+
+          {% for download in downloads %}
+          <tr>
+            <td class="text-right">{{ download.order_id }}</td>
+            <td class="text-left">{{ download.name }}</td>
+            <td class="text-left">{{ download.size }}</td>
+            <td class="text-left">{{ download.date_added }}</td>
+            <td style="width:1%"><a href="{{ download.href }}" data-toggle="tooltip" title="{{ button_download }}" class="btn btn-primary px-2">
+
+								<svg class="d-block ft-icon-18 m-0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+									<path xmlns="http://www.w3.org/2000/svg" d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/>
+								</svg>
+
+            </a></td>
+          </tr>
+          {% endfor %}
+          </tbody>
+
+        </table>
+      </div>
+      <div class="row pr-container">
+				<div class="col-12 col-md-auto ml-md-auto order-md-2 text-center text-md-left">
+					<div class="d-table w-100 h-100">
+						<div class="d-table-cell w-100 h-100 align-middle">
+							<div class="results text-muted mb-3">{{ results }}</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-12 col-md-auto order-md-1 text-center text-md-left">
+					<nav>
+						{{ pagination }}
+					</nav>
+				</div>
+			</div>
+      {% else %}
+      <p>{{ text_empty }}</p>
+      {% endif %}
+      <div class="">
+        <div class=""><a href="{{ continue }}" class="btn btn-primary px-4">{{ button_continue }}</a></div>
+      </div>
+      </div>
+    </div>
+	{{ content_bottom }}
+</div>
+{{ footer }}

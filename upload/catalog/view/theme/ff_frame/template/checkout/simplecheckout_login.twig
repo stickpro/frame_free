@@ -1,0 +1,39 @@
+<div class="simplecheckout-block rounded" id="simplecheckout_login" {{ has_error ? 'data-error="true"' : '' }}>
+  <div class="simplecheckout-block-content">
+    <div id="simple_login_header" class="text-right">
+      <a href="javascript:void(0)" class="d-inline-block mt-2 mr-2" data-onclick="close">
+        <svg class="d-block ft-icon-24 m-0 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+        </svg>
+      </a>
+    </div>
+    <div class="px-4 pt-2">
+      {% if error_login %}
+      <div class="alert alert-danger simplecheckout-warning-block py-2 px-3">
+        {{ error_login }}
+      </div>
+      {% endif %}
+      <fieldset>
+        <div class="form-group">
+          <label class="control-label d-none">{{ entry_email }}</label>
+          <input class="form-control" data-onkeydown="detectEnterAndLogin" type="text" name="email" value="{{ email }}" placeholder="{{ entry_email }}"></label>
+        </div>
+        <div class="form-group">
+          <label class="control-label d-none">{{ entry_password }}</label>
+          <input class="form-control" data-onkeydown="detectEnterAndLogin" type="password" name="password" value="" placeholder="{{ entry_password }}"></label>
+        </div>
+        <div class="row no-gutters align-items-center">
+          <div class="col-auto">
+            <a href="javascript:void(0)" id="simplecheckout_button_login" data-onclick="login" class="button btn-primary button_oc btn px-4">
+              <span>{{ button_login }}</span>
+            </a>
+          </div>
+          <div class="col text-left">
+            <a class="ml-3 text-dark" href="{{ forgotten }}">{{ text_forgotten }}</a>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+  </div>
+  <hr>
+</div>

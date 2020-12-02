@@ -1,0 +1,58 @@
+<div id="slideshow-{{ module }}" class="position-relative overflow-hidden border rounded mb-3">
+  <div class="owl-carousel">
+		{% for banner in banners %}
+    <div class="position-relative">
+			{% if banner.link %}
+			<a href="{{ banner.link }}">
+      {% endif %}
+      <img src="{{ banner.thumb_holder }}" data-src="{{ banner.image }}" alt="{{ banner.title }}" class="d-block img-fluid w-100 owl-lazy" />
+      <div class="d-flex justify-content-center align-items-center position-absolute t-0 b-0 r-0 l-0 w-100 h-100 lazy-spinner">
+        <div class="spinner-border text-gray-400"></div>
+      </div>
+      {% if banner.link %}
+      </a>
+      {% endif %}
+		</div>
+    {% endfor %}
+	</div>
+  <div class="owl-pagination position-absolute b-0 l-0 r-0 w-100 z-index-2 text-center px-3 pb-2">
+    <button role="button" class="btn btn-dot bg-dark shadow-none rounded-pill border-0 bg-secondary p-0 mr-0"><span></span></button>
+  </div>
+  <button class="btn btn-next position-absolute t-50p r-0 p-0 rounded-pill z-index-2 mt-n3 mr-3">
+		<svg class="d-block ft-icon-24 m-0 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+			<path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"></path>
+		</svg>
+	</button>
+  <button class="btn btn-prev position-absolute t-50p l-0 p-0 rounded-pill z-index-2 mt-n3 ml-3">
+		<svg class="d-block ft-icon-24 m-0 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+			<path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"></path>
+		</svg>
+	</button>
+</div>
+<script>
+	$(function () {
+		var slideshow_{{ module }} = $('#slideshow-{{ module }} .owl-carousel');
+
+		slideshow_{{ module }}.owlCarousel({
+      mouseDrag: false,
+      touchDrag: true,
+      items: 1,
+      autoHeight: true,
+      nav: false,
+      dots: true,
+      dotsContainer: '#slideshow-{{ module }} .owl-pagination',
+      dotClass: 'btn btn-dot bg-dark shadow-none rounded-pill border-0 bg-secondary p-0',
+      loop: false,
+      rewind: true,
+      autoplay: true,
+      autoplayTimeout: 5000,
+      autoplayHoverPause: true,
+      lazyLoad: true,
+      lazyLoadEager: 0,
+      onLoadedLazy: function(e) { e.element.parent().parent().find('.lazy-spinner').remove() }
+		});
+
+		$('#slideshow-{{ module }} .btn-prev').click(function() { slideshow_{{ module }}.trigger('prev.owl.carousel'); });
+		$('#slideshow-{{ module }} .btn-next').click(function() { slideshow_{{ module }}.trigger('next.owl.carousel'); });
+	});
+</script>

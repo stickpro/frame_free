@@ -1,0 +1,54 @@
+<div class="list-group-item ocfilter-option" id="option-{{ option.option_id }}">
+  <div class="ocf-option-name mb-2 font-weight-bold">
+
+      {{ option.name }}
+
+  		{% if option.type == 'slide' or option.type == 'slide_dual' %}
+      <span id="left-value-{{ option.option_id }}">{{ option.slide_value_min_get }}</span>
+  		{% if option.type == 'slide_dual' %}
+  		-&nbsp;<span id="right-value-{{ option.option_id }}">{{ option.slide_value_max_get }}</span>
+  		{% endif %}
+      {{ option.postfix }}
+      {% endif %}
+
+  </div>
+
+  <div class="ocf-option-values">
+    {% if option.type == 'slide' or option.type == 'slide_dual' %}
+    {% include 'ff_frame/template/extension/module/ocfilter/filter_slider_item.twig' %}
+    {% else %}
+
+    {% if option.selectbox %}
+    <div class="dropdown">
+      <button class="btn btn-sm btn-block btn-{{ (selecteds[option.option_id] is defined) ? 'primary' : 'light' }} dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+
+        <span class="row no-gutters align-items-center">
+          <span class="col text-left">
+            {% if selecteds[option.option_id] is defined %}
+
+            {% for value in selecteds[option.option_id].values %}
+            {{ value.name }}<br />
+  					{% endfor %}
+
+          	{% else %}
+          	{{ text_any }}
+            {% endif %}
+          </span>
+          <span class="col-auto">
+            <svg class="d-block ft-icon-18 m-0 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M7.41 7.84L12 12.42l4.59-4.58L18 9.25l-6 6-6-6z"></path>
+            </svg>
+          </span>
+        </span>
+
+      </button>
+      <div class="dropdown-menu">
+        {% include 'ff_frame/template/extension/module/ocfilter/value_list.twig' %}
+      </div>
+    </div>
+    {% else %}
+    {% include 'ff_frame/template/extension/module/ocfilter/value_list.twig' %}
+    {% endif %}
+    {% endif %}
+  </div>
+</div>

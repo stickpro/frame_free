@@ -1,0 +1,227 @@
+{{ header }}
+<div id="information-contact" class="container">
+
+  <div class="row">
+		{% if column_left %}
+		<div class="col-12 col-sm col-lg-3 order-lg-1 col-aside">
+			{{ column_left }}
+		</div>
+		{% endif %}
+		{% if column_right %}
+		<div class="col-12 col-sm col-lg-3 order-lg-3 col-asid">
+			{{ column_right }}
+		</div>
+		{% endif %}
+		<div id="content" class="col-12 col-lg order-lg-2 mb-3">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb p-0 mb-3 bg-transparent" itemscope itemtype="http://schema.org/BreadcrumbList">
+          {% for breadcrumb in breadcrumbs %}
+          {% if loop.index == 1 %}
+          <li class="breadcrumb-item p-0" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a class="text-dark" href="{{ breadcrumb.href }}"  itemprop="item">
+              <meta itemprop="name" content="{{ g_text_home }}" />
+            	<svg class="ft-icon-18 d-block" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            		<path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+            	</svg>
+            </a>
+            <meta itemprop="position" content="{{ loop.index }}" />
+          </li>
+          {% elseif breadcrumbs|length != loop.index %}
+          <li class="breadcrumb-item p-0" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a class="text-dark" href="{{ breadcrumb.href }}" itemprop="item">
+              <span itemprop="name">{{ breadcrumb.text }}</span>
+            </a>
+            <meta itemprop="position" content="{{ loop.index }}" />
+          </li>
+          {% else %}
+          <li class="breadcrumb-item p-0 active">
+            <span>{{ breadcrumb.text }}</span>
+          </li>
+          {% endif %}
+          {% endfor %}
+        </ol>
+      </nav>
+			{{ content_top }}
+			<h1 class="h2 mb-3">{{ heading_title }}</h1>
+
+			{% if error_warning %}
+			<div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}</div>
+			{% endif %}
+
+			<div class="row">
+				<div class="col">
+					<div class="card mb-3">
+						<div class="card-header">
+							<h5 class="card-title m-0">{{ text_location }}</h5>
+						</div>
+						<div class="card-body">
+							<div class="row">
+								{% if image %}
+								<div class="col-12 col-sm-6 col-md-4">
+									<img src="{{ image }}" alt="{{ store }}" title="{{ store }}" class="img-fluid mb-3 mb-md-0" />
+								</div>
+								{% endif %}
+								<div class="col-12 col-sm-6 col-md-4">
+									<div class="mb-3">
+										<h6>{{ store }}</h6>
+										<address class="mb-2">
+										{{ address }}
+										</address>
+										{% if geocode %}
+										<a href="https://maps.google.com/maps?q={{ geocode|url_encode }}&hl={{ geocode_hl }}&t=m&z=15" target="_blank" class="btn btn-sm btn-primary">{{ button_map }}</a>
+										{% endif %}
+									</div>
+
+									<div class="mb-3">
+										<h6>{{ text_telephone }}</h6>
+										{{ telephone }}
+									</div>
+
+									{% if fax %}
+									<div class="mb-3">
+										<h6>{{ text_fax }}</h6>
+										{{ fax }}
+									</div>
+									{% endif %}
+
+								</div>
+								{% if open or comment %}
+								<div class="col">
+									{% if open %}
+									<div class="mb-3">
+										<h6>{{ text_open }}</h6>
+										{{ open }}
+									</div>
+									{% endif %}
+
+									{% if comment %}
+									<div class="mb-3">
+										<h6>{{ text_comment }}</h6>
+										{{ comment }}
+									</div>
+									{% endif %}
+								</div>
+								{% endif %}
+							</div>
+						</div>
+					</div>
+
+				{% if locations %}
+				<h4 class="mb-3">{{ text_store }}</h4>
+				<div id="accordion">
+					{% for location in locations %}
+					<div class="card mb-2">
+						<div class="card-header">
+							<h5 class="card-title m-0"><a href="#collapse-location{{ location.location_id }}" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion">{{ location.name }}</a></h5>
+						</div>
+						<div class="collapse" id="collapse-location{{ location.location_id }}">
+							<div class="card-body">
+								<div class="row">
+									{% if location.image %}
+									<div class="col-12 col-sm-6 col-md-4">
+										<img src="{{ location.image }}" alt="{{ location.name }}" title="{{ location.name }}" class="img-fluid mb-3 mb-md-0" />
+									</div>
+									{% endif %}
+									<div class="col-12 col-sm-6 col-md-4">
+										<div class="mb-3">
+											<h6>{{ location.name }}</h6>
+											<address class="mb-2">{{ location.address }}</address>
+											{% if location.geocode %}
+											<a href="https://maps.google.com/maps?q={{ location.geocode|url_encode }}&hl={{ geocode_hl }}&t=m&z=15" target="_blank" class="btn btn-sm btn-primary">{{ button_map }}</a>
+											{% endif %}
+										</div>
+										<div class="mb-3">
+											<h6>{{ text_telephone }}</h6>
+											{{ location.telephone }}
+										</div>
+										{% if location.fax %}
+										<div class="mb-3">
+										<h6>{{ text_fax }}</h6>
+										{{ location.fax }}
+										</div>
+										{% endif %}
+									</div>
+									<div class="col">
+										{% if location.open %}
+										<div class="mb-3">
+											<h6>{{ text_open }}</h6>
+											{{ location.open }}
+										</div>
+										{% endif %}
+										{% if location.comment %}
+										<div class="mb-3">
+											<h6>{{ text_comment }}</h6>
+											{{ location.comment }}
+										</div>
+										{% endif %}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+				{% endif %}
+				</div>
+				<div class="col-12 col-lg-4">
+					<div class="card">
+						<div class="card-header">
+							<h5 class="card-title m-0">{{ text_contact }}</h5>
+						</div>
+						<div class="card-body">
+							<form action="{{ action }}" method="post" enctype="multipart/form-data" class="form-horizontal">
+									<div class="form-row">
+										<div class="col-12 col-sm-12">
+											<div class="form-group required">
+												<!-- <label for="input-name">{{ entry_name }}</label> -->
+												<input type="text" name="name" value="{{ name }}" id="input-name" class="form-control{% if error_name %} border-danger{% endif %}" placeholder="{{ entry_name }} *" />
+												{% if error_name %}
+												<small class="d-block text-danger">{{ error_name }}</small>
+												{% endif %}
+											</div>
+										</div>
+										<div class="col-12 col-sm-12">
+											<div class="form-group required">
+												<!-- <label for="input-email">{{ entry_email }}</label> -->
+												<input type="text" name="email" value="{{ email }}" id="input-email" class="form-control{% if error_email %} border-danger{% endif %}" placeholder="{{ entry_email }} *" />
+												{% if error_email %}
+												<small class="d-block text-danger">{{ error_email }}</small>
+												{% endif %}
+											</div>
+										</div>
+										<div class="col-12">
+											<div class="form-group required">
+												<!-- <label for="input-enquiry">{{ entry_enquiry }}</label> -->
+												<textarea name="enquiry" rows="5" id="input-enquiry" class="form-control{% if error_enquiry %} border-danger{% endif %}" placeholder="{{ entry_enquiry }} *">{{ enquiry }}</textarea>
+												{% if error_enquiry %}
+												<small class="d-block text-danger">{{ error_enquiry }}</small>
+												{% endif %}
+											</div>
+										</div>
+									</div>
+                  {% if captcha %}
+                  <div class="form-group">
+          				{{ captcha }}
+                  </div>
+                  {% endif %}
+								<div>
+									{% if text_agree %}
+									<div class="mb-3">
+										<input type="checkbox" name="agree" value="1" {% if agree %} checked="checked" {% endif %} class="float-left mr-2" />
+										<small class="d-block">{{ text_agree }}</small>
+									</div>
+									<input type="submit" value="{{ button_submit }}" class="btn btn-primary" />
+									{% else %}
+									<input class="btn btn-primary" type="submit" value="{{ button_submit }}" />
+									{% endif %}
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+    </div>
+  </div>
+	{{ content_bottom }}
+</div>
+{{ footer }}

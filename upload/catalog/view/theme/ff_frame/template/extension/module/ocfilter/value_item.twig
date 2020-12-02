@@ -1,0 +1,39 @@
+{% if option.color %}
+<div class="ocf-color" style="background-color: #{{ value.color }};"></div>
+{% endif %}
+
+{% if option.image %}
+<div class="ocf-image" style="background-image: url({{ value.image }});"></div>
+{% endif %}
+
+{% if value.selected %}
+<label id="v-{{ value.id }}" class="custom-control {% if option.color or option.image %} ml-4 {% endif %} mb-1 custom-{{ option.type }} ocf-selected" data-option-id="{{ option.option_id }}">
+  <input type="{{ option.type }}" name="ocf[{{ option.option_id }}]" value="{{ value.params }}" checked="checked" class="custom-control-input ocf-target" autocomplete="off" />
+  <span class="custom-control-label">
+    {{ value.name }}
+  </span>
+  {% if show_counter %}
+  <small class="badge badge-light float-right font-weight-normal"></small>
+  {% endif %}
+</label>
+{% elseif value.count %}
+<label id="v-{{ value.id }}" class="custom-control {% if option.color or option.image %} ml-4 {% endif %} mb-1 custom-{{ option.type }}" data-option-id="{{ option.option_id }}">
+  <input type="{{ option.type }}" name="ocf[{{ option.option_id }}]" value="{{ value.params }}" class="custom-control-input ocf-target" autocomplete="off" />
+  <span class="custom-control-label">
+    {{ value.name }}
+  </span>
+  {% if show_counter %}
+  <small class="badge badge-light float-right font-weight-normal">{{ value.count }}</small>
+  {% endif %}
+</label>
+{% else %}
+<label id="v-{{ value.id }}" class="custom-control {% if option.color or option.image %} ml-4 {% endif %} mb-1 custom-{{ option.type }} disabled" data-option-id="{{ option.option_id }}">
+  <input type="{{ option.type }}" name="ocf[{{ option.option_id }}]" value="" disabled="disabled" class="custom-control-input ocf-target" autocomplete="off" />
+  <span class="custom-control-label">
+    {{ value.name }}
+  </span>
+  {% if show_counter %}
+  <small class="badge badge-light float-right font-weight-normal">0</small>
+  {% endif %}
+</label>
+{% endif %}

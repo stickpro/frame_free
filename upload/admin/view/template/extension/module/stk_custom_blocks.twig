@@ -1,0 +1,464 @@
+{{ header }}{{ column_left }}
+<div id="content">
+	<div class="page-header">
+    <div class="container-fluid">
+      <div class="row no-gutters">
+        <div class="col-xs-8 col-lg-10">
+          <ul class="breadcrumb">
+            {% for breadcrumb in breadcrumbs %}
+            {% if loop.first %}
+            <li><a href="{{ breadcrumb.href }}"><i class="fa fa-fw fa-home" title="{{ breadcrumb.text }}"></i></a> &nbsp;/&nbsp; </li>
+            {% elseif loop.last %}
+
+            {% elseif loop.revindex == 2 %}
+            <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a> &nbsp;/&nbsp; </li>
+            {% else %}
+            <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a> &nbsp;/&nbsp; </li>
+            {% endif %}
+            {% endfor %}
+          </ul>
+          <h1>{{ heading_title }}</h1>
+        </div>
+        <div class="col-xs-4 col-lg-2">
+          <div class="control-btns text-right mb-3">
+            {% if apply_button %}
+    				<button type="button" onclick="apply()" data-toggle="tooltip" title="{{ button_apply }}" class="btn btn-success mb-1">
+    					<span class="l-icon">
+                <svg class="show" fill="currentColor" width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path>
+                    <animate attributeName="d" calcMode="discrete" dur="1.25s" repeatCount="indefinite" values="M6,2l0.01,6L10,12l-3.99,4.01L6,22h12v-6l-4-4l4-3.99V2H6z M16,16.5V20H8v-3.5l4-4L16,16.5z;M6 2v6h.01L6 8.01 10 12l-4 4 .01.01H6V22h12v-5.99h-.01L18 16l-4-4 4-3.99-.01-.01H18V2H6zm10 11v4H8l4-4 4 4zm-4-2L8 7V4h8v3H8z;M18,22l-0.01-6L14,12l3.99-4.01L18,2H6v6l4,4l-4,3.99V22H18z M8,7.5V4h8v3.5l-4,4L8,7.5z;M18,22l-0.01-6L14,12l3.99-4.01L18,2H6v6l4,4l-4,3.99V22H18z M8,7.5V4h8v3.5l-4,4L8,7.5z"/>
+                    <animateTransform attributeName="transform" type="rotate" dur="1.25s" repeatCount="indefinite" values="0 12 12;0 12 12;0 12 12;0 12 12;180 12 12"/>
+                  </path>
+                </svg>
+              </span>
+    					<span class="s-icon">
+                <svg class="show" fill="currentColor" width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                </svg>
+              </span>
+    				</button>
+    				{% endif %}
+            <button type="submit" form="form-module" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary mb-1">
+              <svg class="show" fill="currentColor" width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              	<path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm2 16H5V5h11.17L19 7.83V19zm-7-7c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zM6 6h9v4H6z"/>
+              </svg>
+            </button>
+            <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-danger mb-1">
+              <svg class="show" fill="currentColor" width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              	<path d="M18.4 10.6C16.55 8.99 14.15 8 11.5 8c-4.65 0-8.58 3.03-9.96 7.22L3.9 16c1.05-3.19 4.05-5.5 7.6-5.5 1.95 0 3.73.72 5.12 1.88L13 16h9V7l-3.6 3.6z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid">
+		{% if error_warning %}
+    <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">{{ text_edit }}</h3>
+      </div>
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-module" class="form-horizontal">
+
+					<h4 class="block-header">
+            <svg class="icon-24" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            	<path d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z"/>
+            </svg>
+            {{ text_settings }}
+          </h4>
+
+          <div class="form-group">
+            <label class="col-lg-3 control-label" for="input-name">{{ entry_name }}</label>
+            <div class="col-lg-9">
+              <input type="text" name="name" value="{{ name }}" id="input-name" class="form-control" />
+							{% if error_name %}
+              <small class="text-danger">{{ error_name }}</small>
+              {% endif %}
+            </div>
+          </div>
+					<hr>
+					<div class="form-group">
+						<label class="col-lg-3 control-label">{{ entry_status }}</label>
+						<div class="col-lg-9">
+							<div class="btn-group" data-toggle="buttons">
+								<label class="btn btn-default {% if not status %} active {% endif %}">
+									<input type="radio" name="status" value="0" {% if not status %} checked {% endif %}>
+									<span class="on-off">{{ text_disabled }}</span>
+								</label>
+								<label class="btn btn-default {% if status %} active {% endif %}">
+									<input type="radio" name="status" value="1" {% if status %} checked {% endif %}>
+									<span class="on-off">{{ text_enabled }}</span>
+								</label>
+							</div>
+						</div>
+					</div>
+					<hr>
+					<div class="form-group">
+            <label class="col-lg-3 control-label">{{ blocks_in_row_text }}</label>
+            <div class="col-lg-9 form-inline">
+
+
+							<div class="input-group mb-2">
+							  <span class="input-group-addon text-monospace">xs</span>
+								<select name="columns" class="form-control">
+									{% for i in 1..6 %}
+									<option value="{{ i }}" {% if columns ==  i %}selected{% endif %}>{{ i }}</option>
+									{% endfor %}
+	              </select>
+							</div> <span class="hidden-xs">&nbsp;</span>
+
+							<div class="input-group mb-2">
+							  <span class="input-group-addon">sm</span>
+								<select name="columns_sm" class="form-control">
+									{% for i in 1..6 %}
+									<option value="{{ i }}" {% if columns_sm ==  i %}selected{% endif %}>{{ i }}</option>
+									{% endfor %}
+	              </select>
+							</div> <span class="hidden-xs">&nbsp;</span>
+
+							<div class="input-group mb-2">
+							  <span class="input-group-addon">md</span>
+								<select name="columns_md" class="form-control">
+									{% for i in 1..6 %}
+									<option value="{{ i }}" {% if columns_md ==  i %}selected{% endif %}>{{ i }}</option>
+									{% endfor %}
+	              </select>
+							</div> <span class="hidden-xs">&nbsp;</span>
+
+							<div class="input-group mb-2">
+							  <span class="input-group-addon">lg</span>
+								<select name="columns_lg" class="form-control">
+									{% for i in 1..6 %}
+									<option value="{{ i }}" {% if columns_lg ==  i %}selected{% endif %}>{{ i }}</option>
+									{% endfor %}
+	              </select>
+							</div> <span class="hidden-xs">&nbsp;</span>
+
+							<div class="input-group mb-2">
+							  <span class="input-group-addon">xl</span>
+								<select name="columns_xl" class="form-control">
+									{% for i in 1..6 %}
+									<option value="{{ i }}" {% if columns_xl ==  i %}selected{% endif %}>{{ i }}</option>
+									{% endfor %}
+	              </select>
+							</div> <span class="hidden-xs">&nbsp;</span>
+
+							<div class="input-group mb-2">
+							  <span class="input-group-addon">xxl</span>
+								<select name="columns_xxl" class="form-control">
+									{% for i in 1..6 %}
+									<option value="{{ i }}" {% if columns_xxl ==  i %}selected{% endif %}>{{ i }}</option>
+									{% endfor %}
+	              </select>
+							</div> <span class="hidden-xs">&nbsp;</span>
+
+            </div>
+          </div>
+					<hr>
+
+
+					<h4 class="block-header">
+            <svg class="icon-24" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            	<path d="M1 5h2v14H1zm4 0h2v14H5zm17 0H10c-.55 0-1 .45-1 1v12c0 .55.45 1 1 1h12c.55 0 1-.45 1-1V6c0-.55-.45-1-1-1zm-1 12H11V7h10v10zm-3.57-4.38l-2 2.57L14 13.47l-2 2.52h8z"/>
+            </svg>
+            {{ text_items }}
+          </h4>
+
+
+					<div class="form-group">
+						<div class="col-lg-3 control-label">
+							<ul id="slides-labels" class="nav nav-pills nav-stacked">
+								{% set item_row = 1 %}
+								{% for cust_blocks_item in cust_blocks_items %}
+								<li {% if item_row == 1 %}class="active"{% endif %}><a href="#cb-{{ item_row }}" data-toggle="tab" class="cb-label">
+									{{ text_item }} {{ item_row }}
+									<svg onclick="removeCB('#cb-{{ item_row }}')" class="btn-just-icon pull-right" width="18" height="18" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7 11v2h10v-2H7zm5-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+								</a></li>
+								{% set item_row = item_row + 1 %}
+								{% endfor %}
+								<li class="add-new-cb">
+									<a href="" onclick="addCB();return false">
+										<svg class="btn-left-icon" width="18" height="18" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+											<path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+										</svg>
+										{{ text_add_item }}
+									</a>
+								</li>
+							</ul>
+						</div>
+						<div class="col-lg-9 border-left">
+							<div class="tab-content cb-content-wrapper">
+								{% set item_row = 1 %}
+								{% for cust_blocks_item in cust_blocks_items %}
+								<div id="cb-{{ item_row }}" class="cb-content tab-pane{% if item_row == 1 %} active{% endif %}">
+									<ul class="nav nav-tabs cb-content-language" id="cb_content_language-{{ item_row }}">
+										{% for language in languages %}
+										<li class="{% if loop.index == 1 %}active{% endif %}">
+											<a href="#cb_content_language-{{ item_row }}-{{ language.language_id }}" data-toggle="tab">
+												<img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" />
+												{{ language.name }}
+											</a>
+										</li>
+										{% endfor %}
+									</ul>
+									<div class="tab-content">
+										<div class="form-group">
+											<label class="col-lg-2 control-label">{{ entry_image }}</label>
+											<div class="col-lg-10 logo-thumb">
+												<a href="" id="thumb-image{{ item_row }}" data-toggle="image" class="img-thumbnail"><img src="{{ cust_blocks_item.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}"  /></a>
+												<div><textarea placeholder="{{ entry_html }}" class="form-control text-monospace" name="cust_blocks_item[{{ item_row }}][html]">{{ cust_blocks_item.html }}</textarea></div>
+												<input type="hidden" name="cust_blocks_item[{{ item_row }}][image]" value="{{ cust_blocks_item.image }}" id="input-image{{ item_row }}" />
+											</div>
+										</div>
+										<hr>
+										{% for language in languages %}
+										<div class="tab-pane {% if loop.index == 1 %}active{% endif %}" id="cb_content_language-{{ item_row }}-{{ language.language_id }}">
+											<div class="form-group">
+												<label class="col-lg-2 control-label">{{ entry_title }}</label>
+												<div class="col-lg-10">
+													<input class="form-control" type="text" placeholder="{{ entry_title }}" name="cust_blocks_item[{{ item_row }}][title][{{ language.language_id }}]" value="{{ cust_blocks_item.title[language.language_id] }}" />
+												</div>
+											</div>
+											<hr>
+											<div class="form-group">
+												<label class="col-lg-2 control-label">{{ entry_link }}</label>
+												<div class="col-lg-10">
+													<input class="form-control" type="text" name="cust_blocks_item[{{ item_row }}][link][{{ language.language_id }}]" value="{{ cust_blocks_item.link[language.language_id] }}" />
+												</div>
+											</div>
+											<hr>
+											<div class="form-group">
+												<label class="col-lg-2 control-label">{{ entry_description }}</label>
+												<div class="col-lg-10">
+													<textarea rows="4" name="cust_blocks_item[{{ item_row }}][description][{{ language.language_id }}]" class="form-control" placeholder="{{ placeholder_description }}">{{ cust_blocks_item.description[language.language_id] }}</textarea>
+												</div>
+											</div>
+											<hr>
+										</div>
+										{% endfor %}
+									</div>
+									<div class="form-group">
+										<label class="col-lg-2 control-label">{{ entry_sort_order }}</label>
+										<div class="col-lg-10 form-inline">
+											<input  class="form-control" type="number" name="cust_blocks_item[{{ item_row }}][sort]" value="{{ cust_blocks_item.sort }}" />
+										</div>
+									</div>
+								</div>
+								{% set item_row = item_row + 1 %}
+								{% endfor %}
+							</div>
+						</div>
+
+
+					</div>
+
+					<script>
+
+						var item_row = {{ item_row }};
+
+						function addCB() {
+							slide_label = '<li>';
+							slide_label += '  <a href="#cb-' + item_row + '" data-toggle="tab" class="cb-label new-slide">';
+							slide_label += '    {{ text_item }} ' + item_row;
+							slide_label += '    <svg onclick="removeCB(\'#cb-' + item_row + '\')" class="btn-just-icon pull-right" width="18" height="18" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7 11v2h10v-2H7zm5-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>';
+							slide_label += '  </a>';
+							slide_label += '</li>';
+
+							slide_content  = '<div class="tab-pane cb-content" id="cb-' + item_row + '">';
+							slide_content += '  <ul class="nav nav-tabs cb-content-language" id="cb_content_language-' + item_row + '">';
+							{% for language in languages %}
+							slide_content += '    <li class="{% if loop.index == 1 %}active{% endif %}">';
+							slide_content += '      <a href="#cb_content_language-' + item_row + '-{{ language.language_id }}" data-toggle="tab">';
+							slide_content += '        <img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}">';
+							slide_content += '        {{ language.name }}';
+							slide_content += '      </a>';
+							slide_content += '    </li>';
+							{% endfor %}
+							slide_content += '  </ul>';
+							slide_content += '  <div class="tab-content">';
+
+
+							slide_content +=   `<div class="form-group">
+																		<label class="col-lg-2 control-label">{{ entry_image }}</label>
+																		<div class="col-lg-10 logo-thumb">
+																			<a href="#" id="thumb-image` + item_row + `" data-toggle="image" class="img-thumbnail"><img src="{{ placeholder }}" data-placeholder="{{ placeholder }}"></a>
+																			<div><textarea placeholder="{{ entry_html }}" class="form-control text-monospace" name="cust_blocks_item[` + item_row + `][html]"></textarea></div>
+																			<input type="hidden" name="cust_blocks_item[` + item_row + `][image]" value="" id="input-image` + item_row + `" />
+																		</div>
+																	</div>
+																	<hr>`;
+
+
+
+
+							{% for language in languages %}
+							slide_content +=   `<div class="tab-pane {% if loop.index == 1 %}active{% endif %}" id="cb_content_language-` + item_row + `-{{ language.language_id }}">
+																		<div class="form-group">
+																			<label class="col-lg-2 control-label">{{ entry_title }}</label>
+																			<div class="col-lg-10">
+																				<input class="form-control" type="text" name="cust_blocks_item[` + item_row + `][title][{{ language.language_id }}]" value="">
+																			</div>
+																		</div>
+																		<hr>
+																		<div class="form-group">
+																			<label class="col-lg-2 control-label">{{ entry_link }}</label>
+																			<div class="col-lg-10">
+																				<input class="form-control" type="text" name="cust_blocks_item[` + item_row + `][link][{{ language.language_id }}]" value="">
+																			</div>
+																		</div>
+																		<hr>
+																		<div class="form-group">
+																			<label class="col-lg-2 control-label">{{ entry_description }}</label>
+																			<div class="col-lg-10">
+																				<textarea rows="4" name="cust_blocks_item[` + item_row + `][description][{{ language.language_id }}]" class="form-control" placeholder="{{ placeholder_description }}"></textarea>
+																			</div>
+																		</div>
+																		<hr>
+																	</div>`;
+							{% endfor %}
+
+							slide_content +=   `<div class="form-group">
+																		<label class="col-lg-2 control-label">{{ entry_sort_order }}</label>
+																		<div class="col-lg-10 form-inline">
+																			<input  class="form-control" type="number" name="cust_blocks_item[` + item_row + `][sort]" value="0" />
+																		</div>
+																	</div>
+																</div>`;
+
+
+
+							$('.add-new-cb').before(slide_label);
+							$('.cb-content-wrapper').append(slide_content)
+
+							$('a[href = #cb-' + item_row + ']').tab('show');
+
+							item_row++;
+						}
+
+						function removeCB(id) {
+							var item = $('a[href=' + id + ']').parent(),
+									next = item.next(),
+									prev = item.prev();
+
+							if ( item.hasClass('active') ) {
+
+								if ( prev.length > 0 ) {
+
+									prev.find('a').tab('show');
+
+								} else if ( next.length > 0 && !next.hasClass('add-new-cb') ) {
+
+									next.find('a').tab('show');
+								}
+							}
+
+							item.remove();
+
+							$(id).remove();
+						}
+					</script>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+var item_row = {{ item_row }};
+
+function addItem() {
+  html  = '<tr id="item-row' + item_row + '">';
+	html  += '<td class="text-left">#' + (item_row + 1) + '</td>';
+	html += '<td class="text-left"><a href="" id="thumb-image' + item_row + '" data-toggle="image" class="img-thumbnail"><img src="{{ placeholder }}" data-placeholder="{{ placeholder }}"  /></a><input type="hidden" name="cust_blocks_item[' + item_row + '][image]" value="" id="input-image' + item_row + '" /></td>';
+	html += '<td class="text-left"><textarea placeholder="{{ entry_html }}" class="form-control" name="cust_blocks_item[' + item_row + '][html]" rows="2" style="font-family:monospace" ></textarea></td>';
+  html += '<td class="text-left">';
+	{% for language in languages %}
+	html += '<div class="input-group pull-left"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>';
+	html += '<input class="form-control" placeholder="{{ entry_title }}" type="text" name="cust_blocks_item[' + item_row + '][title][{{ language.language_id }}]" value="" />';
+	html += '</div>';
+	{% endfor %}
+	html += '</td>';
+	html += '<td class="text-left" style="width:40%">';
+	{% for language in languages %}
+	html += '<div class="input-group pull-left"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>';
+	html += '<input class="form-control" placeholder="{{ entry_description }}" type="text" name="cust_blocks_item[' + item_row + '][description][{{ language.language_id }}]" value="" />';
+	html += '</div>';
+	{% endfor %}
+	html += '</td>';
+	html += '<td class="text-left" style="width:30%">';
+	{% for language in languages %}
+	html += '<div class="input-group pull-left"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>';
+	html += '<input class="form-control" placeholder="{{ entry_link }}" type="text" name="cust_blocks_item[' + item_row + '][link][{{ language.language_id }}]" value="" />';
+	html += '</div>';
+	{% endfor %}
+	html += '</td>';
+	html += '<td class="text-left"><input class="form-control" placeholder="{{ entry_sort_order }}" type="number" name="cust_blocks_item[' + item_row + '][sort]" size="1" value="" /></td>';
+	html += '<td class="text-right"><a class="btn btn-danger" onclick="$(\'#item-row' + item_row  + '\').remove();" data-toggle="tooltip" title="{{ button_delete }}"><i class="fa fa-fw fa-lg fa-trash-o"></i></a></td>';
+	html += '</tr>';
+
+	$('#items tbody').append(html);;
+
+	item_row++;
+}
+</script>
+
+{% if apply_button %}
+<script>
+	function apply(){
+		$(".alert").remove();
+		$.ajax({
+			type: "post",
+			url: $("#form-module").attr('action'),
+			data: $("#form-module").serialize(),
+			dataType: 'html',
+			beforeSend: function() {
+				$('body').addClass('loading');
+				$('.control-btns .btn').addClass('disabled');
+			},
+			success: function(html) {
+				var $href = $(html).find(".well [selected=\"selected\"]").val();
+				if ($href) {
+					$.ajax({
+						type: "post",
+						url: $href,
+						data: '',
+						dataType: 'html',
+						success: function(html) {
+							var $success = $(html).find('.alert-success, .alert-danger');
+							if ($success.length > 0) {
+								$('.panel-default').before($success);
+								$('body').removeClass('loading');
+								$('.control-btns .btn').removeClass('disabled');
+							}
+						}
+					});
+
+					$('.has-error .text-danger').remove();
+					$('.has-error').removeClass('has-error');
+					
+				} else {
+					var $success = $(html).find('.alert-success, .alert-danger'),
+							$content = $(html).find('.panel-default').html();
+
+					if ($success.length > 0) {
+						$('.panel-default').before($success);
+					} else {
+						$('.panel-default').html($content);
+					}
+
+					$('body').removeClass('loading');
+					$('.control-btns .btn').removeClass('disabled');
+				}
+			}
+		});
+	}
+</script>
+{% endif %}
+{{ footer }}

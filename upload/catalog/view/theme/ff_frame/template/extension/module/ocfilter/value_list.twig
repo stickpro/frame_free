@@ -1,0 +1,33 @@
+{% if show_values_limit > 0 and option.values|length > show_values_limit %}
+{% set hidden_values = option.values[show_values_limit:] %}
+{% set values = option.values[:show_values_limit] %}
+{% else %}
+{% set hidden_values = [] %}
+{% set values = option.values %}
+{% endif %}
+
+{% for value in values %}
+{% include 'ff_frame/template/extension/module/ocfilter/value_item.twig' %}
+{% endfor %}
+
+{% if hidden_values|length > 0 %}
+<div class="collapse" id="ocfilter-hidden-values-{{ option.option_id }}">
+  {% for value in hidden_values %}
+  {% include 'ff_frame/template/extension/module/ocfilter/value_item.twig' %}
+  {% endfor %}
+</div>
+<div class="collapse-value mt-2 mb-0">
+  <button type="button" data-target="#ocfilter-hidden-values-{{ option.option_id }}" data-toggle="collapse" class="btn btn-light btn-block btn-sm">
+    <span class="row no-gutters align-items-center">
+      <span class="col text-left">
+        {{ text_show_all }}
+      </span>
+      <span class="col-auto">
+        <svg class="d-block ft-icon-18 m-0 text-gray-500 darker-on-hover" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M7.41 7.84L12 12.42l4.59-4.58L18 9.25l-6 6-6-6z"></path>
+        </svg>
+      </span>
+    </span>
+  </button>
+</div>
+{% endif %}

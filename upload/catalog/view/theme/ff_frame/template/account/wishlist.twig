@@ -1,0 +1,122 @@
+{{ header }}
+<div id="account-wishlist" class="container">
+  {% if success %}
+  <div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> {{ success }}
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+  </div>
+  {% endif %}
+  <div class="row">
+
+		{% if column_left %}
+		<div class="col-12 col-sm col-lg-3 order-lg-1 col-aside">
+			{{ column_left }}
+		</div>
+		{% endif %}
+
+		{% if column_right %}
+		<div class="col-12 col-sm col-lg-3 order-lg-3 col-aside">
+			{{ column_right }}
+		</div>
+		{% endif %}
+
+		{% if column_left and column_right %}
+    {% set class = 'col-lg-6' %}
+    {% elseif column_left or column_right %}
+    {% set class = 'col-lg-9' %}
+    {% else %}
+    {% set class = 'col-lg' %}
+    {% endif %}
+
+    <div id="content" class="col-12 col-lg order-lg-2 mb-3">
+			{{ content_top }}
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb p-0 mb-3 bg-transparent" itemscope itemtype="http://schema.org/BreadcrumbList">
+          {% for breadcrumb in breadcrumbs %}
+          {% if loop.index == 1 %}
+          <li class="breadcrumb-item p-0" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a class="text-dark" href="{{ breadcrumb.href }}"  itemprop="item">
+              <meta itemprop="name" content="{{ g_text_home }}" />
+            	<svg class="ft-icon-18 d-block" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            		<path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+            	</svg>
+            </a>
+            <meta itemprop="position" content="{{ loop.index }}" />
+          </li>
+          {% elseif breadcrumbs|length != loop.index %}
+          <li class="breadcrumb-item p-0" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a class="text-dark" href="{{ breadcrumb.href }}" itemprop="item">
+              <span itemprop="name">{{ breadcrumb.text }}</span>
+            </a>
+            <meta itemprop="position" content="{{ loop.index }}" />
+          </li>
+          {% else %}
+          <li class="breadcrumb-item p-0 active">
+            <span>{{ breadcrumb.text }}</span>
+          </li>
+          {% endif %}
+          {% endfor %}
+        </ol>
+      </nav>
+      <h1 class="h2 mb-4">{{ heading_title }}</h1>
+      {% if products %}
+
+
+      <div class="table-responsive mb-3">
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr class="bg-light">
+              <th  class="text-center text-nowrap">{{ column_image }}</th>
+              <th  class="text-left text-nowrap">{{ column_name }}</th>
+              <th  class="text-left text-nowrap">{{ column_model }}</th>
+              <th  class="text-right text-nowrap">{{ column_stock }}</th>
+              <th  class="text-right text-nowrap">{{ column_price }}</th>
+              <th  class="text-right text-nowrap">{{ column_action }}</th>
+            </tr>
+          </thead>
+          <tbody>
+
+          {% for product in products %}
+          <tr>
+            <td class="text-center">{% if product.thumb %}<a href="{{ product.href }}"><img src="{{ product.thumb }}" {% if product.thumb2x %}srcset="{{ product.thumb }} 1x, {{ product.thumb2x }} 2x, {{ product.thumb3x }} 3x, {{ product.thumb4x }} 4x"{% endif %} alt="{{ product.name }}" title="{{ product.name }}" /></a>{% endif %}</td>
+            <td class="text-left"><a class="text-dark h6" href="{{ product.href }}">{{ product.name }}</a></td>
+            <td class="text-left">{{ product.model }}</td>
+            <td class="text-right text-nowrap">{{ product.stock }}</td>
+            <td class="text-right">{% if product.price %}
+              <div class="price"> {% if not product.special %}
+                {{ product.price }}
+                {% else %} <b>{{ product.special }}</b> <s>{{ product.price }}</s> {% endif %} </div>
+              {% endif %}</td>
+            <td class="text-right text-nowrap">
+							<button type="button" onclick="cart.add('{{ product.product_id }}');" data-toggle="tooltip" title="{{ button_cart }}" class="btn btn-primary">
+
+									<svg class="d-block ft-icon-18 m-0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+										<path d="M17.21 9l-4.38-6.56c-.19-.28-.51-.42-.83-.42-.32 0-.64.14-.83.43L6.79 9H2c-.55 0-1 .45-1 1 0 .09.01.18.04.27l2.54 9.27c.23.84 1 1.46 1.92 1.46h13c.92 0 1.69-.62 1.93-1.46l2.54-9.27L23 10c0-.55-.45-1-1-1h-4.79zM9 9l3-4.4L15 9H9zm3 8c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>
+									</svg>
+
+
+							</button>
+              <a href="{{ product.remove }}" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger">
+
+									<svg class="d-block ft-icon-18 m-0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+										<path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+									</svg>
+
+							</a>
+						</td>
+          </tr>
+          {% endfor %}
+            </tbody>
+        </table>
+      </div>
+      {% else %}
+      <p>{{ text_empty }}</p>
+      {% endif %}
+
+      <div class="d-none">
+        <a href="{{ continue }}" class="btn btn-primary">{{ button_continue }}</a>
+      </div>
+    </div>
+	</div>
+	{{ content_bottom }}
+</div>
+{{ footer }}
