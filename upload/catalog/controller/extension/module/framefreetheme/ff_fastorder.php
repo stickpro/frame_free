@@ -9,7 +9,7 @@ class ControllerExtensionModuleFramefreethemeFFFastorder extends Controller {
 		$this->load->model('setting/setting');
 
 		$ff_settings = array();
-		$ff_settings = $this->model_setting_setting->getSetting('theme_frame', $this->config->get('config_store_id'));
+		$ff_settings = $this->model_setting_setting->getSetting('theme_framefree', $this->config->get('config_store_id'));
 		$language_id = $this->config->get('config_language_id');
 
 		if (isset($ff_settings['t1_high_definition_imgs']) && $ff_settings['t1_high_definition_imgs']){
@@ -130,7 +130,7 @@ class ControllerExtensionModuleFramefreethemeFFFastorder extends Controller {
 		$this->load->model('setting/setting');
 
 		$ff_settings = array();
-		$ff_settings = $this->model_setting_setting->getSetting('theme_frame', $this->config->get('config_store_id'));
+		$ff_settings = $this->model_setting_setting->getSetting('theme_framefree', $this->config->get('config_store_id'));
 		$language_id = $this->config->get('config_language_id');
 
 
