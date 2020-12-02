@@ -931,7 +931,7 @@
   			if ((float)$product_info['special']) {
   				$data['microdata_special'] = $this->currency->format($this->tax->calculate($product_info['special'], $product_info['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency'], '', false);
 
-          $this->load->model('extension/theme/frame');
+          $this->load->model('extension/theme/framefree');
 
           $special_end_date = $this->model_extension_theme_framefree->getSpecialEndDate($product_id);
 
