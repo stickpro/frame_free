@@ -1,5 +1,5 @@
 <?php
-class ControllerExtensionModuleSTKroductsCarousel extends Controller {
+class ControllerExtensionModuleSTKProductsCarousel extends Controller {
 	private $error = array();
 
 	public function index() {
